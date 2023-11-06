@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { cn } from '@/lib/utils'
 import { Open_Sans } from 'next/font/google'
+import { ModalProvider } from '@/components/providers/modal-provider'
 
 
 const font = Open_Sans({ subsets: ['latin'] })
@@ -21,7 +22,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" >
-      <body className={font.className}>{children}</body>
+      <body className={font.className}>
+        <ModalProvider />
+        {children}</body>
     </html>
   )
 }

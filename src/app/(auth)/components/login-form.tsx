@@ -14,6 +14,10 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import * as z from "zod"
+import { signIn } from "next-auth/react"
+import { useRouter } from "next/navigation"
+import { Icons } from "@/components/icons"
+import { useState } from "react"
 
 const formSchema = z.object({
     email: z.string().email({ message: 'Invalid email' }),
@@ -23,6 +27,9 @@ const formSchema = z.object({
 
 export default function LoginForm() {
 
+    const [isLoading, setIsLoading] = useState(false)
+    const router = useRouter()
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -31,8 +38,21 @@ export default function LoginForm() {
         }
     })
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
         console.log(values);
+
+        setIsLoading(true)
+
+        const res = await signIn('credentials', { ...values, redirect: false })
+
+        console.log('ok', res);
+
+        if (res?.status === 200) {
+            router.push('/session')
+        }
+
+        console.log('error', res);
+        setIsLoading(false)
 
     }
     return (
@@ -80,7 +100,12 @@ export default function LoginForm() {
                         )}
                     />
                     <div className="flex justify-center">
-                        <Button type="submit" className="w-full">Login</Button>
+                        <Button type="submit" className="w-full" disabled={isLoading}>
+                            {isLoading && (
+                                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                            )}
+                            Login
+                        </Button>
                     </div>
 
 

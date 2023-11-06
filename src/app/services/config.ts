@@ -3,31 +3,35 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { z } from 'zod'
 import { db } from "./db";
-import {validatePassword} from "@/app/utils/password"
+import { validatePassword } from "@/app/utils/password"
+
+
+
+
 
 
 const providers = [
     CredentialsProvider({
         name: 'credentials',
         credentials: {
-          email: { label: "email", type: "text", },
-          password: { label: "password", type: "password" },
+            email: { label: "email", type: "text", },
+            password: { label: "password", type: "password" },
         },
 
         async authorize(credentials, req) {
-            
+
 
             try {
                 if (!(credentials?.email && credentials?.password)) {
                     throw new Error('email, passwword is required')
                 }
-    
+
                 const credSchema = z.object({
-                    email: z.string().email({message: 'Email is invalid'}),
-                    password: z.string().min(6, {message: 'Password should be more than 6 characters'}),
+                    email: z.string().email({ message: 'Email is invalid' }),
+                    password: z.string().min(6, { message: 'Password should be more than 6 characters' }),
                 })
 
-                const credVal = credSchema.safeParse({email: credentials.email, password: credentials.password})
+                const credVal = credSchema.safeParse({ email: credentials.email, password: credentials.password })
 
                 if (!credVal.success) throw new Error(credVal.error.message)
 
@@ -52,14 +56,18 @@ const providers = [
                     email: user.email,
                     role: user.role
                 }
-                
-            } catch (error) {
 
+            } catch (error: any) {
+                console.log(error);
+                if (typeof error === 'object') {
+                    throw new Error(error)
+                }
                 throw new Error('Something went wrong...')
-                
+
+
             }
 
-           
+
 
         }
     }
@@ -74,10 +82,22 @@ export const authOptions = {
         signIn: '/login',
     },
     jwt: {
-      // The maximum age of the NextAuth.js issued JWT in seconds.
-      // Defaults to `session.maxAge`.
-      maxAge: 60 * 60 * 2,
-     
+        // The maximum age of the NextAuth.js issued JWT in seconds.
+        // Defaults to `session.maxAge`.
+        maxAge: 60 * 60 * 2,
+
     },
-    
+    callbacks: {
+        async jwt(data) {
+            // console.log(data.user);
+
+            return { ...data.token, ...data.user }
+        },
+        async session(data) {
+
+
+            return { ...data.session, ...data.token }
+        }
+    }
+
 } satisfies NextAuthOptions

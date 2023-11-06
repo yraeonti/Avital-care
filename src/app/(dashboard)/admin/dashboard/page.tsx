@@ -3,7 +3,7 @@
 export default async function Overview() {
     return (
         <div>
-            Dashboard
+            Admin Dashboard
         </div>
     )
 }

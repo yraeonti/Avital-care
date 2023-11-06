@@ -7,6 +7,7 @@ import * as z from "zod"
 import { type Dispatch } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import axios from 'axios'
 import {
     Form,
     FormControl,
@@ -17,7 +18,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { signIn } from "next-auth/react"
+import { Icons } from "@/components/icons"
 
 
 type ProfileForm = {
@@ -41,6 +42,8 @@ type SignUpProps = {
     userForm: UseFormReturn<UserForm, any, undefined>,
     setpage: Dispatch<SetStateAction<string>>,
     setdata: Dispatch<SetStateAction<SignUpProps['data']>>,
+    seterrors: Dispatch<SetStateAction<string>>,
+    errors: string,
     pageTo: string
     data: (ProfileForm) | null
 }
@@ -75,6 +78,7 @@ const userSchema = z.object({
 export default function SignUpForm() {
     const [page, setPage] = useState<string>("profile")
     const [data, setData] = useState<SignUpProps['data']>(null)
+    const [errors, setErrors] = useState<string>('')
 
     const profileForm = useForm<z.infer<typeof profileSchema>>({
         resolver: zodResolver(profileSchema),
@@ -131,7 +135,9 @@ export default function SignUpForm() {
                         setdata={setData}
                         profileForm={profileForm}
                         setpage={setPage}
-                        pageTo="signup" />
+                        pageTo="signup"
+                        errors={errors}
+                    />
 
                 </Transition>
 
@@ -147,7 +153,9 @@ export default function SignUpForm() {
                         userForm={userForm}
                         setpage={setPage}
                         data={data}
-                        pageTo="profile" />
+                        seterrors={setErrors}
+                        pageTo="profile"
+                    />
 
 
                 </Transition>
@@ -169,7 +177,7 @@ const ProfileDetails = (
         pageTo,
         setdata
     }:
-        Omit<SignUpProps, 'data' | 'userForm'>) => {
+        Omit<SignUpProps, 'data' | 'userForm' | 'seterrors'>) => {
 
     const onNextClick = (values: z.infer<typeof profileSchema>) => {
 
@@ -204,7 +212,7 @@ const ProfileDetails = (
                                 control={profileForm.control}
                                 name="first_name"
                                 render={({ field }) => (
-                                    <FormItem>
+                                    <FormItem className="w-full">
 
                                         <FormControl>
                                             <Input placeholder="First Name" {...field} />
@@ -220,7 +228,7 @@ const ProfileDetails = (
                                 control={profileForm.control}
                                 name="last_name"
                                 render={({ field }) => (
-                                    <FormItem>
+                                    <FormItem className="w-full">
                                         <FormControl>
                                             <Input placeholder="Last Name" {...field} />
                                         </FormControl>
@@ -312,19 +320,40 @@ const UserDetails = (
         pageTo,
         data
     }:
-        Omit<SignUpProps, 'setdata' | 'profileForm'>) => {
+        Omit<SignUpProps, 'setdata' | 'profileForm' | 'errors'>) => {
 
     const router = useRouter()
+
+    const [isLoading, setIsLoading] = useState(false)
 
 
     const onSubmit = async (values: z.infer<typeof userSchema>) => {
         console.log({ ...values, ...data, role: 'PATIENT' });
         const info = { ...values, ...data, role: 'PATIENT' }
-        const res = await signIn('credentials', { ...info, redirect: false, })
+        setIsLoading(true)
 
-        if (res?.status === 200) {
-            return router.push('/login');
+        try {
+
+            const res = await axios.post('/api/auth/register', {
+                ...info
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            console.log(res);
+
+
+            if (res?.status === 200) {
+                return router.push('/login');
+            }
+            setIsLoading(false)
+        } catch (error) {
+            console.log(error);
+            setIsLoading(false)
         }
+
 
     }
     return (
@@ -410,8 +439,11 @@ const UserDetails = (
 
 
                     <div className="flex justify-center mt-10 space-x-3">
-                        <Button type="button" className="w-full" onClick={() => pageTo && setpage(pageTo)}>Back</Button>
-                        <Button type="submit" className="w-full bg-black text-white text-center">
+                        <Button type="button" className="w-full" disabled={isLoading} onClick={() => pageTo && setpage(pageTo)}>Back</Button>
+                        <Button type="submit" className="w-full bg-black text-white text-center" disabled={isLoading}>
+                            {isLoading && (
+                                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                            )}
                             Sign Up
                         </Button>
                     </div>
