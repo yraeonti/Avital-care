@@ -22,7 +22,7 @@ export default async function PatientLayout({
 
     return (
         <main className="h-full flex">
-            <div className="hidden md:block h-full w-[25%] lg:w-80 z-30 fixed inset-y-0 border-r border-neutral-200 shadow-md">
+            <div className="hidden md:block h-full w-[25%] lg:w-80 z-30 fixed inset-y-0 border-r border-neutral-200 shadow-md overflow-y-scroll pb-7">
                 <NavigationSideBar session={session} navitems={PatientNavRoutes} />
 
 

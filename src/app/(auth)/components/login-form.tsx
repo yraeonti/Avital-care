@@ -18,6 +18,9 @@ import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { Icons } from "@/components/icons"
 import { useState } from "react"
+import { getSession } from "next-auth/react"
+import { SessionWithExtraData } from "@/app/services/types"
+import { Role } from "@/app/services/types"
 
 const formSchema = z.object({
     email: z.string().email({ message: 'Invalid email' }),
@@ -48,7 +51,20 @@ export default function LoginForm() {
         console.log('ok', res);
 
         if (res?.status === 200) {
-            router.push('/session')
+            const session: SessionWithExtraData | null = await getSession()
+
+            if (session) {
+
+                const { role } = session
+                if (role === Role.PATIENT) {
+                    return router.push('/patient/dashboard')
+                } else if (role === Role.DOCTOR) {
+                    return router.push('/doctor/dashboard')
+                } else {
+                    if (role === 'ADMIN') return router.push('/admin/dashboard')
+                }
+            }
+            return router.push('/login')
         }
 
         console.log('error', res);

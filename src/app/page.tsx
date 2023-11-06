@@ -1,7 +1,9 @@
-import Image from 'next/image'
+import { Icons } from "@/components/icons"
 
 export default function Home() {
   return (
-    <div></div>
+    <div>
+    </div>
+
   )
 }
