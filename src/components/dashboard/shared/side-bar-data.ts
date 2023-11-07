@@ -1,5 +1,14 @@
 
-import { HomeIcon, DoctorIcon, BookingIcon, SettingIcon, ScheduleIcon } from "./nav-icons";
+import {
+    HomeIcon,
+    DoctorIcon,
+    BookingIcon,
+    SettingIcon,
+    ScheduleIcon,
+    AppointmentIcon,
+    DashboardIcon,
+    PatientsIcon
+} from "./nav-icons";
 
 export type NavItems = {
     icon: string | (() => JSX.Element);
@@ -32,7 +41,7 @@ export const PatientNavRoutes: NavItems = [
     {
         icon: SettingIcon,
         name: 'Settings',
-        link: '#'
+        link: '/patient/dashboard/settings'
     },
 ]
 export const DoctorNavRoutes: NavItems = [
@@ -65,28 +74,28 @@ export const DoctorNavRoutes: NavItems = [
 
 export const AdminNavRoutes: NavItems = [
     {
-        icon: '',
-        name: 'Home',
-        link: '/patient/dashboard'
+        icon: DashboardIcon,
+        name: 'Dashboard',
+        link: '/admin/dashboard'
     },
     {
-        icon: '',
-        name: 'All Doctors',
+        icon: DoctorIcon,
+        name: 'Doctors',
         link: '#'
     },
     {
-        icon: '',
-        name: 'Scheduled Sessions',
+        icon: ScheduleIcon,
+        name: 'Schedule',
         link: '#'
     },
     {
-        icon: '',
-        name: 'My Bookings',
+        icon: AppointmentIcon,
+        name: 'Appointments',
         link: '#'
     },
     {
-        icon: '',
-        name: 'Settings',
+        icon: PatientsIcon,
+        name: 'Patients',
         link: '#'
     },
 ]

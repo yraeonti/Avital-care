@@ -4,6 +4,7 @@ import { authOptions } from "@/app/services/config"
 import { Role, SessionWithExtraData } from "@/app/services/types"
 import { PatientNavRoutes } from '@/components/dashboard/shared/side-bar-data'
 import { redirect } from "next/navigation"
+import { ModalProvider } from '@/components/providers/patient-modal-provider'
 
 export default async function PatientLayout({
     children, // will be a page or nested layout
@@ -30,6 +31,7 @@ export default async function PatientLayout({
             <main className="flex-1 pl-0 md:pl-[25%] lg:pl-80 h-full">
                 {children}
             </main>
+            <ModalProvider />
         </main>
     )
 }

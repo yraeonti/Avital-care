@@ -11,6 +11,12 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
+import {
+    Alert,
+    AlertDescription,
+    AlertTitle,
+} from "@/components/ui/alert"
+import { AlertCircle } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import * as z from "zod"
@@ -31,6 +37,7 @@ const formSchema = z.object({
 export default function LoginForm() {
 
     const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState('')
     const router = useRouter()
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -68,6 +75,7 @@ export default function LoginForm() {
         }
 
         console.log('error', res);
+        setError(res?.error ?? 'Something went wrong...')
         setIsLoading(false)
 
     }
@@ -76,7 +84,16 @@ export default function LoginForm() {
 
             <div className="flex flex-col items-center space-y-5">
                 <p>Logo</p>
-
+                {
+                    error !== '' && (
+                        <Alert variant="destructive">
+                            <AlertCircle className="h-4 w-4" />
+                            <AlertDescription>
+                                {error}
+                            </AlertDescription>
+                        </Alert>
+                    )
+                }
                 <h1 className="text-3xl font-semibold">Welcome Back</h1>
             </div>
 

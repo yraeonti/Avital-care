@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     try {
 
         const userCred = z.object({
-            email: z.string().email(),
+            email: z.string().email({ message: 'Please provide valid email' }),
             first_name: z.string(),
             last_name: z.string(),
             password: z.string().min(6),

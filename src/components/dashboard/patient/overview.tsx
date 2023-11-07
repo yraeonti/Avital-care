@@ -54,7 +54,7 @@ export default function Overview({ session }: { session: Session }) {
     return (
         <section className="px-6">
 
-            <h1 className="text-xl font-medium truncate my-5">Welcome  <span className="opacity-60 text-2xl truncate pl-1">{session.user?.name}!</span></h1>
+            <h1 className="text-xl font-medium truncate my-5">Welcome  <span className="opacity-60 text-2xl truncate pl-1 capitalize">{session.user?.name}!</span></h1>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-6">
                 {

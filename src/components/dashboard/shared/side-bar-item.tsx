@@ -10,29 +10,29 @@ export default function SideBarItem({ icon, name, link, mobile }: NavItems[numbe
     const checkActive = (type: string) => path.endsWith(type);
     return mobile ? (
         <SheetClose>
-            <aside className={`flex space-x-4 items-center 
+            <Link href={link} className={`flex space-x-4 items-center 
                 justify-start p-3 cursor-pointer rounded-md
                 ${checkActive(link) ? "bg-black" : "hover:bg-neutral-200"} 
                 `}>
                 {typeof icon !== 'string' && icon()}
-                <Link href={link} className={`truncate ${checkActive(link) ? " text-white" : "text-black"}`}>
+                <div className={`truncate ${checkActive(link) ? " text-white" : "text-black"}`}>
                     {name}
-                </Link>
+                </div>
 
 
 
-            </aside>
+            </Link>
         </SheetClose>
 
     ) : (
-        <aside className={`flex space-x-4 items-center 
+        <Link href={link} className={`flex space-x-4 items-center 
             justify-start p-3 cursor-pointer rounded-md
              ${checkActive(link) ? "bg-black" : "hover:bg-neutral-200"} 
              `}>
             {typeof icon !== 'string' && icon()}
-            <Link href={link} className={`truncate ${checkActive(link) ? " text-white" : "text-black"}`}>
+            <div className={`truncate ${checkActive(link) ? " text-white" : "text-black"}`}>
                 {name}
-            </Link>
-        </aside>
+            </div>
+        </Link>
     )
 }

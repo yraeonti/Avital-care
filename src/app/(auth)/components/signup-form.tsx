@@ -19,6 +19,12 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
+import {
+    Alert,
+    AlertDescription,
+    AlertTitle,
+} from "@/components/ui/alert"
+import { AlertCircle } from "lucide-react"
 
 
 type ProfileForm = {
@@ -135,8 +141,9 @@ export default function SignUpForm() {
                         setdata={setData}
                         profileForm={profileForm}
                         setpage={setPage}
-                        pageTo="signup"
                         errors={errors}
+                        pageTo="signup"
+
                     />
 
                 </Transition>
@@ -154,6 +161,7 @@ export default function SignUpForm() {
                         setpage={setPage}
                         data={data}
                         seterrors={setErrors}
+                        errors={errors}
                         pageTo="profile"
                     />
 
@@ -175,7 +183,8 @@ const ProfileDetails = (
         profileForm,
         setpage,
         pageTo,
-        setdata
+        setdata,
+        errors
     }:
         Omit<SignUpProps, 'data' | 'userForm' | 'seterrors'>) => {
 
@@ -193,8 +202,22 @@ const ProfileDetails = (
                 <form onSubmit={profileForm.handleSubmit(onNextClick)} className="border-2 border-neutral-100 py-10 px-10 md:px-28
                          w-11/12 sm:w-4/5 lg:w-1/2 bg-white mx-auto space-y-6 shadow-lg">
 
+
+
                     <div className="flex flex-col items-center space-y-5">
                         <p>Logo</p>
+
+                        {
+                            errors !== '' && (
+                                <Alert variant="destructive">
+                                    <AlertCircle className="h-4 w-4" />
+
+                                    <AlertDescription>
+                                        {errors}
+                                    </AlertDescription>
+                                </Alert>
+                            )
+                        }
 
                         <h1 className="text-3xl font-semibold">Let's Get Started</h1>
                     </div>
@@ -318,13 +341,16 @@ const UserDetails = (
         userForm,
         setpage,
         pageTo,
-        data
+        data,
+        seterrors,
+        errors
     }:
-        Omit<SignUpProps, 'setdata' | 'profileForm' | 'errors'>) => {
+        Omit<SignUpProps, 'setdata' | 'profileForm'>) => {
 
     const router = useRouter()
 
     const [isLoading, setIsLoading] = useState(false)
+
 
 
     const onSubmit = async (values: z.infer<typeof userSchema>) => {
@@ -349,8 +375,9 @@ const UserDetails = (
                 return router.push('/login');
             }
             setIsLoading(false)
-        } catch (error) {
+        } catch (error: any) {
             console.log(error);
+            seterrors(error.response.data.message ?? 'Something went wrong...')
             setIsLoading(false)
         }
 
@@ -362,9 +389,20 @@ const UserDetails = (
             <Form {...userForm}>
                 <form onSubmit={userForm.handleSubmit(onSubmit)} className="border-2 border-neutral-100 py-10 px-10 md:px-28
                          w-11/12 sm:w-4/5 lg:w-1/2 bg-white mx-auto space-y-6 shadow-lg">
-
                     <div className="flex flex-col items-center space-y-5">
                         <p>Logo</p>
+
+                        {
+                            errors !== '' && (
+                                <Alert variant="destructive">
+                                    <AlertCircle className="h-4 w-4" />
+
+                                    <AlertDescription>
+                                        {errors}
+                                    </AlertDescription>
+                                </Alert>
+                            )
+                        }
 
                         <h1 className="text-3xl font-semibold">Let's Get Started</h1>
                     </div>
