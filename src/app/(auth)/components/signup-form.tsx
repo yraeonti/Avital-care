@@ -126,49 +126,46 @@ export default function SignUpForm() {
     }
 
     return (
-        <div className="">
 
-            <div className="relative" >
+        <div className="relative h-full flex items-center justify-center " >
 
-                <Transition
-                    {...leaveTransitions}
-                    show={page === 'profile'}
-                    as="div"
-                    className="absolute inset-x-0"
-                >
+            <Transition
+                {...leaveTransitions}
+                show={page === 'profile'}
+                as="div"
+                className="absolute inset-x-0"
+            >
 
-                    <ProfileDetails
-                        setdata={setData}
-                        profileForm={profileForm}
-                        setpage={setPage}
-                        errors={errors}
-                        pageTo="signup"
+                <ProfileDetails
+                    setdata={setData}
+                    profileForm={profileForm}
+                    setpage={setPage}
+                    errors={errors}
+                    pageTo="signup"
 
-                    />
+                />
 
-                </Transition>
-
-
-                <Transition
-                    {...enterTransitions}
-                    show={page === 'signup'}
-                    as="div"
-                    className="absolute inset-x-0"
-                >
-
-                    <UserDetails
-                        userForm={userForm}
-                        setpage={setPage}
-                        data={data}
-                        seterrors={setErrors}
-                        errors={errors}
-                        pageTo="profile"
-                    />
+            </Transition>
 
 
-                </Transition>
+            <Transition
+                {...enterTransitions}
+                show={page === 'signup'}
+                as="div"
+                className="absolute inset-x-0"
+            >
 
-            </div>
+                <UserDetails
+                    userForm={userForm}
+                    setpage={setPage}
+                    data={data}
+                    seterrors={setErrors}
+                    errors={errors}
+                    pageTo="profile"
+                />
+
+
+            </Transition>
 
         </div>
     )
