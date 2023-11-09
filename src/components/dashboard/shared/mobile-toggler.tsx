@@ -7,10 +7,10 @@ import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import NavigationSideBar from "./side-bar";
 import { Session } from "next-auth"
-import { PatientNavRoutes } from "./side-bar-data";
+import { NavItems } from "./side-bar-data";
 
 
-export default function MobileToggler({ session }: { session: Session }) {
+export default function MobileToggler({ session, navRoutes }: { session: Session, navRoutes: NavItems }) {
     return (
         <Sheet>
             <SheetTrigger asChild>
@@ -20,7 +20,7 @@ export default function MobileToggler({ session }: { session: Session }) {
             </SheetTrigger>
             <SheetContent side="left" className="p-0 flex gap-0 md:hidden">
 
-                <NavigationSideBar session={session} navitems={PatientNavRoutes} mobile />
+                <NavigationSideBar session={session} navitems={navRoutes} mobile />
 
             </SheetContent>
         </Sheet>

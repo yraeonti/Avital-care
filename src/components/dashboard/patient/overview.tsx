@@ -11,10 +11,11 @@ import {
 import { Session } from "next-auth"
 import { Clock, Stethoscope, CalendarCheck, Bookmark } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useModal, ModalType } from "@/components/hooks/use-modal-store"
+import { useStore } from "@/components/hooks/use-store"
+import { ModalType } from "@/components/hooks/modal-store"
 
 export default function Overview({ session }: { session: Session }) {
-    const { onOpen } = useModal()
+    const { onOpen } = useStore()
 
     const carddata = [
         {

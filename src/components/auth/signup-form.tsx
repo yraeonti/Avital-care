@@ -25,6 +25,7 @@ import {
     AlertTitle,
 } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
+import { Role } from "@/app/services/types"
 
 
 type ProfileForm = {
@@ -352,7 +353,7 @@ const UserDetails = (
 
     const onSubmit = async (values: z.infer<typeof userSchema>) => {
         console.log({ ...values, ...data, role: 'PATIENT' });
-        const info = { ...values, ...data, role: 'PATIENT' }
+        const info = { ...values, ...data, role: Role.PATIENT }
         setIsLoading(true)
 
         try {

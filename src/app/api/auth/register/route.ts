@@ -20,7 +20,7 @@ export async function POST(req: Request) {
             nin: z.string().min(10),
             telephone: z.string().min(10),
             date_of_birth: z.coerce.date(),
-            specialty: z.string()
+            specialty: z.coerce.number()
         })
 
 
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
             specialty: true
         })
 
-        type userCred = z.infer<typeof partialUserCred>
+        type UserCred = z.infer<typeof partialUserCred>
 
         const {
             email,
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
             telephone,
             date_of_birth,
             specialty,
-        }: userCred = await req.json()
+        }: UserCred = await req.json()
 
         console.log(
 
@@ -119,11 +119,7 @@ export async function POST(req: Request) {
                             nin,
 
                             telephone,
-                            specialty: {
-                                create: {
-                                    name: specialty!
-                                }
-                            }
+                            specialtyId: specialty
                         }
                     }
                 }

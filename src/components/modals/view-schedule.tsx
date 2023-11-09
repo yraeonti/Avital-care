@@ -15,8 +15,8 @@ import {
 } from "@/components/ui/select"
 import { Button } from "../ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form";
-import { useModal } from "../hooks/use-modal-store";
-import { ModalType } from "../hooks/use-modal-store";
+import { useStore } from "../hooks/use-store";
+import { ModalType } from "@/components/hooks/modal-store"
 import { useForm } from "react-hook-form";
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,7 +29,7 @@ const formSchema = z.object({
 
 export default function ViewScheduler() {
 
-    const { isOpen, onClose, type } = useModal();
+    const { isOpen, onClose, type } = useStore();
 
     const isModalOpen = isOpen && type === ModalType.VIEWSCHEDULE;
 

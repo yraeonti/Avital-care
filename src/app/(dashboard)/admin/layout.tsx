@@ -4,6 +4,10 @@ import { authOptions } from "@/app/services/config"
 import { SessionWithExtraData } from "@/app/services/types"
 import { AdminNavRoutes } from '@/components/dashboard/shared/side-bar-data'
 import { redirect } from "next/navigation"
+import { ModalProvider } from "@/components/providers/admin-modal-provider"
+
+
+
 
 export default async function AdminLayout({
     children, // will be a page or nested layout
@@ -27,6 +31,7 @@ export default async function AdminLayout({
             <main className="flex-1 pl-0 md:pl-[25%] lg:pl-80 h-full">
                 {children}
             </main>
+            <ModalProvider />
         </main>
     )
 }

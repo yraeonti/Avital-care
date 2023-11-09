@@ -1,10 +1,9 @@
 
-
-
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import '../globals.css'
 import { Open_Sans } from 'next/font/google'
+import { Toaster } from "@/components/ui/toaster"
 
 
 
@@ -26,6 +25,7 @@ export default function RootLayout({
         <html lang="en" >
             <body className={font.className}>
                 {children}
+                <Toaster />
             </body>
         </html>
     )

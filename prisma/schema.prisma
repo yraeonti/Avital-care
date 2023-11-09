@@ -35,7 +35,7 @@ model Profile {
   telephone     String
   date_of_birth String?
   specialty     Specialties? @relation(fields: [specialtyId], references: [id])
-  specialtyId   String?
+  specialtyId   Int?
 
   user   User   @relation(fields: [userId], references: [id])
   userId String @unique
@@ -47,7 +47,7 @@ model Profile {
 }
 
 model Specialties {
-  id String @id @default(uuid())
+  id Int @id @default(autoincrement())
 
   name    String
   profile Profile[]

@@ -81,7 +81,7 @@ export const AdminNavRoutes: NavItems = [
     {
         icon: DoctorIcon,
         name: 'Doctors',
-        link: '#'
+        link: '/admin/dashboard/doctors'
     },
     {
         icon: ScheduleIcon,

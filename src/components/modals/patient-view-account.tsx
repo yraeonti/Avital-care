@@ -7,14 +7,15 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { useModal, ModalType } from "../hooks/use-modal-store";
+import { useStore } from "../hooks/use-store";
+import { ModalType } from "@/components/hooks/modal-store"
 import { fetcher } from '@/lib/utils'
 import { Skeleton } from "../ui/skeleton";
 
 import useSWR from 'swr'
 
 export default function PatientViewAccount() {
-    const { isOpen, onClose, type } = useModal();
+    const { isOpen, onClose, type } = useStore();
 
     const isModalOpen = isOpen && type === ModalType.PATIENTVIEWACCOUNT;
 
@@ -152,11 +153,6 @@ export default function PatientViewAccount() {
 
         </Dialog>
     )
-
-
-
-    console.log(data?.data.data);
-
 
 
 

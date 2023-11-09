@@ -51,7 +51,7 @@ export async function DELETE(req: NextRequest) {
         },
     })
 
-    const res = await Promise.all([profile, user])
+    const res = await prisma?.$transaction([profile, user])
 
     if (!res) return NextResponse.json({ status: false, message: 'User not found' }, { status: 401 })
 

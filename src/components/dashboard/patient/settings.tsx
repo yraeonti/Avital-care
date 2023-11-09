@@ -9,11 +9,12 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { ModalType, useModal } from "@/components/hooks/use-modal-store"
+import { useStore } from "@/components/hooks/use-store"
+import { ModalType } from "@/components/hooks/modal-store"
 
 export default function Settings() {
 
-    const { onOpen } = useModal()
+    const { onOpen } = useStore()
 
     const settingsdata = [
         {

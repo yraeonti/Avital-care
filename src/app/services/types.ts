@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import { Session } from "next-auth";
 import { JWT } from "next-auth/jwt";
 
@@ -10,14 +11,12 @@ export type SessionWithExtraData = Session & {
     role?: string,
 }
 
-// namespace JWT {
-//     interface JWT extends JWTINITIAL {
-//         id?: string,
-//         role?: string
-//     }
-// }
-
 export interface JWTWithExtraData extends JWT {
     id: string,
     role: string
 }
+
+export type AxiosResponseMod<T> = AxiosResponse<{ status: boolean, data: T }>
+
+
+export type AxiosResponseModDoctors<T> = AxiosResponse<{ status: boolean, data: T, totaldoctors: number }>

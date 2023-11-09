@@ -8,10 +8,11 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form";
-import { useModal, ModalType } from "../hooks/use-modal-store";
+import { useStore } from "../hooks/use-store";
+import { ModalType } from "@/components/hooks/modal-store"
 
 export default function PatientChangePassword() {
-    const { isOpen, onClose, type } = useModal();
+    const { isOpen, onClose, type } = useStore();
 
     const isModalOpen = isOpen && type === ModalType.PATIENTCHANGEPASSWORD;
 

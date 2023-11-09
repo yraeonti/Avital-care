@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
 import { lazy } from "react"
 import PageTransition from "@/components/dashboard/shared/page-transition"
+import { PatientNavRoutes } from "@/components/dashboard/shared/side-bar-data"
 
 const SettingsComponent = lazy(() => import('@/components/dashboard/patient/settings'))
 
@@ -12,7 +13,7 @@ export default async function SettingsPage() {
     if (!session) return redirect('/login')
     return (
         <div className=" h-full">
-            <Header session={session} />
+            <Header session={session} navRoutes={PatientNavRoutes} />
 
             <PageTransition>
                 <SettingsComponent />

@@ -13,51 +13,71 @@ import { Button } from "../ui/button";
 import axios from "axios";
 import { useState } from "react";
 import { Icons } from "../icons";
-import { signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useToast } from "../ui/use-toast";
+import { useSWRConfig } from "swr";
+import { Skeleton } from "../ui/skeleton";
 
-export default function PatientDelAccount() {
-    const { isOpen, onClose, type } = useStore();
+export default function AdminDelDoctor() {
+    const { isOpen, onClose, type, data: { doctorData } } = useStore();
     const [isLoading, setIsLoading] = useState(false)
 
-    const isModalOpen = isOpen && type === ModalType.PATIENTDELACCOUNT;
+    const isModalOpen = isOpen && type === ModalType.ADMINDELDOCTOR;
 
-    const router = useRouter()
+    const toast = useToast()
+
+    const { mutate } = useSWRConfig()
 
 
     const onDelete = async () => {
         setIsLoading(true)
         try {
 
-            const res = await axios.delete('/api/patient')
+            if (doctorData?.id) {
 
-            if (res.data.status) {
-                setTimeout(() => {
-                    onClose()
-                    signOut()
-                }, 1000);
+                const res = await axios.delete('/api/doctor', {
+                    data: {
+                        id: doctorData.id
+                    },
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                },
+                )
 
+                if (res.status === 200) {
+                    toast.toast({
+                        variant: 'success',
+                        description: 'Account has been deleted'
+                    })
+
+                    mutate('/api/doctors')
+                }
 
             }
-
-            console.log(res);
-
 
         } catch (error) {
             console.log(error);
             setIsLoading(false)
+            toast.toast({
+                description: 'Account not deleted'
+            })
         }
+
+        setIsLoading(false)
     }
 
     return (
         <Dialog open={isModalOpen} onOpenChange={onClose}>
             <DialogContent className="bg-white text-black pt-4 pb-8 px-7 overflow-hidden">
                 <DialogHeader className="pt-8">
-                    <DialogTitle className="text-3xl text-red-500 font-bold">
+                    <DialogTitle className="text-3xl text-red-500 font-bold text-center">
                         Account Deletion
                     </DialogTitle>
-                    <DialogDescription className=" text-lg font-medium">
-                        Are you sure you want to delete your account?
+                    <DialogDescription className=" text-lg font-medium space-x-1 text-center">
+                        Are you sure you want to delete
+                        {doctorData ? <span className="font-semibold text-black text-lg">{`${" "} ${doctorData.name}'s`}</span>
+                            : <Skeleton className="h-4 w-10" />} account?
+
                     </DialogDescription>
 
                 </DialogHeader>
