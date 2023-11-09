@@ -1,0 +1,160 @@
+
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
+import { useStore } from "../hooks/use-store";
+import { ModalType } from "@/components/hooks/modal-store"
+import { fetcher } from '@/lib/utils'
+import { Skeleton } from "../ui/skeleton";
+
+import useSWR from 'swr'
+
+export default function PatientViewAccount() {
+    const { isOpen, onClose, type } = useStore();
+
+    const isModalOpen = isOpen && type === ModalType.PATIENTVIEWACCOUNT;
+
+    const { data, isLoading, error } = useSWR<any>('/api/patient', fetcher)
+
+    if (!isLoading && data) {
+
+        const { data: { data: { email, profile: {
+            name,
+            nin,
+            address,
+            date_of_birth,
+            telephone
+        } } } } = data
+
+
+        const details = [
+            {
+                det: 'Name', val: name
+            },
+            {
+                det: 'Email', val: email
+            },
+            {
+                det: 'Nin', val: nin
+            },
+            {
+                det: 'Telephone', val: telephone
+            },
+            {
+                det: 'Address', val: address
+            },
+            {
+                det: 'Date of Birth', val: date_of_birth
+            },
+        ]
+
+
+        return (
+            <Dialog open={isModalOpen} onOpenChange={onClose}>
+                <DialogContent className="bg-white text-black pt-4 pb-8 px-7 overflow-hidden">
+                    <DialogHeader className="pt-8 px-6">
+                        <DialogTitle className="text-2xl text-center font-bold">
+                            View Account Details
+                        </DialogTitle>
+
+                    </DialogHeader>
+
+                    <div className="space-y-4">
+
+                        {
+                            details.map(({ det, val }, i) => (
+                                <div className="space-y-2" key={i}>
+                                    <h1 className="font-semibold text-xl">
+                                        {det}
+                                    </h1>
+
+                                    <p className="opacity-70">
+
+                                        {val}
+
+                                    </p>
+                                </div>
+                            ))
+                        }
+
+
+
+                    </div>
+
+
+
+
+                </DialogContent>
+
+            </Dialog>
+        )
+
+    }
+    const details = [
+        {
+            det: 'Name'
+        },
+        {
+            det: 'Email'
+        },
+        {
+            det: 'Nin'
+        },
+        {
+            det: 'Telephone'
+        },
+        {
+            det: 'Address'
+        },
+        {
+            det: 'Date of Birth'
+        },
+    ]
+    return (
+        <Dialog open={isModalOpen} onOpenChange={onClose}>
+            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 overflow-hidden">
+                <DialogHeader className="pt-8 px-6">
+                    <DialogTitle className="text-2xl text-center font-bold">
+                        View Account Details
+                    </DialogTitle>
+
+                </DialogHeader>
+
+                <div className="space-y-4">
+
+                    {
+                        details.map(({ det }, i) => (
+                            <div className="space-y-2" key={i}>
+                                <h1 className="font-semibold text-xl">
+                                    {det}
+                                </h1>
+
+                                <p className="opacity-70">
+                                    {isLoading && <Skeleton className="h-4 w-[200px] bg-stone-500" />}
+                                    {error && 'N/A'}
+                                </p>
+                            </div>
+                        ))
+                    }
+
+
+
+                </div>
+
+
+
+
+            </DialogContent>
+
+        </Dialog>
+    )
+
+
+
+
+}
