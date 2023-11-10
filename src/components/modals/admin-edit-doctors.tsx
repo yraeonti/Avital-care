@@ -61,11 +61,11 @@ export default function AdminEditDoctor() {
     const isModalOpen = isOpen && type === ModalType.ADMINEDITDOCTOR;
 
     const checkData = (
-        data.networkData?.data.status &&
-        data.networkData.data.data
+        data.specialtiesData?.data.status &&
+        data.specialtiesData.data.data
     )
 
-    console.log(data.networkData);
+    console.log(data.specialtiesData);
 
     const form = useForm<z.infer<typeof doctorSchema>>({
         resolver: zodResolver(doctorSchema),
@@ -251,8 +251,8 @@ export default function AdminEditDoctor() {
                                                             !field.value && "text-muted-foreground"
                                                         )}
                                                     >
-                                                        {checkData && data.networkData && field.value
-                                                            ? data.networkData.data.data.find(
+                                                        {checkData && data.specialtiesData && field.value
+                                                            ? data.specialtiesData.data.data.find(
                                                                 (item: Specialties) => item.id === field.value
                                                             )?.name : data.doctorData?.specialty ? data.doctorData.specialty
                                                                 : "Choose a Specialty"}
@@ -271,8 +271,8 @@ export default function AdminEditDoctor() {
                                                         <CommandInput placeholder="Search specialties" />
                                                         <CommandEmpty>No specialty found.</CommandEmpty>
                                                         <CommandGroup className="overflow-y-scroll max-h-screen py-4">
-                                                            {checkData && data.networkData ? (
-                                                                data.networkData.data.data.map((item: any) => (
+                                                            {checkData && data.specialtiesData ? (
+                                                                data.specialtiesData.data.data.map((item: any) => (
                                                                     <CommandItem
                                                                         value={item.name}
                                                                         key={item.id}

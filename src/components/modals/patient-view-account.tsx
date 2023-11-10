@@ -18,7 +18,7 @@ export default function PatientViewAccount() {
 
 
 
-    if (networkData) {
+    if (networkData && networkData?.data.status) {
 
         const { data: { data: { email, profile: {
             name,

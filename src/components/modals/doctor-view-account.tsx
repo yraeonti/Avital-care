@@ -11,7 +11,7 @@ import { useStore } from "../hooks/use-store";
 import { ModalType } from "@/components/hooks/modal-store"
 import { Skeleton } from "../ui/skeleton";
 
-export default function PatientViewAccount() {
+export default function DoctorViewAccount() {
     const { isOpen, onClose, type, data: { networkData } } = useStore();
 
     const isModalOpen = isOpen && type === ModalType.DOCTORVIEWACCOUNT;

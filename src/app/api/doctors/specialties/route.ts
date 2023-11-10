@@ -10,9 +10,13 @@ export async function GET(req: NextRequest) {
         if (!token) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
 
         const specialties = await db.specialties.findMany({
-            select: {
-                id: true,
-                name: true
+            include: {
+                profile: {
+                    select: {
+                        name: true,
+                        id: true
+                    }
+                }
             }
         })
 

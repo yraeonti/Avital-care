@@ -13,9 +13,18 @@ import { Clock, Stethoscope, CalendarCheck, Bookmark } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useStore } from "@/components/hooks/use-store"
 import { ModalType } from "@/components/hooks/modal-store"
+import useSWR from "swr"
+import { fetcher } from "@/lib/utils"
+import { AxiosResponseMod } from "@/app/services/types"
 
 export default function Overview({ session }: { session: Session }) {
     const { onOpen } = useStore()
+
+    const { data: specialtiesData } =
+        useSWR<AxiosResponseMod<any>>('/api/doctors/specialties', fetcher)
+
+    // console.log(networkData);
+
 
     const carddata = [
         {
@@ -77,7 +86,10 @@ export default function Overview({ session }: { session: Session }) {
                                 </p>
                             </CardContent>
                             <CardFooter>
-                                <Button variant='link' className="text-blue-800 p-0" onClick={() => item.onclick(ModalType.VIEWSCHEDULE)}>
+                                <Button
+                                    variant='link'
+                                    className="text-blue-800 p-0"
+                                    onClick={() => item.desc === 'Schedule Appointment' ? item.onclick(ModalType.VIEWSCHEDULE, { specialtiesData }) : item.onclick}>
                                     <p className="text-start">
                                         {item.footer}
                                     </p>

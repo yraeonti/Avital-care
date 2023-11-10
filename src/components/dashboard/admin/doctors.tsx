@@ -53,7 +53,7 @@ export default function Doctors() {
 
     const { onOpen } = useStore()
 
-    const { data: networkData } =
+    const { data: specialtiesData } =
         useSWR<AxiosResponseMod<any>>('/api/doctors/specialties', fetcher)
 
     const { data: tableData, isLoading: tableLoader } =
@@ -92,7 +92,7 @@ export default function Doctors() {
                         <DropdownMenuContent align="end">
                             <DropdownMenuItem
                                 className="cursor-pointer"
-                                onClick={() => onOpen(ModalType.ADMINEDITDOCTOR, { doctorData, networkData })}
+                                onClick={() => onOpen(ModalType.ADMINEDITDOCTOR, { doctorData, specialtiesData })}
                             >
                                 <Pen className="mr-2 h-4 w-4" />
                                 <span>
@@ -153,7 +153,7 @@ export default function Doctors() {
                 <Button
                     className="flex self-end space-x-2 hover:bg-blue-800 text-xs sm:text-sm bg-blue-700 text-white opacity-90 shadow-md"
 
-                    onClick={() => onOpen(ModalType.ADMINADDDOCTOR, { networkData })}>
+                    onClick={() => onOpen(ModalType.ADMINADDDOCTOR, { specialtiesData })}>
 
                     <Plus className="stroke-white" /> <span>Add New Doctor</span>
                 </Button>
