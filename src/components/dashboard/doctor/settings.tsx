@@ -4,6 +4,10 @@ import { User2, Eye, Trash2, LockKeyhole } from "lucide-react"
 import {
     Card,
     CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card"
 import { useStore } from "@/components/hooks/use-store"
 import { ModalType } from "@/components/hooks/modal-store"
@@ -16,7 +20,7 @@ export default function Settings() {
 
     const { onOpen } = useStore()
 
-    const { data, isLoading, error } = useSWR<AxiosResponseMod<any>>('/api/patient', fetcher)
+    const { data, isLoading, error } = useSWR<AxiosResponseMod<any>>('/api/doctor', fetcher)
 
     const settingsdata = [
         {
@@ -24,28 +28,21 @@ export default function Settings() {
             desc: 'Account Settings',
             content: 'Edit your Account Details',
             onclick: onOpen,
-            modaltype: ModalType.PATIENTACCOUNTSETTINGS
-        },
-        {
-            icon: <LockKeyhole className="stroke-[#1ea351] w-8 h-8" />,
-            desc: 'Change Password',
-            content: 'Change your Account Password',
-            onclick: onOpen,
-            modaltype: ModalType.PATIENTCHANGEPASSWORD
+            modaltype: ModalType.DOCTORACCOUNTSETTINGS
         },
         {
             icon: <Eye className="stroke-[#157494] w-8 h-8" />,
             desc: 'View Account Details',
             content: 'View Profile Information on your Account',
             onclick: onOpen,
-            modaltype: ModalType.PATIENTVIEWACCOUNT
+            modaltype: ModalType.DOCTORVIEWACCOUNT
         },
         {
             icon: <Trash2 className="stroke-red-500 w-8 h-8" />,
             desc: 'Delete Account',
             content: 'Permanently Remove your Account',
             onclick: onOpen,
-            modaltype: ModalType.PATIENTDELACCOUNT
+            modaltype: ModalType.DOCTORDELACCOUNT
         },
     ]
     return (

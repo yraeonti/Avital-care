@@ -84,18 +84,20 @@ export default function LoginForm() {
 
             <div className="flex flex-col items-center space-y-5">
                 <p>Logo</p>
-                {
-                    error !== '' && (
-                        <Alert variant="destructive">
-                            <AlertCircle className="h-4 w-4" />
-                            <AlertDescription>
-                                {error}
-                            </AlertDescription>
-                        </Alert>
-                    )
-                }
+
                 <h1 className="text-3xl font-semibold">Welcome Back</h1>
             </div>
+
+            {
+                error !== '' && (
+                    <Alert variant="destructive" className="my-4">
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertDescription>
+                            {error}
+                        </AlertDescription>
+                    </Alert>
+                )
+            }
 
             <Form {...form}>
 

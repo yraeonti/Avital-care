@@ -7,13 +7,53 @@ import { hashPassword } from "@/app/utils/password";
 import { Role } from "@/app/services/types";
 
 
+
+
+
+
+export async function GET(req: NextRequest) {
+
+    const token = await Token(req)
+
+    if (!token) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
+
+
+    const { id } = token
+
+    const user = await db.user.findUnique({
+        where: {
+            id
+        },
+        include: {
+            profile: {
+                include: {
+                    specialty: {
+                        select: {
+                            name: true
+                        }
+                    }
+                }
+            }
+        }
+    })
+
+    if (!user) return NextResponse.json({ status: false, message: 'User not found' }, { status: 401 })
+
+    // console.log(token);
+
+
+    return NextResponse.json({ status: true, data: user })
+
+}
+
+
 export async function DELETE(req: NextRequest) {
 
     const token = await Token(req)
 
     if (!token) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
 
-    if (token.role !== 'ADMIN') return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
+    if (!(['ADMIN', Role.DOCTOR].includes(token.role))) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
 
     const {
         id
@@ -36,11 +76,6 @@ export async function DELETE(req: NextRequest) {
     if (!res) return NextResponse.json({ status: false, message: 'User not found' }, { status: 401 })
 
     return NextResponse.json({ status: true, message: 'User deleted' })
-
-
-
-
-
 
 }
 

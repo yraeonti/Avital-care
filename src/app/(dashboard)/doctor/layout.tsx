@@ -4,6 +4,7 @@ import { authOptions } from "@/app/services/config"
 import { Role, SessionWithExtraData } from "@/app/services/types"
 import { DoctorNavRoutes } from '@/components/dashboard/shared/side-bar-data'
 import { redirect } from "next/navigation"
+import { ModalProvider } from "@/components/providers/doctor-modal-provider"
 
 export default async function DoctorLayout({
     children, // will be a page or nested layout
@@ -26,6 +27,7 @@ export default async function DoctorLayout({
             <main className="flex-1 pl-0 md:pl-[25%] lg:pl-80 h-full">
                 {children}
             </main>
+            <ModalProvider />
         </main>
     )
 }

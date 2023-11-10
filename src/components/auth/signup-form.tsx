@@ -59,9 +59,9 @@ type SignUpProps = {
 const profileSchema = z.object({
     first_name: z.string().min(1, { message: 'This field is required' }),
     last_name: z.string().min(1, { message: 'This field is required' }),
-    address: z.string(),
+    address: z.string().min(1, { message: 'This field is required' }),
     nin: z.string().length(11, { message: 'Invalid Nin' }),
-    date_of_birth: z.coerce.date().max(new Date(), { message: "Invalid date" }).refine((val) => val.toString().length < 1, {
+    date_of_birth: z.date().max(new Date(), { message: "Invalid date" }).refine((val) => val.toString().length > 1, {
         message: 'This field is required',
         path: ['date_of_birth']
     }).or(z.string())
@@ -205,20 +205,22 @@ const ProfileDetails = (
                     <div className="flex flex-col items-center space-y-5">
                         <p>Logo</p>
 
-                        {
-                            errors !== '' && (
-                                <Alert variant="destructive">
-                                    <AlertCircle className="h-4 w-4" />
 
-                                    <AlertDescription>
-                                        {errors}
-                                    </AlertDescription>
-                                </Alert>
-                            )
-                        }
 
                         <h1 className="text-3xl font-semibold">Let's Get Started</h1>
                     </div>
+
+                    {
+                        errors !== '' && (
+                            <Alert variant="destructive" className="my-4">
+                                <AlertCircle className="h-4 w-4" />
+
+                                <AlertDescription>
+                                    {errors}
+                                </AlertDescription>
+                            </Alert>
+                        )
+                    }
 
 
 
@@ -390,20 +392,23 @@ const UserDetails = (
                     <div className="flex flex-col items-center space-y-5">
                         <p>Logo</p>
 
-                        {
-                            errors !== '' && (
-                                <Alert variant="destructive">
-                                    <AlertCircle className="h-4 w-4" />
 
-                                    <AlertDescription>
-                                        {errors}
-                                    </AlertDescription>
-                                </Alert>
-                            )
-                        }
 
                         <h1 className="text-3xl font-semibold">Let's Get Started</h1>
                     </div>
+
+
+                    {
+                        errors !== '' && (
+                            <Alert variant="destructive" className="my-4">
+                                <AlertCircle className="h-4 w-4" />
+
+                                <AlertDescription>
+                                    {errors}
+                                </AlertDescription>
+                            </Alert>
+                        )
+                    }
 
 
 

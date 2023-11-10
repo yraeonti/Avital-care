@@ -19,4 +19,4 @@ export interface JWTWithExtraData extends JWT {
 export type AxiosResponseMod<T> = AxiosResponse<{ status: boolean, data: T }>
 
 
-export type AxiosResponseModDoctors<T> = AxiosResponse<{ status: boolean, data: T, totaldoctors: number }>
+export type AxiosResponseModDoctors<T> = AxiosResponse<{ status: boolean, data: T, totalcount: number }>

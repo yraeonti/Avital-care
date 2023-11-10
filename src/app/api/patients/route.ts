@@ -13,38 +13,30 @@ export async function GET(req: NextRequest) {
 
         if (token.role !== 'ADMIN') return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
 
-        const doctors = await db.user.findMany({
+        const patients = await db.user.findMany({
             where: {
-                role: Role.DOCTOR
+                role: Role.PATIENT
             },
             include: {
-                profile: {
-                    include: {
-                        specialty: {
-                            select: {
-                                name: true
-                            }
-                        }
-                    }
-                }
+                profile: true
             },
         })
 
         const totalcount = await db.user.count({
             where: {
-                role: Role.DOCTOR
+                role: Role.PATIENT
             }
         })
 
-        const data = doctors.map((item) => {
+        const data = patients.map((item) => {
             return {
                 id: item.id,
                 name: item.profile?.name,
                 nin: item.profile?.nin,
                 email: item.email,
                 telephone: item.profile?.telephone,
-                specialty: item.profile?.specialty?.name,
-                specialtyId: item.profile?.specialtyId
+                date_of_birth: item.profile?.date_of_birth,
+                address: item.profile?.address
             }
         })
 
@@ -75,9 +67,9 @@ export async function POST(req: NextRequest) {
             search
         } = await req.json()
 
-        const doctors = await db.user.findMany({
+        const patients = await db.user.findMany({
             where: {
-                role: Role.DOCTOR,
+                role: Role.PATIENT,
                 OR: [
                     {
                         email: {
@@ -94,11 +86,7 @@ export async function POST(req: NextRequest) {
                 ]
             },
             include: {
-                profile: {
-                    include: {
-                        specialty: true
-                    }
-                }
+                profile: true
             }
         })
 
@@ -108,15 +96,15 @@ export async function POST(req: NextRequest) {
             }
         })
 
-        const data = doctors.map((item) => {
+        const data = patients.map((item) => {
             return {
                 id: item.id,
                 name: item.profile?.name,
                 nin: item.profile?.nin,
                 email: item.email,
                 telephone: item.profile?.telephone,
-                specialty: item.profile?.specialty?.name,
-                specialtyId: item.profile?.specialtyId
+                date_of_birth: item.profile?.date_of_birth,
+                address: item.profile?.address
             }
         })
 

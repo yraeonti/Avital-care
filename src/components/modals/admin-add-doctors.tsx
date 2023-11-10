@@ -44,7 +44,7 @@ const doctorSchema = z.object({
     path: ["confirm_password"]
 })
 
-type Specialties = {
+export type Specialties = {
     id: number | string;
     name: string;
 }
@@ -62,8 +62,8 @@ export default function AdminAddDoctor() {
     const isModalOpen = isOpen && type === ModalType.ADMINADDDOCTOR;
 
     const checkData = (
-        data.networkData?.data.status &&
-        data.networkData.data.data
+        data.specialtiesData?.data.status &&
+        data.specialtiesData.data.data
     )
 
     const form = useForm<z.infer<typeof doctorSchema>>({
@@ -230,8 +230,8 @@ export default function AdminAddDoctor() {
                                                             !field.value && "text-muted-foreground"
                                                         )}
                                                     >
-                                                        {checkData && data.networkData && field.value
-                                                            ? data.networkData.data.data.find(
+                                                        {checkData && data.specialtiesData && field.value
+                                                            ? data.specialtiesData.data.data.find(
                                                                 (item: Specialties) => item.id === field.value
                                                             )?.name
                                                             : "Choose a Specialty"}
@@ -242,7 +242,7 @@ export default function AdminAddDoctor() {
 
                                             <PopoverContent className="w-[250px] p-0">
 
-                                                <div className="h-96">
+                                                <div className="max-h-96">
 
 
 
@@ -250,8 +250,8 @@ export default function AdminAddDoctor() {
                                                         <CommandInput placeholder="Search specialties" />
                                                         <CommandEmpty>No specialty found.</CommandEmpty>
                                                         <CommandGroup className="overflow-y-scroll max-h-screen py-4">
-                                                            {checkData && data.networkData ? (
-                                                                data.networkData.data.data.map((item: any) => (
+                                                            {checkData && data.specialtiesData ? (
+                                                                data.specialtiesData.data.data.map((item: any) => (
                                                                     <CommandItem
                                                                         value={item.name}
                                                                         key={item.id}
