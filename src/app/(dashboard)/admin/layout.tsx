@@ -22,13 +22,13 @@ export default async function AdminLayout({
     if (!(session.role === 'ADMIN')) return redirect('/login')
 
     return (
-        <main className="h-full flex">
+        <main className="h-full md:flex">
             <div className="hidden md:block h-full w-[25%] lg:w-80 z-30 fixed inset-y-0 border-r border-neutral-200 shadow-md">
                 <NavigationSideBar session={session} navitems={AdminNavRoutes} />
 
 
             </div>
-            <main className="flex-1 pl-0 md:pl-[25%] lg:pl-80 h-full">
+            <main className="md:flex-1  pl-0 md:pl-[25%] lg:pl-80 h-full">
                 {children}
             </main>
             <ModalProvider />

@@ -46,29 +46,29 @@ export const PatientNavRoutes: NavItems = [
 ]
 export const DoctorNavRoutes: NavItems = [
     {
-        icon: '',
-        name: 'Home',
-        link: '/patient/dashboard'
+        icon: DashboardIcon,
+        name: 'Dashboard',
+        link: '/doctor/dashboard'
     },
     {
-        icon: '',
-        name: 'All Doctors',
+        icon: AppointmentIcon,
+        name: 'My Appointments',
         link: '#'
     },
     {
-        icon: '',
-        name: 'Scheduled Sessions',
+        icon: ScheduleIcon,
+        name: 'My Sessions',
         link: '#'
     },
     {
-        icon: '',
-        name: 'My Bookings',
+        icon: PatientsIcon,
+        name: 'My Patients',
         link: '#'
     },
     {
-        icon: '',
+        icon: SettingIcon,
         name: 'Settings',
-        link: '#'
+        link: '/doctor/dashboard/settings'
     },
 ]
 
@@ -96,6 +96,6 @@ export const AdminNavRoutes: NavItems = [
     {
         icon: PatientsIcon,
         name: 'Patients',
-        link: '#'
+        link: '/admin/dashboard/patients'
     },
 ]

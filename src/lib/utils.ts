@@ -13,6 +13,14 @@ export async function fetcher<T>(url: string) {
   return await axios.get<T>(url);
 }
 
+export const fetcherPost = ({ url, data }: { url: string, data: { [key: string]: string } }) => fetch(url, {
+  method: 'POST',
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(data)
+}).then((res) => res.json());
+
 
 export async function Token(req: NextRequest) {
   return await getToken({ req }) as JWTWithExtraData

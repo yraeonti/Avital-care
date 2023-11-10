@@ -30,18 +30,18 @@ import axios from "axios"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 
 
-export type DoctorData = {
+export type PatientData = {
     name: string;
     email: string;
-    specialty: string;
-    specialtyId: string;
     nin: string;
     telephone: string;
     id: string;
+    date_of_birth: string;
+    address: string
 }
 
 
-type TableData = { status: boolean; data: DoctorData[]; totalcount: number; }
+type TableData = { status: boolean; data: PatientData[]; totalcount: number; }
 
 
 export default function Doctors() {
@@ -53,16 +53,16 @@ export default function Doctors() {
 
     const { onOpen } = useStore()
 
-    const { data: networkData } =
-        useSWR<AxiosResponseMod<any>>('/api/doctors/specialties', fetcher)
+    // const { data: networkData } =
+    //     useSWR<AxiosResponseMod<any>>('/api/doctors/specialties', fetcher)
 
     const { data: tableData, isLoading: tableLoader } =
-        useSWRImmutable<AxiosResponseModDoctors<DoctorData[]>>('/api/doctors', fetcher)
+        useSWRImmutable<AxiosResponseModDoctors<PatientData[]>>('/api/patients', fetcher)
 
 
 
 
-    const columns: ColumnDef<DoctorData>[] = [
+    const columns: ColumnDef<PatientData>[] = [
         {
             accessorKey: "name",
             header: () => <div className="font-semibold ">Name</div>,
@@ -72,14 +72,22 @@ export default function Doctors() {
             header: () => <div className="font-semibold text-center">Email</div>,
         },
         {
-            accessorKey: "specialty",
-            header: () => <div className="font-semibold text-center">Specialties</div>,
+            accessorKey: "telephone",
+            header: () => <div className="font-semibold text-center">Mobile Number</div>,
+        },
+        {
+            accessorKey: "nin",
+            header: () => <div className="font-semibold text-center">NIN</div>,
+        },
+        {
+            accessorKey: "date_of_birth",
+            header: () => <div className="font-semibold text-center">Date Of Birth</div>,
         },
         {
             id: "actions",
             header: () => <div className="font-semibold text-center">Actions</div>,
             cell({ row }) {
-                const doctorData = row.original
+                const patientData = row.original
 
                 return (
                     <DropdownMenu>
@@ -92,19 +100,9 @@ export default function Doctors() {
                         <DropdownMenuContent align="end">
                             <DropdownMenuItem
                                 className="cursor-pointer"
-                                onClick={() => onOpen(ModalType.ADMINEDITDOCTOR, { doctorData, networkData })}
+                                onClick={() => onOpen(ModalType.VIEWPATIENTACCOUNT, { patientData })}
                             >
                                 <Pen className="mr-2 h-4 w-4" />
-                                <span>
-                                    Edit
-                                </span>
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                                className="cursor-pointer"
-                                onClick={() => onOpen(ModalType.VIEWDOCTORACCOUNT, { doctorData })}
-                            >
-                                <Eye className="mr-2 h-4 w-4" />
                                 <span>
                                     View
                                 </span>
@@ -112,11 +110,11 @@ export default function Doctors() {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                                 className="cursor-pointer"
-                                onClick={() => onOpen(ModalType.ADMINDELDOCTOR, { doctorData })}
+                            // onClick={() => onOpen(ModalType.VIEWDOCTORACCOUNT, { doctorData })}
                             >
-                                <Trash2 className="mr-2 h-4 w-4" />
+                                <Eye className="mr-2 h-4 w-4" />
                                 <span>
-                                    Remove
+                                    History
                                 </span>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -150,19 +148,11 @@ export default function Doctors() {
         <section className="px-6">
             <div className="my-5 mx-3 sm:px-7 flex flex-col">
 
-                <Button
-                    className="flex self-end space-x-2 hover:bg-blue-800 text-xs sm:text-sm bg-blue-700 text-white opacity-90 shadow-md"
-
-                    onClick={() => onOpen(ModalType.ADMINADDDOCTOR, { networkData })}>
-
-                    <Plus className="stroke-white" /> <span>Add New Doctor</span>
-                </Button>
-
 
 
 
                 <div className="mt-3 flex items-center space-x-2 font-semibold text-lg">
-                    <span className="">All DOCTORS</span> {
+                    <span className="">All PATIENTS</span> {
                         tableLoader ? (
                             <Skeleton className="h-4 w-24 bg-stone-200" />
                         ) : (
@@ -215,7 +205,7 @@ const SearchForm = <T,>({ setdata, setsearchloader }:
     const onSubmit = async (values: z.infer<typeof searchSchema>) => {
         setsearchloader(true)
         try {
-            const response = await axios.post('/api/doctors', {
+            const response = await axios.post('/api/patients', {
                 ...values
             }, {
                 headers: {
@@ -247,7 +237,7 @@ const SearchForm = <T,>({ setdata, setsearchloader }:
                         <FormItem className="w-full sm:w-3/5">
 
                             <FormControl>
-                                <Input placeholder="Search doctor by name or email" className="" {...field} />
+                                <Input placeholder="Search patient by name or email" className="" {...field} />
                             </FormControl>
 
                         </FormItem>

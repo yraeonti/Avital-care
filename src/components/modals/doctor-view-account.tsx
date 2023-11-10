@@ -14,7 +14,7 @@ import { Skeleton } from "../ui/skeleton";
 export default function PatientViewAccount() {
     const { isOpen, onClose, type, data: { networkData } } = useStore();
 
-    const isModalOpen = isOpen && type === ModalType.PATIENTVIEWACCOUNT;
+    const isModalOpen = isOpen && type === ModalType.DOCTORVIEWACCOUNT;
 
 
 
@@ -23,8 +23,7 @@ export default function PatientViewAccount() {
         const { data: { data: { email, profile: {
             name,
             nin,
-            address,
-            date_of_birth,
+            specialty: { name: specialty },
             telephone
         } } } } = networkData
 
@@ -43,11 +42,9 @@ export default function PatientViewAccount() {
                 det: 'Telephone', val: telephone
             },
             {
-                det: 'Address', val: address
+                det: 'Specialty', val: specialty
             },
-            {
-                det: 'Date of Birth', val: date_of_birth
-            },
+
         ]
 
 
@@ -106,10 +103,7 @@ export default function PatientViewAccount() {
             det: 'Telephone'
         },
         {
-            det: 'Address'
-        },
-        {
-            det: 'Date of Birth'
+            det: 'Specialty'
         },
     ]
     return (

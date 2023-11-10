@@ -2,6 +2,7 @@
 import { AxiosResponse } from "axios";
 import { StateCreator } from 'zustand'
 import { DoctorData } from "../dashboard/admin/doctors";
+import { PatientData } from "../dashboard/admin/patients";
 
 export enum ModalType {
     VIEWSCHEDULE = 'VIEWSCHEDULE',
@@ -13,12 +14,17 @@ export enum ModalType {
     ADMINEDITDOCTOR = 'ADMINEDITDOCTOR',
     VIEWDOCTORACCOUNT = 'VIEWDOCTORACCOUNT',
     ADMINDELDOCTOR = 'ADMINDELDOCTOR',
+    VIEWPATIENTACCOUNT = 'VIEWPATIENTACCOUNT',
+    DOCTORVIEWACCOUNT = 'DOCTORVIEWACCOUNT',
+    DOCTORDELACCOUNT = 'DOCTORDELACCOUNT',
+    DOCTORACCOUNTSETTINGS = 'DOCTORACCOUNTSETTINGS',
 }
 
 
 export interface ModalData {
     networkData?: AxiosResponse<{ status: boolean, data: any }, any> | undefined
     doctorData?: DoctorData
+    patientData?: PatientData
 }
 
 export interface ModalStore {
