@@ -5,6 +5,7 @@ import SideBarItem from "./side-bar-item"
 import { Role, SessionWithExtraData } from "@/app/services/types"
 import { NavItems } from "./side-bar-data"
 import SignOutButton from "./signout-button"
+import { Skeleton } from "@/components/ui/skeleton"
 
 type Props = {
     session: SessionWithExtraData;
@@ -67,10 +68,26 @@ export default function NavigationSideBar({ session, navitems, mobile }: Props) 
         <nav className="flex flex-col items-center w-full">
 
             <div className="flex items-center justify-center space-x-3 w-4/5 pt-14">
-                <Avatar className="w-16 h-16">
-                    {/* <AvatarImage src="https://github.com/shadcn.png" alt="user" /> */}
-                    <AvatarFallback className="uppercase text-2xl">{initials}</AvatarFallback>
-                </Avatar>
+                {
+                    session.user?.image ? (
+                        <Avatar className="w-16 h-16">
+
+                            <AvatarImage src={session.user?.image} alt="user" />
+
+
+                            <AvatarFallback className="uppercase text-2xl">
+                                <Skeleton className="w-full h-full rounded-full bg-stone-200" />
+                            </AvatarFallback>
+                        </Avatar>
+                    ) : (
+
+                        <Avatar className="w-16 h-16">
+                            <AvatarFallback className="uppercase text-2xl">{initials}</AvatarFallback>
+                        </Avatar>
+
+                    )
+                }
+
 
 
                 <div className="truncate">

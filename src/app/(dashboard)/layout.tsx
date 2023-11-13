@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import '../globals.css'
 import { Open_Sans } from 'next/font/google'
 import { Toaster } from "@/components/ui/toaster"
+import { EdgeStoreProvider } from '@/lib/edgestore';
 
 
 
@@ -24,7 +25,9 @@ export default function RootLayout({
     return (
         <html lang="en" >
             <body className={font.className}>
-                {children}
+                <EdgeStoreProvider>
+                    {children}
+                </EdgeStoreProvider>
                 <Toaster />
             </body>
         </html>

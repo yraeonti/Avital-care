@@ -28,7 +28,7 @@ export default async function AdminLayout({
 
 
             </div>
-            <main className="md:flex-1  pl-0 md:pl-[25%] lg:pl-80 h-full">
+            <main className="md:flex-1  pl-0 md:pl-[25%] lg:pl-80 h-full overflow-x-hidden ">
                 {children}
             </main>
             <ModalProvider />

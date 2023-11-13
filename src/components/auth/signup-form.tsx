@@ -61,10 +61,7 @@ const profileSchema = z.object({
     last_name: z.string().min(1, { message: 'This field is required' }),
     address: z.string().min(1, { message: 'This field is required' }),
     nin: z.string().length(11, { message: 'Invalid Nin' }),
-    date_of_birth: z.date().max(new Date(), { message: "Invalid date" }).refine((val) => val.toString().length > 1, {
-        message: 'This field is required',
-        path: ['date_of_birth']
-    }).or(z.string())
+    date_of_birth: z.coerce.date().max(new Date(), { message: "Invalid date" })
 
 })
 
@@ -94,7 +91,7 @@ export default function SignUpForm() {
             last_name: "",
             address: "",
             nin: "",
-            date_of_birth: new Date().toDateString(),
+            date_of_birth: undefined
         }
     })
 
