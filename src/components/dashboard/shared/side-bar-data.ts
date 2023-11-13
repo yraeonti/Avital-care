@@ -85,13 +85,13 @@ export const AdminNavRoutes: NavItems = [
     },
     {
         icon: ScheduleIcon,
-        name: 'Schedule',
-        link: '#'
+        name: 'Sessions',
+        link: '/admin/dashboard/sessions'
     },
     {
         icon: AppointmentIcon,
         name: 'Appointments',
-        link: '#'
+        link: '/admin/dashboard/appointments'
     },
     {
         icon: PatientsIcon,

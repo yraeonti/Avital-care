@@ -17,11 +17,13 @@ enum ROLE {
 }
 
 model User {
-  id       String   @id @default(uuid())
-  email    String   @unique
-  password String
-  role     ROLE     @default(PATIENT)
-  profile  Profile?
+  id          String       @id @default(uuid())
+  email       String       @unique
+  password    String
+  role        ROLE         @default(PATIENT)
+  profile     Profile?
+  session     Session[]
+  appointment Appointment?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -32,6 +34,7 @@ model Profile {
   name          String
   address       String?
   nin           String
+  imageUrl      String?
   telephone     String
   date_of_birth String?
   specialty     Specialties? @relation(fields: [specialtyId], references: [id])
@@ -54,4 +57,64 @@ model Specialties {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Session {
+  id Int @id @default(autoincrement())
+
+  title        String
+  sessionDate  DateTime
+  noOfPatients Int
+
+  doctor   User   @relation(fields: [doctorId], references: [id])
+  doctorId String
+
+  sessionTime SessionTime[]
+  appointment Appointment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([doctorId])
+}
+
+model SessionTime {
+  id Int @id @default(autoincrement())
+
+  startTime DateTime @db.Time()
+  endTime   DateTime @db.Time()
+
+  status Boolean @default(false)
+
+  session   Session @relation(fields: [sessionId], references: [id])
+  sessionId Int
+
+  appointment Appointment?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Appointment {
+  id Int @id @default(autoincrement())
+
+  appointmentId   String
+  appointmentDate DateTime
+
+  status Boolean @default(false)
+
+  session   Session @relation(fields: [sessionId], references: [id])
+  sessionId Int
+
+  sessionTime   SessionTime @relation(fields: [sessionTimeId], references: [id])
+  sessionTimeId Int         @unique
+
+  patient   User   @relation(fields: [patientId], references: [id])
+  patientId String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sessionId])
+  @@index([patientId])
 }

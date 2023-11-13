@@ -19,7 +19,6 @@ import {
     PopoverTrigger,
 } from "@/components/ui/custpopover"
 import { Button } from "../ui/button";
-import { Role } from "@/app/services/types";
 import { cn } from "@/lib/utils"
 import { ChevronsUpDown } from "lucide-react"
 import { useEffect, useState } from "react";

@@ -25,3 +25,7 @@ export const fetcherPost = ({ url, data }: { url: string, data: { [key: string]:
 export async function Token(req: NextRequest) {
   return await getToken({ req }) as JWTWithExtraData
 }
+
+export function Authorize<T>(roles: T[], role: T) {
+  return roles.includes(role)
+}

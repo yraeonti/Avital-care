@@ -54,7 +54,8 @@ const providers = [
                     id: user.id,
                     name: user.profile?.name ?? 'N/A',
                     email: user.email,
-                    role: user.role
+                    role: user.role,
+                    image: user.profile?.imageUrl ?? null
                 }
 
             } catch (error: any) {

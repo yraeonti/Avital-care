@@ -22,13 +22,13 @@ export default async function PatientLayout({
 
 
     return (
-        <main className="h-full flex">
+        <main className="h-full md:flex">
             <div className="hidden md:block h-full w-[25%] lg:w-80 z-30 fixed inset-y-0 border-r border-neutral-200 shadow-md overflow-y-scroll pb-7">
                 <NavigationSideBar session={session} navitems={PatientNavRoutes} />
 
 
             </div>
-            <main className="flex-1 pl-0 md:pl-[25%] lg:pl-80 h-full">
+            <main className="md:flex-1 pl-0 md:pl-[25%] lg:pl-80 h-full overflow-x-hidden">
                 {children}
             </main>
             <ModalProvider />

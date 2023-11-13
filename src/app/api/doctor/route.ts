@@ -5,6 +5,7 @@ import { db } from "@/app/services/db";
 import { z, ZodError } from 'zod'
 import { hashPassword } from "@/app/utils/password";
 import { Role } from "@/app/services/types";
+import { Authorize } from "@/lib/utils";
 
 
 
@@ -13,69 +14,81 @@ import { Role } from "@/app/services/types";
 
 export async function GET(req: NextRequest) {
 
-    const token = await Token(req)
+    try {
+        const token = await Token(req)
 
-    if (!token) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
+        if (!token) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
 
 
-    const { id } = token
+        const { id } = token
 
-    const user = await db.user.findUnique({
-        where: {
-            id
-        },
-        include: {
-            profile: {
-                include: {
-                    specialty: {
-                        select: {
-                            name: true
+        const user = await db.user.findUnique({
+            where: {
+                id
+            },
+            include: {
+                profile: {
+                    include: {
+                        specialty: {
+                            select: {
+                                name: true
+                            }
                         }
                     }
                 }
             }
-        }
-    })
+        })
 
-    if (!user) return NextResponse.json({ status: false, message: 'User not found' }, { status: 401 })
+        if (!user) return NextResponse.json({ status: false, message: 'User not found' }, { status: 401 })
 
-    // console.log(token);
+        // console.log(token);
 
 
-    return NextResponse.json({ status: true, data: user })
+        return NextResponse.json({ status: true, data: user })
+    } catch (error) {
+        return NextResponse.json({ status: false, message: 'Something went wrong..' }, { status: 500 })
+    }
+
+
 
 }
 
 
 export async function DELETE(req: NextRequest) {
 
-    const token = await Token(req)
+    try {
+        const token = await Token(req)
 
-    if (!token) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
+        if (!token) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
 
-    if (!(['ADMIN', Role.DOCTOR].includes(token.role))) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
+        if (!(Authorize(['ADMIN', Role.DOCTOR], token.role))) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
 
-    const {
-        id
-    } = await req.json()
-
-    const profile = db.profile.delete({
-        where: {
-            userId: id
-        }
-    })
-
-    const user = db.user.delete({
-        where: {
+        const {
             id
-        },
-    })
+        } = await req.json()
 
-    const res = await prisma?.$transaction([profile, user])
+        const profile = db.profile.delete({
+            where: {
+                userId: id
+            }
+        })
 
-    if (!res) return NextResponse.json({ status: false, message: 'User not found' }, { status: 401 })
+        const user = db.user.delete({
+            where: {
+                id
+            },
+        })
 
-    return NextResponse.json({ status: true, message: 'User deleted' })
+        const res = await db.$transaction([profile, user])
+
+        if (!res) return NextResponse.json({ status: false, message: 'User not found' }, { status: 401 })
+
+        return NextResponse.json({ status: true, message: 'User deleted' })
+    } catch (error) {
+        return NextResponse.json({ status: false, message: 'Something went wrong..' }, { status: 500 })
+    }
+
+
 
 }
 
@@ -90,7 +103,7 @@ export async function PATCH(req: NextRequest) {
 
         if (!token) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
 
-        if (token.role !== 'ADMIN') return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
+        if (!(Authorize(['ADMIN', Role.DOCTOR], token.role))) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
 
         const doctorCred = z.object({
             id: z.string(),

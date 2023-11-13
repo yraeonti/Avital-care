@@ -17,6 +17,9 @@ export async function GET(req: NextRequest) {
             where: {
                 role: Role.DOCTOR
             },
+            orderBy: {
+                createdAt: 'desc'
+            },
             include: {
                 profile: {
                     include: {
@@ -92,6 +95,9 @@ export async function POST(req: NextRequest) {
                         }
                     }
                 ]
+            },
+            orderBy: {
+                createdAt: 'desc'
             },
             include: {
                 profile: {
