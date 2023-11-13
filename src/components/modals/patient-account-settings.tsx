@@ -18,7 +18,9 @@ import FileUpload from "../dashboard/shared/file-upload";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useToast } from "../ui/use-toast";
-
+import { getSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { mutate } from "swr"
 
 
 const patientSchema = z.object({
@@ -36,6 +38,8 @@ export default function PatientAccountSettings() {
     const { isOpen, onClose, type, data } = useStore();
     const [isLoading, setIsLoading] = useState(false)
     const { toast } = useToast()
+
+    const router = useRouter()
 
     const isModalOpen = isOpen && type === ModalType.PATIENTACCOUNTSETTINGS;
 
@@ -74,8 +78,10 @@ export default function PatientAccountSettings() {
                     variant: 'success',
                     description: "Account successfully edited",
                 })
-
                 onClose()
+                mutate('/api/patient')
+                await getSession()
+                router.refresh()
 
             }
 
@@ -116,8 +122,9 @@ export default function PatientAccountSettings() {
 
 
 
-
-
+    if (!data.networkData) {
+        return null
+    }
 
     return (
         <Dialog open={isModalOpen} onOpenChange={onClose}>
