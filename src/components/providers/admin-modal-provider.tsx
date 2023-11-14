@@ -6,6 +6,7 @@ const EditDoctor = lazy(() => import("../modals/admin-edit-doctors"))
 const ViewDoctor = lazy(() => import("../modals/view-doctor-account"))
 const DeleteDoctor = lazy(() => import("../modals/admin-del-doctors"))
 const ViewPatientAccount = lazy(() => import("../modals/view-patient-account"))
+const AddSession = lazy(() => import("../modals/admin-add-session"))
 export const ModalProvider = () => {
     const [isMounted, setIsMounted] = useState(false);
 
@@ -24,7 +25,7 @@ export const ModalProvider = () => {
             <ViewDoctor />
             <DeleteDoctor />
             <ViewPatientAccount />
-
+            <AddSession />
         </>
     )
 }

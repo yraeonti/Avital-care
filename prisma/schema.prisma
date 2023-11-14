@@ -64,7 +64,7 @@ model Session {
 
   title        String
   sessionDate  DateTime
-  noOfPatients Int
+  noOfPatients Int?
 
   doctor   User   @relation(fields: [doctorId], references: [id])
   doctorId String

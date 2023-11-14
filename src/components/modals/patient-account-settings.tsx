@@ -1,4 +1,3 @@
-
 import {
     Dialog,
     DialogContent,
@@ -21,6 +20,7 @@ import { useToast } from "../ui/use-toast";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { mutate } from "swr"
+import { useSession } from "next-auth/react";
 
 
 const patientSchema = z.object({
@@ -40,6 +40,7 @@ export default function PatientAccountSettings() {
     const { toast } = useToast()
 
     const router = useRouter()
+    const { update } = useSession()
 
     const isModalOpen = isOpen && type === ModalType.PATIENTACCOUNTSETTINGS;
 
@@ -80,7 +81,7 @@ export default function PatientAccountSettings() {
                 })
                 onClose()
                 mutate('/api/patient')
-                await getSession()
+                await update()
                 router.refresh()
 
             }

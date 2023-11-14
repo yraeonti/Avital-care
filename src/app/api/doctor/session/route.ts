@@ -19,8 +19,7 @@ export async function POST(req: NextRequest) {
 
         const sessionCred = z.object({
             title: z.string(),
-            doctorId: z.string().min(10),
-            noOfPatients: z.number(),
+            doctorId: z.string().uuid(),
             sessionDate: z.coerce.date(),
             sessionTime: z.array(z.object({
                 startTime: z.string(),
@@ -33,13 +32,12 @@ export async function POST(req: NextRequest) {
         const {
             title,
             doctorId,
-            noOfPatients,
             sessionDate,
             sessionTime,
         }: SessionCred = await req.json()
 
 
-        const sessionVal = sessionCred.safeParse({ title, doctorId, noOfPatients, sessionDate, sessionTime })
+        const sessionVal = sessionCred.safeParse({ title, doctorId, sessionDate, sessionTime })
 
         if (!sessionVal.success) {
             const errors = fromZodError(sessionVal.error)
@@ -47,15 +45,24 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ message: errors.message }, { status: 400 })
         }
 
+        const date = new Date(sessionDate).toISOString()
+
+        const time = sessionTime.map((item) => (
+            {
+                startTime: new Date(`${sessionDate} ${item.startTime}`).toISOString(),
+                endTime: new Date(`${sessionDate} ${item.endTime}`).toISOString()
+            }
+        ))
+
         await db.session.create({
             data: {
                 title,
-                noOfPatients,
+                noOfPatients: sessionTime.length,
                 doctorId,
-                sessionDate,
+                sessionDate: date,
                 sessionTime: {
                     createMany: {
-                        data: sessionTime
+                        data: time
                     }
                 }
             }
@@ -65,6 +72,8 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ status: true, message: 'Session created' })
 
     } catch (error) {
+        console.log(error);
+
         return NextResponse.json({ status: false, message: 'Something went wrong..' }, { status: 500 })
     }
 
