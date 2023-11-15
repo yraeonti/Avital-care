@@ -27,6 +27,7 @@ import { useToast } from "../ui/use-toast";
 import { Icons } from "../icons";
 import _ from "lodash"
 import axios from "axios";
+import { mutate } from "swr";
 
 
 const sessionSchema = z.object({
@@ -94,7 +95,7 @@ export default function AddSession() {
                     description: "New Session has been created",
                 })
 
-                // mutate('/api/doctors')
+                mutate('/api/doctors/sessions')
             }
 
             console.log(response);

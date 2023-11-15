@@ -7,7 +7,8 @@ import {
     ScheduleIcon,
     AppointmentIcon,
     DashboardIcon,
-    PatientsIcon
+    PatientsIcon,
+    SessionIcon
 } from "./nav-icons";
 
 export type NavItems = {
@@ -84,7 +85,7 @@ export const AdminNavRoutes: NavItems = [
         link: '/admin/dashboard/doctors'
     },
     {
-        icon: ScheduleIcon,
+        icon: SessionIcon,
         name: 'Sessions',
         link: '/admin/dashboard/sessions'
     },
