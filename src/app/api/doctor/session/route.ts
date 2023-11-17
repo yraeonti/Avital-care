@@ -50,7 +50,8 @@ export async function POST(req: NextRequest) {
         const time = sessionTime.map((item) => (
             {
                 startTime: new Date(`${sessionDate} ${item.startTime}`).toISOString(),
-                endTime: new Date(`${sessionDate} ${item.endTime}`).toISOString()
+                endTime: new Date(`${sessionDate} ${item.endTime}`).toISOString(),
+                appointmentNo: Math.floor(1000 + Math.random() * 9000)
             }
         ))
 
@@ -107,7 +108,7 @@ export async function DELETE(req: NextRequest) {
 
         const res = await db.$transaction([time, session])
 
-        if (!res) return NextResponse.json({ status: false, message: 'User not found' }, { status: 401 })
+        if (!res) return NextResponse.json({ status: false, message: 'Session not deleted' }, { status: 401 })
 
         return NextResponse.json({ status: true, message: 'Session deleted' })
 

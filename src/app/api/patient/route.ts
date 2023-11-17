@@ -7,58 +7,73 @@ import { fromZodError } from 'zod-validation-error';
 import { Role } from "@/app/services/types";
 
 export async function GET(req: NextRequest) {
+    try {
 
-    const token = await Token(req)
+        const token = await Token(req)
 
-    if (!token) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
-
-
-    const { id } = token
-
-    const user = await db.user.findUnique({
-        where: {
-            id
-        },
-        include: {
-            profile: true
-        }
-    })
-
-    if (!user) return NextResponse.json({ status: false, message: 'User not found' }, { status: 401 })
-
-    // console.log(token);
+        if (!token) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
 
 
-    return NextResponse.json({ status: true, data: user })
+        const { id } = token
+
+        const user = await db.user.findUnique({
+            where: {
+                id
+            },
+            include: {
+                profile: true
+            }
+        })
+
+        if (!user) return NextResponse.json({ status: false, message: 'User not found' }, { status: 401 })
+
+        // console.log(token);
+
+
+        return NextResponse.json({ status: true, data: user })
+
+    } catch (error) {
+        return NextResponse.json({ status: false, message: 'Something went wrong..' }, { status: 500 })
+    }
+
+
 
 }
 
 export async function DELETE(req: NextRequest) {
 
-    const token = await Token(req)
+    try {
 
-    if (!token) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
+        const token = await Token(req)
+
+        if (!token) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
 
 
-    const { id } = token
+        const { id } = token
 
-    const profile = db.profile.delete({
-        where: {
-            userId: id
-        }
-    })
+        const profile = db.profile.delete({
+            where: {
+                userId: id
+            }
+        })
 
-    const user = db.user.delete({
-        where: {
-            id
-        },
-    })
+        const user = db.user.delete({
+            where: {
+                id
+            },
+        })
 
-    const res = await prisma?.$transaction([profile, user])
+        const res = await prisma?.$transaction([profile, user])
 
-    if (!res) return NextResponse.json({ status: false, message: 'User not found' }, { status: 401 })
+        if (!res) return NextResponse.json({ status: false, message: 'User not found' }, { status: 401 })
 
-    return NextResponse.json({ status: true, message: 'User deleted' })
+        return NextResponse.json({ status: true, message: 'User deleted' })
+
+    } catch (error) {
+        return NextResponse.json({ status: false, message: 'Something went wrong..' }, { status: 500 })
+    }
+
+
 }
 
 export async function PATCH(req: NextRequest) {

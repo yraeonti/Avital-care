@@ -3,10 +3,11 @@ import { useEffect, useState, lazy } from "react";
 
 const AddDoctor = lazy(() => import("../modals/admin-add-doctors"))
 const EditDoctor = lazy(() => import("../modals/admin-edit-doctors"))
-const ViewDoctor = lazy(() => import("../modals/view-doctor-account"))
 const DeleteDoctor = lazy(() => import("../modals/admin-del-doctors"))
 const ViewPatientAccount = lazy(() => import("../modals/view-patient-account"))
 const AddSession = lazy(() => import("../modals/admin-add-session"))
+const ViewSession = lazy(() => import("../modals/admin-view-sessions"))
+const DeleteSession = lazy(() => import("../modals/admin-del-session"))
 export const ModalProvider = () => {
     const [isMounted, setIsMounted] = useState(false);
 
@@ -22,10 +23,11 @@ export const ModalProvider = () => {
         <>
             <AddDoctor />
             <EditDoctor />
-            <ViewDoctor />
             <DeleteDoctor />
             <ViewPatientAccount />
             <AddSession />
+            <ViewSession />
+            <DeleteSession />
         </>
     )
 }

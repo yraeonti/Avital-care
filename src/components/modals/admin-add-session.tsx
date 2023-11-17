@@ -28,6 +28,7 @@ import { Icons } from "../icons";
 import _ from "lodash"
 import axios from "axios";
 import { mutate } from "swr";
+import moment from "moment";
 
 
 const sessionSchema = z.object({
@@ -168,7 +169,7 @@ export default function AddSession() {
                                                             ? data.networkData.data.data.find(
                                                                 (item: DoctorData) => item.id === field.value
                                                             )?.name
-                                                            : "Choose a Specialty"}
+                                                            : "Choose a Doctor"}
                                                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                     </Button>
                                                 </FormControl>
@@ -178,7 +179,7 @@ export default function AddSession() {
 
                                                 <div className="max-h-full">
                                                     <Command>
-                                                        <CommandInput placeholder="Search specialties" />
+                                                        <CommandInput placeholder="Search doctors" />
                                                         <CommandEmpty>No doctor found.</CommandEmpty>
                                                         <CommandGroup className="overflow-y-scroll max-h-full py-4">
                                                             {checkData && data.networkData ? (
@@ -276,17 +277,21 @@ export default function AddSession() {
                             <div className="flex flex-wrap mt-5">
 
                                 {
-                                    form.getValues().sessionTime.map((item, i) => (
-                                        <Button
-                                            variant='secondary'
-                                            size="sm"
-                                            key={i}
-                                            type="button"
-                                            className="m-1 cursor-default "
-                                        >
-                                            {item.startTime} - {item.endTime}
-                                        </Button>
-                                    ))
+                                    form.getValues().sessionTime.map((item, i) => {
+                                        const startTime = item.startTime
+                                        const endTime = item.endTime
+                                        return (
+                                            <Button
+                                                variant='secondary'
+                                                size="sm"
+                                                key={i}
+                                                type="button"
+                                                className="m-1 cursor-default "
+                                            >
+                                                {startTime} - {endTime}
+                                            </Button>
+                                        )
+                                    })
                                 }
 
                             </div>

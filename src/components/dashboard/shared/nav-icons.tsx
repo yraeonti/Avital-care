@@ -4,8 +4,12 @@ import { usePathname } from "next/navigation"
 type Props = {
     path: string
 }
+
+
 const activeColorSvg = (type: string, pathname: string) =>
-    pathname.endsWith(type) ? " #fff" : "#000";
+    type.endsWith('dashboard') ?
+        (pathname.endsWith(type) ? " #fff" : "#000") :
+        (pathname.includes(type) ? " #fff" : "#000")
 
 export const HomeIcon = () => {
     const pathname = usePathname()
@@ -61,7 +65,7 @@ export const ScheduleIcon = () => {
             height="24"
             viewBox="0 0 24 24"
             fill="none"
-            stroke={activeColorSvg('schedules', pathname)}
+            stroke={activeColorSvg('sessions', pathname)}
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"

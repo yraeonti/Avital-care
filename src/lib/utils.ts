@@ -13,13 +13,11 @@ export async function fetcher<T>(url: string) {
   return await axios.get<T>(url);
 }
 
-export const fetcherPost = ({ url, data }: { url: string, data: { [key: string]: string } }) => fetch(url, {
-  method: 'POST',
+export const fetcherPost = (url: string, slug: { [key: string]: any }) => axios.post(url, { ...slug }, {
   headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify(data)
-}).then((res) => res.json());
+    'Content-Type': 'application/json'
+  }
+})
 
 
 export async function Token(req: NextRequest) {

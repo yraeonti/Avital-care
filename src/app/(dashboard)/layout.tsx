@@ -6,6 +6,7 @@ import { Open_Sans } from 'next/font/google'
 import { Toaster } from "@/components/ui/toaster"
 import { EdgeStoreProvider } from '@/lib/edgestore';
 import SessionProviderWrapper from '@/components/providers/session-provider'
+import { ModalProvider } from '@/components/providers/shared-modal-provider'
 
 
 
@@ -33,6 +34,7 @@ export default function RootLayout({
 
                 </EdgeStoreProvider>
                 <Toaster />
+                <ModalProvider />
             </body>
         </html>
     )

@@ -27,12 +27,12 @@ export const PatientNavRoutes: NavItems = [
     {
         icon: DoctorIcon,
         name: 'All Doctors',
-        link: '#'
+        link: '/patient/dashboard/doctors'
     },
     {
         icon: ScheduleIcon,
         name: 'Scheduled Sessions',
-        link: '#'
+        link: '/patient/dashboard/sessions'
     },
     {
         icon: BookingIcon,

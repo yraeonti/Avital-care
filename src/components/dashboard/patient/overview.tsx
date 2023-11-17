@@ -16,9 +16,11 @@ import { ModalType } from "@/components/hooks/modal-store"
 import useSWR from "swr"
 import { fetcher } from "@/lib/utils"
 import { AxiosResponseMod } from "@/app/services/types"
+import { useRouter } from "next/navigation"
 
 export default function Overview({ session }: { session: Session }) {
     const { onOpen } = useStore()
+    const router = useRouter()
 
     const { data: specialtiesData } =
         useSWR<AxiosResponseMod<any>>('/api/doctors/specialties', fetcher)
@@ -31,8 +33,8 @@ export default function Overview({ session }: { session: Session }) {
             bgcolour: 'bg-[#e9edc9]',
             icon: <Clock className="stroke-[#8d9d13]" />,
             desc: 'Schedule Appointment',
+            link: '#',
             content: 'Book an appointment with a health practioner',
-            onclick: onOpen,
             footer: 'Schedule Now'
         },
         {
@@ -40,7 +42,7 @@ export default function Overview({ session }: { session: Session }) {
             icon: <Stethoscope className="stroke-[#a9491d]" />,
             desc: 'Doctor\'s List',
             content: 'View all doctors we currently offer and their sessions',
-            onclick: () => { },
+            link: '/patient/dashboard/doctors',
             footer: 'View Doctors'
         },
         {
@@ -48,7 +50,7 @@ export default function Overview({ session }: { session: Session }) {
             icon: <CalendarCheck className="stroke-[#1ea351]" />,
             desc: 'View Schedules',
             content: 'View and search for all your scheduled sessions',
-            onclick: () => { },
+            link: '/patient/dashboard/sessions',
             footer: 'View Schedules'
         },
         {
@@ -56,7 +58,7 @@ export default function Overview({ session }: { session: Session }) {
             icon: <Bookmark className="stroke-[#157494]" />,
             desc: 'My Bookings',
             content: 'Track your past and future appointments history',
-            onclick: () => { },
+            link: '#',
             footer: 'Track History'
         },
     ]
@@ -89,7 +91,7 @@ export default function Overview({ session }: { session: Session }) {
                                 <Button
                                     variant='link'
                                     className="text-blue-800 p-0"
-                                    onClick={() => item.desc === 'Schedule Appointment' ? item.onclick(ModalType.VIEWSCHEDULE, { specialtiesData }) : item.onclick}>
+                                    onClick={() => item.desc === 'Schedule Appointment' ? onOpen(ModalType.VIEWSCHEDULE, { specialtiesData }) : router.push(item.link)}>
                                     <p className="text-start">
                                         {item.footer}
                                     </p>

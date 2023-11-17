@@ -11,8 +11,6 @@ export async function GET(req: NextRequest) {
 
         if (!token) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
 
-        if (token.role !== 'ADMIN') return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
-
         const doctors = await db.user.findMany({
             where: {
                 role: Role.DOCTOR
