@@ -79,7 +79,7 @@ export default function Appointments() {
         },
         {
             accessorKey: "status",
-            header: () => <div className="font-semibold ">Session Title</div>,
+            header: () => <div className="font-semibold ">Appointment Status</div>,
             cell(props) {
                 const status = props.row.getValue("status") as string
                 return (
@@ -93,7 +93,7 @@ export default function Appointments() {
         },
         {
             accessorKey: "sessionTime",
-            header: () => <div className="font-semibold ">Session Title</div>,
+            header: () => <div className="font-semibold ">Appointment Time</div>,
             cell(props) {
                 const time = props.row.getValue("sessionTime") as AppointmentsData['sessionTime']
 

@@ -5,6 +5,7 @@ import { db } from "@/app/services/db";
 import { z, ZodError } from 'zod'
 import { Role } from "@/app/services/types";
 import { Authorize } from "@/lib/utils";
+import { APPOINTMENTSTATUS } from "@prisma/client";
 
 
 
@@ -47,6 +48,7 @@ export async function GET(req: NextRequest) {
             sessionTitle: item.session.title,
             scheduledDate: item.appointmentDate,
             appointmentNo: item.appointmentNo,
+            appointmentId: item.id,
             doctor: item.session.doctor.profile?.name,
             doctorEmail: item.session.doctor.email,
             specialty: item.session.doctor.profile?.specialty?.name,
@@ -131,6 +133,59 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ status: true, message: 'Session Created' })
 
 
+
+    } catch (error) {
+        console.log(error);
+
+        return NextResponse.json({ status: false, message: 'Something went wrong..' }, { status: 500 })
+    }
+}
+
+export async function PATCH(req: NextRequest) {
+
+    try {
+
+        const token = await Token(req)
+
+        if (!token) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
+
+        const appointmentUpdateCred = z.object({
+            appointmentId: z.number().min(1),
+            sessionTimeId: z.number().min(1)
+        })
+
+        type AppointmentUpdateCred = z.infer<typeof appointmentUpdateCred>
+
+        const {
+            appointmentId,
+            sessionTimeId
+        }: AppointmentUpdateCred = await req.json()
+
+
+        const updateSessionTime = db.sessionTime.update({
+            where: {
+                id: sessionTimeId,
+            },
+            data: {
+                status: false
+            }
+        })
+
+        const updateAppointment = db.appointment.update({
+            where: {
+                id: appointmentId,
+                patientId: token.id
+            },
+            data: {
+                status: APPOINTMENTSTATUS.CANCELLED
+            }
+        })
+
+        const res = await db.$transaction([updateAppointment, updateSessionTime])
+
+        if (!res) return NextResponse.json({ status: false, message: 'Appointment not Cancelled' }, { status: 400 })
+
+        return NextResponse.json({ status: true, message: 'Appointment Cancelled Successfully' })
 
     } catch (error) {
         console.log(error);

@@ -116,10 +116,10 @@ export default function ViewScheduler() {
 
                                                 <div className="max-h-96">
 
-                                                    <Command>
+                                                    <Command className="">
                                                         <CommandInput placeholder="Search specialties" />
                                                         <CommandEmpty>No specialty found.</CommandEmpty>
-                                                        <CommandGroup className="overflow-y-scroll max-h-screen py-4">
+                                                        <CommandGroup className="overflow-y-scroll max-h-96 py-4">
                                                             {checkData && data.specialtiesData ? (
                                                                 data.specialtiesData.data.data.map((item: any) => (
                                                                     <CommandItem
@@ -127,6 +127,7 @@ export default function ViewScheduler() {
                                                                         key={item.id}
                                                                         onSelect={() => {
                                                                             form.setValue("specialty", item.id)
+                                                                            form.setValue("id", '')
                                                                             setOpen(false)
                                                                             setDoctorsList(item.profile)
                                                                         }}
@@ -174,8 +175,7 @@ export default function ViewScheduler() {
 
                                                 ))}
 
-                                                {/* <SelectItem value="dark">Dark</SelectItem>
-                                                <SelectItem value="system">System</SelectItem> */}
+
                                             </SelectContent>
                                         </Select>
                                         <FormMessage />

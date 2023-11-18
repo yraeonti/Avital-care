@@ -73,14 +73,13 @@ CREATE TABLE `Appointment` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `appointmentNo` INTEGER NOT NULL,
     `appointmentDate` DATETIME(3) NOT NULL,
-    `status` BOOLEAN NOT NULL DEFAULT false,
+    `status` ENUM('PENDING', 'CANCELLED', 'DONE') NOT NULL DEFAULT 'PENDING',
     `sessionId` INTEGER NOT NULL,
     `sessionTimeId` INTEGER NOT NULL,
     `patientId` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `Appointment_sessionTimeId_key`(`sessionTimeId`),
     INDEX `Appointment_sessionId_idx`(`sessionId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
