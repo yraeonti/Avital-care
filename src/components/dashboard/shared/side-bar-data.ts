@@ -54,12 +54,12 @@ export const DoctorNavRoutes: NavItems = [
     {
         icon: AppointmentIcon,
         name: 'My Appointments',
-        link: '#'
+        link: '/doctor/dashboard/appointments'
     },
     {
         icon: ScheduleIcon,
         name: 'My Sessions',
-        link: '#'
+        link: '/doctor/dashboard/sessions'
     },
     {
         icon: PatientsIcon,

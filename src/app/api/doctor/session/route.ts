@@ -7,6 +7,57 @@ import { Role, APPOINTMENTSTATUS } from "@/app/services/types";
 import { Authorize } from "@/lib/utils";
 
 
+
+export async function GET(req: NextRequest) {
+
+    try {
+
+        const token = await Token(req)
+
+        if (!token) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
+
+        if (!(Authorize([Role.DOCTOR], token.role))) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
+
+
+        const mySessions = await db.session.findMany({
+            where: {
+                doctorId: token.id
+            },
+            include: {
+                doctor: {
+                    include: {
+                        profile: {
+                            select: {
+                                name: true
+                            }
+                        }
+                    }
+                },
+                sessionTime: true
+            },
+            orderBy: {
+                sessionDate: 'desc'
+            }
+        })
+
+        const sessions = mySessions.map(item => ({
+            id: item.id,
+            title: item.title,
+            sessionDate: item.sessionDate,
+            noOfPatients: item.noOfPatients,
+            sessionTime: item.sessionTime,
+            doctor: item.doctor.profile?.name
+        }))
+
+        return NextResponse.json({ status: true, data: sessions, totalcount: sessions.length })
+
+    } catch (error) {
+        return NextResponse.json({ status: false, message: 'Something went wrong..' }, { status: 500 })
+    }
+
+}
+
+
 export async function POST(req: NextRequest) {
 
     try {
