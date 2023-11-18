@@ -6,7 +6,7 @@ import { useStore } from "@/components/hooks/use-store"
 import { ModalType } from "@/components/hooks/modal-store"
 import { fetcher } from "@/lib/utils"
 import useSWR from "swr"
-import { AxiosResponseModDoctors, AxiosResponseMod } from "@/app/services/types"
+import { AxiosResponseModCount, AxiosResponseMod } from "@/app/services/types"
 import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
 import { Pen, Eye, Trash2 } from "lucide-react"
@@ -53,7 +53,7 @@ export default function Doctors() {
         useSWR<AxiosResponseMod<any>>('/api/doctors/specialties', fetcher)
 
     const { data: tableData, isLoading: tableLoader } =
-        useSWR<AxiosResponseModDoctors<DoctorData[]>>('/api/doctors', fetcher)
+        useSWR<AxiosResponseModCount<DoctorData[]>>('/api/doctors', fetcher)
 
 
 
@@ -67,18 +67,18 @@ export default function Doctors() {
         },
         {
             accessorKey: "email",
-            header: () => <div className="font-semibold text-center">Email</div>,
+            header: () => <div className="font-semibold">Email</div>,
             filterFn: 'includesString',
             enableGlobalFilter: true
         },
         {
             accessorKey: "specialty",
-            header: () => <div className="font-semibold text-center">Specialties</div>,
+            header: () => <div className="font-semibold">Specialties</div>,
             enableGlobalFilter: true
         },
         {
             id: "actions",
-            header: () => <div className="font-semibold text-center">Actions</div>,
+            header: () => <div className="font-semibold">Actions</div>,
             cell({ row }) {
                 const doctorData = row.original
 

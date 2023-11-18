@@ -7,6 +7,12 @@ export enum Role {
     DOCTOR = "DOCTOR"
 }
 
+export enum APPOINTMENTSTATUS {
+    PENDING = 'PENDING',
+    CANCELLED = 'CANCELLED',
+    DONE = 'DONE'
+}
+
 export type SessionWithExtraData = Session & {
     role?: string,
 }
@@ -19,4 +25,6 @@ export interface JWTWithExtraData extends JWT {
 export type AxiosResponseMod<T> = AxiosResponse<{ status: boolean, data: T }>
 
 
-export type AxiosResponseModDoctors<T> = AxiosResponse<{ status: boolean, data: T, totalcount: number }>
+export type AxiosResponseModCount<T> = AxiosResponse<{ status: boolean, data: T, totalcount: number }>
+
+

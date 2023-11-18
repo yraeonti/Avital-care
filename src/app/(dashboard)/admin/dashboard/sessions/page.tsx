@@ -4,7 +4,8 @@ import { redirect } from "next/navigation"
 import Header from "@/components/dashboard/shared/header"
 import PageTransition from "@/components/dashboard/shared/page-transition"
 import { AdminNavRoutes } from "@/components/dashboard/shared/side-bar-data"
-import { lazy } from "react"
+import SessionsComponent from "@/components/dashboard/admin/sessions"
+
 
 export default async function Session() {
     const session = await getServerSession(authOptions)
@@ -14,7 +15,7 @@ export default async function Session() {
             <Header session={session} navRoutes={AdminNavRoutes} />
 
             <PageTransition>
-                Session Page
+                <SessionsComponent />
 
             </PageTransition>
 

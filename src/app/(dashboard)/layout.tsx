@@ -5,6 +5,7 @@ import '../globals.css'
 import { Open_Sans } from 'next/font/google'
 import { Toaster } from "@/components/ui/toaster"
 import { EdgeStoreProvider } from '@/lib/edgestore';
+import SessionProviderWrapper from '@/components/providers/session-provider'
 
 
 
@@ -26,7 +27,10 @@ export default function RootLayout({
         <html lang="en" >
             <body className={font.className}>
                 <EdgeStoreProvider>
-                    {children}
+                    <SessionProviderWrapper>
+                        {children}
+                    </SessionProviderWrapper>
+
                 </EdgeStoreProvider>
                 <Toaster />
             </body>

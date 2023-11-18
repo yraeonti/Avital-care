@@ -9,7 +9,7 @@ import { ReactNode } from "react";
 
 type Props = {
     title: string,
-    figure: number;
+    figure: ReactNode;
     bg: string;
     icon: ReactNode
 }

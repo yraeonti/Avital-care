@@ -80,9 +80,17 @@ export async function POST(req: Request) {
 
         const name = `${first_name} ${last_name}`
 
+        const existingUser = await db.user.findFirst({
+            where: {
+                email
+            }
+        })
+
+        if (existingUser) return NextResponse.json({ message: 'User already exists' }, { status: 400 })
+
         if (role === Role.PATIENT) {
 
-            const birth_date = `${date_of_birth}`
+            const birth_date = new Date(date_of_birth!).toISOString()
 
             const user = await db.user.create({
                 data: {

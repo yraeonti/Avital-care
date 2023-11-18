@@ -16,14 +16,20 @@ enum ROLE {
   DOCTOR
 }
 
+enum APPOINTMENTSTATUS {
+  PENDING
+  CANCELLED
+  DONE
+}
+
 model User {
-  id          String       @id @default(uuid())
-  email       String       @unique
+  id          String        @id @default(uuid())
+  email       String        @unique
   password    String
-  role        ROLE         @default(PATIENT)
+  role        ROLE          @default(PATIENT)
   profile     Profile?
   session     Session[]
-  appointment Appointment?
+  appointment Appointment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -86,10 +92,12 @@ model SessionTime {
 
   status Boolean @default(false)
 
+  appointmentNo Int
+
   session   Session @relation(fields: [sessionId], references: [id])
   sessionId Int
 
-  appointment Appointment?
+  appointment Appointment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -98,23 +106,22 @@ model SessionTime {
 model Appointment {
   id Int @id @default(autoincrement())
 
-  appointmentId   String
+  appointmentNo   Int
   appointmentDate DateTime
 
-  status Boolean @default(false)
+  status APPOINTMENTSTATUS @default(PENDING)
 
   session   Session @relation(fields: [sessionId], references: [id])
   sessionId Int
 
   sessionTime   SessionTime @relation(fields: [sessionTimeId], references: [id])
-  sessionTimeId Int         @unique
+  sessionTimeId Int
 
   patient   User   @relation(fields: [patientId], references: [id])
-  patientId String @unique
+  patientId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([sessionId])
-  @@index([patientId])
 }

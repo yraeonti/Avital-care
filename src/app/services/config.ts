@@ -90,7 +90,33 @@ export const authOptions = {
     },
     callbacks: {
         async jwt(data) {
-            // console.log(data.user);
+
+            if (data.trigger === 'update') {
+                const id = data.token.id
+                if (id) {
+                    console.log('inside the id');
+                    const user = await db.user.findUnique({
+                        where: {
+                            id: id as string
+                        },
+                        include: {
+                            profile: true
+                        }
+                    })
+
+                    return {
+                        ...data.token,
+                        ...data.user,
+                        name: user?.profile?.name ?? 'N/A',
+                        email: user?.email,
+                        image: user?.profile?.imageUrl ?? null,
+                        picture: user?.profile?.imageUrl ?? null
+                    }
+                }
+
+            }
+
+
 
             return { ...data.token, ...data.user }
         },

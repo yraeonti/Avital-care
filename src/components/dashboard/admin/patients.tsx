@@ -5,7 +5,7 @@ import { useStore } from "@/components/hooks/use-store"
 import { ModalType } from "@/components/hooks/modal-store"
 import { fetcher } from "@/lib/utils"
 import useSWR from "swr"
-import { AxiosResponseModDoctors, AxiosResponseMod } from "@/app/services/types"
+import { AxiosResponseModCount, AxiosResponseMod } from "@/app/services/types"
 import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
 import { Pen, Eye, Trash2 } from "lucide-react"
@@ -34,9 +34,6 @@ export type PatientData = {
 }
 
 
-type TableData = { status: boolean; data: PatientData[]; totalcount: number; }
-
-
 export default function Doctors() {
 
     const [searchFilter, setSearchFilter] = useState<string>('')
@@ -47,7 +44,7 @@ export default function Doctors() {
 
 
     const { data: tableData, isLoading: tableLoader } =
-        useSWR<AxiosResponseModDoctors<PatientData[]>>('/api/patients', fetcher)
+        useSWR<AxiosResponseModCount<PatientData[]>>('/api/patients', fetcher)
 
 
 
@@ -60,26 +57,26 @@ export default function Doctors() {
         },
         {
             accessorKey: "email",
-            header: () => <div className="font-semibold text-center">Email</div>,
+            header: () => <div className="font-semibold">Email</div>,
             filterFn: 'includesString'
         },
         {
             accessorKey: "telephone",
-            header: () => <div className="font-semibold text-center">Mobile Number</div>,
+            header: () => <div className="font-semibold">Mobile Number</div>,
             filterFn: 'includesString'
         },
         {
             accessorKey: "nin",
-            header: () => <div className="font-semibold text-center">NIN</div>,
+            header: () => <div className="font-semibold">NIN</div>,
             enableGlobalFilter: false
         },
         {
             accessorKey: "date_of_birth",
-            header: () => <div className="font-semibold text-center">Date Of Birth</div>,
+            header: () => <div className="font-semibold">Date Of Birth</div>,
             enableGlobalFilter: false,
             cell(props) {
                 const val = props.getValue() as string
-                return val.split('T')[0]
+                return new Date(val).toLocaleDateString()
             },
         },
         {

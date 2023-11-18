@@ -17,6 +17,9 @@ export async function GET(req: NextRequest) {
             where: {
                 role: Role.PATIENT
             },
+            orderBy: {
+                createdAt: 'desc'
+            },
             include: {
                 profile: true
             },
@@ -25,7 +28,7 @@ export async function GET(req: NextRequest) {
         const totalcount = await db.user.count({
             where: {
                 role: Role.PATIENT
-            }
+            },
         })
 
         const data = patients.map((item) => {
