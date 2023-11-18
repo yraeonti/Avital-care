@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { fromZodError } from 'zod-validation-error';
 import { db } from "@/app/services/db";
 import { z, ZodError } from 'zod'
-import { Role } from "@/app/services/types";
+import { Role, APPOINTMENTSTATUS } from "@/app/services/types";
 import { Authorize } from "@/lib/utils";
 
 
@@ -99,20 +99,26 @@ export async function DELETE(req: NextRequest) {
                 sessionId: id
             }
         })
-
+        const appointments = db.appointment.deleteMany({
+            where: {
+                sessionId: id
+            },
+        })
         const session = db.session.delete({
             where: {
                 id
             }
         })
 
-        const res = await db.$transaction([time, session])
+        const res = await db.$transaction([appointments, time, session])
 
         if (!res) return NextResponse.json({ status: false, message: 'Session not deleted' }, { status: 401 })
 
         return NextResponse.json({ status: true, message: 'Session deleted' })
 
     } catch (error) {
+        console.log(error);
+
         return NextResponse.json({ status: false, message: 'Something went wrong..' }, { status: 500 })
     }
 

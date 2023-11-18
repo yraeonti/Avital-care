@@ -37,7 +37,7 @@ export const PatientNavRoutes: NavItems = [
     {
         icon: BookingIcon,
         name: 'My Bookings',
-        link: '#'
+        link: '/patient/dashboard/bookings'
     },
     {
         icon: SettingIcon,

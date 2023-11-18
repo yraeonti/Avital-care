@@ -4,13 +4,13 @@ import { Plus } from "lucide-react"
 import { useStore } from "@/components/hooks/use-store"
 import { ModalType } from "@/components/hooks/modal-store"
 import useSWR from "swr"
-import { AxiosResponseModCount, AxiosResponseMod } from "@/app/services/types"
-import { DoctorData } from "./doctors"
+import { AxiosResponseModCount, APPOINTMENTSTATUS } from "@/app/services/types"
 import { fetcher } from "@/lib/utils"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
-import { Pen, Eye, Trash2 } from "lucide-react"
+import { Trash2 } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
 import DataTable from "../shared/table/data-table-filter"
 import {
     DropdownMenu,
@@ -19,52 +19,86 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { formatTime } from "@/lib/utils"
 
-export type SessionData = {
-    id: number,
-    title: string,
-    sessionDate: string,
-    noOfPatients: number,
-    sessionTime: { startTime: string; endTime: string, status: boolean }[],
-    doctor: string
+export type AppointmentsData = {
+    patientName: string;
+    appointmentNo: number;
+    doctor: string;
+    sessionTitle: string
+    sessionDate: string
+    status: APPOINTMENTSTATUS
+    sessionTime: { startTime: string; endTime: string, status: boolean },
 }
 
 
-export default function Sessions() {
+export default function Appointments() {
     const { onOpen } = useStore()
 
-    const { data: doctorData } =
-        useSWR<AxiosResponseModCount<DoctorData[]>>('/api/doctors', fetcher)
+    // const { data: doctorData } =
+    //     useSWR<AxiosResponseModCount<DoctorData[]>>('/api/doctors', fetcher)
 
     const { data: tableData, isLoading: tableLoader } =
-        useSWR<AxiosResponseModCount<SessionData[]>>('/api/doctors/sessions', fetcher)
+        useSWR<AxiosResponseModCount<AppointmentsData[]>>('/api/patients/appointments', fetcher)
 
-    const columns: ColumnDef<SessionData>[] = [
+    console.log(tableData);
+
+
+    const columns: ColumnDef<AppointmentsData>[] = [
         {
-            accessorKey: "title",
-            header: () => <div className="font-semibold ">Session Title</div>,
+            accessorKey: "patientName",
+            header: () => <div className="font-semibold ">Patient Name</div>,
+            filterFn: 'includesString',
+            enableGlobalFilter: true
+        },
+        {
+            accessorKey: "appointmentNo",
+            header: () => <div className="font-semibold">Appointment Number</div>,
             filterFn: 'includesString',
             enableGlobalFilter: true
         },
         {
             accessorKey: "doctor",
-            header: () => <div className="font-semibold">Doctor</div>,
-            filterFn: 'includesString',
+            header: () => <div className="font-semibold">Doctor Name</div>,
+            enableGlobalFilter: true,
+
+        },
+
+        {
+            accessorKey: "sessionTitle",
+            header: () => <div className="font-semibold ">Session Title</div>,
             enableGlobalFilter: true
         },
         {
             accessorKey: "sessionDate",
-            header: () => <div className="font-semibold">Session Date</div>,
-            enableGlobalFilter: true,
+            header: () => <div className="font-semibold ">Session Date</div>,
             cell(props) {
                 const date = props.row.getValue("sessionDate") as string
                 return new Date(date).toLocaleDateString()
             },
         },
         {
-            accessorKey: "noOfPatients",
-            header: () => <div className="font-semibold ">No. Of Time Slots</div>,
-            enableGlobalFilter: true
+            accessorKey: "status",
+            header: () => <div className="font-semibold ">Session Title</div>,
+            cell(props) {
+                const status = props.row.getValue("status") as string
+                return (
+                    <Badge variant={status === APPOINTMENTSTATUS.PENDING ?
+                        'pending' : status === APPOINTMENTSTATUS.CANCELLED ?
+                            'destructive' : 'done'}>
+                        {status}
+                    </Badge>
+                )
+            },
+        },
+        {
+            accessorKey: "sessionTime",
+            header: () => <div className="font-semibold ">Session Title</div>,
+            cell(props) {
+                const time = props.row.getValue("sessionTime") as AppointmentsData['sessionTime']
+
+                return `${formatTime(time.startTime)}-${formatTime(time.endTime)} `
+            },
         },
         {
             id: "actions",
@@ -83,21 +117,11 @@ export default function Sessions() {
                         <DropdownMenuContent align="end">
                             <DropdownMenuItem
                                 className="cursor-pointer"
-                                onClick={() => onOpen(ModalType.ADMINVIEWSESSION, { sessionData })}
-                            >
-                                <Eye className="mr-2 h-4 w-4" />
-                                <span>
-                                    View
-                                </span>
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                                className="cursor-pointer"
-                                onClick={() => onOpen(ModalType.ADMINDELSESSION, { sessionData })}
+                            // onClick={() => onOpen(ModalType.ADMINDELSESSION, { sessionData })}
                             >
                                 <Trash2 className="mr-2 h-4 w-4" />
                                 <span>
-                                    Remove
+                                    Cancel
                                 </span>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -111,18 +135,11 @@ export default function Sessions() {
     return (
         <section className="px-2 md:px-6">
             <div className="my-5 mx-3 sm:px-7 flex flex-col">
-                <Button
-                    className="flex self-end space-x-2 hover:bg-blue-800 text-xs sm:text-sm bg-blue-700 text-white opacity-90 shadow-md"
 
-                    onClick={() => onOpen(ModalType.ADMINADDSESSION, { networkData: doctorData })}
-                >
-
-                    <Plus className="stroke-white" /> <span>Add New Session</span>
-                </Button>
 
 
                 <div className="mt-3 flex items-center space-x-2 font-semibold text-lg">
-                    <span className="">All Sessions</span> {
+                    <span className="">All Appointments</span> {
                         tableLoader ? (
                             <Skeleton className="h-4 w-24 bg-stone-200" />
                         ) : (

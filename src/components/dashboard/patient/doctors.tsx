@@ -5,7 +5,7 @@ import { useStore } from "@/components/hooks/use-store"
 import { ModalType } from "@/components/hooks/modal-store"
 import { fetcher } from "@/lib/utils"
 import useSWR from "swr"
-import { AxiosResponseModDoctors, AxiosResponseMod } from "@/app/services/types"
+import { AxiosResponseModCount, AxiosResponseMod } from "@/app/services/types"
 import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
 import { Pen, Eye, Calendar } from "lucide-react"
@@ -22,10 +22,15 @@ import {
 import { Skeleton } from "@/components/ui/skeleton"
 import { useState } from "react"
 import { DoctorData } from "../admin/doctors"
+import { useRouter } from "next/navigation"
 
 export default function Doctors() {
 
     const [searchFilter, setSearchFilter] = useState<string>('')
+
+    const { setSessionSearch } = useStore()
+
+    const router = useRouter()
 
 
 
@@ -33,7 +38,7 @@ export default function Doctors() {
 
 
     const { data: tableData, isLoading: tableLoader } =
-        useSWR<AxiosResponseModDoctors<DoctorData[]>>('/api/doctors', fetcher)
+        useSWR<AxiosResponseModCount<DoctorData[]>>('/api/doctors', fetcher)
 
 
     const columns: ColumnDef<DoctorData>[] = [
@@ -45,18 +50,18 @@ export default function Doctors() {
         },
         {
             accessorKey: "email",
-            header: () => <div className="font-semibold text-center">Email</div>,
+            header: () => <div className="font-semibold">Email</div>,
             filterFn: 'includesString',
             enableGlobalFilter: true
         },
         {
             accessorKey: "specialty",
-            header: () => <div className="font-semibold text-center">Specialties</div>,
+            header: () => <div className="font-semibold">Specialties</div>,
             enableGlobalFilter: true
         },
         {
             id: "actions",
-            header: () => <div className="font-semibold text-center">Actions</div>,
+            header: () => <div className="font-semibold">Actions</div>,
             cell({ row }) {
                 const doctorData = row.original
 
@@ -81,7 +86,10 @@ export default function Doctors() {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                                 className="cursor-pointer"
-                            // onClick={() => onOpen(ModalType.ADMINDELDOCTOR, { doctorData })}
+                                onClick={() => {
+                                    setSessionSearch(doctorData.email)
+                                    router.push('/patient/dashboard/sessions')
+                                }}
                             >
                                 <Calendar className="mr-2 h-4 w-4" />
                                 <span>

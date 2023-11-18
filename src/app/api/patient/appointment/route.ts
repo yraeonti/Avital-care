@@ -8,6 +8,66 @@ import { Authorize } from "@/lib/utils";
 
 
 
+export async function GET(req: NextRequest) {
+
+    try {
+
+        const token = await Token(req)
+
+        if (!token) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
+
+        const allAppointments = await db.appointment.findMany({
+            where: {
+                patientId: token.id
+            },
+            include: {
+                session: {
+                    include: {
+                        doctor: {
+                            include: {
+                                profile: {
+                                    select: {
+                                        name: true,
+                                        specialty: {
+                                            select: {
+                                                name: true
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                sessionTime: true
+            }
+        })
+
+        const appointments = allAppointments.map((item) => ({
+            sessionTitle: item.session.title,
+            scheduledDate: item.appointmentDate,
+            appointmentNo: item.appointmentNo,
+            doctor: item.session.doctor.profile?.name,
+            doctorEmail: item.session.doctor.email,
+            specialty: item.session.doctor.profile?.specialty?.name,
+            scheduledTime: item.sessionTime,
+            status: item.status
+        }))
+
+        return NextResponse.json({ status: true, data: appointments, totalcount: appointments.length })
+
+    } catch (error) {
+        console.log(error);
+
+        return NextResponse.json({ status: true, message: 'Something went wrong...' }, { status: 500 })
+    }
+
+
+
+
+}
+
+
 export async function POST(req: NextRequest) {
     try {
 

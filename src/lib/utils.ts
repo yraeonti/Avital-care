@@ -4,6 +4,7 @@ import axios from "axios";
 import { NextRequest } from "next/server";
 import { JWTWithExtraData } from "@/app/services/types";
 import { getToken } from "next-auth/jwt";
+import moment from "moment";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -26,4 +27,8 @@ export async function Token(req: NextRequest) {
 
 export function Authorize<T>(roles: T[], role: T) {
   return roles.includes(role)
+}
+
+export function formatTime(date: string) {
+  return moment.utc(date).format('LT')
 }

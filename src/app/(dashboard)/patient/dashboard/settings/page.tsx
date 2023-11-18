@@ -5,8 +5,7 @@ import { redirect } from "next/navigation"
 import { lazy } from "react"
 import PageTransition from "@/components/dashboard/shared/page-transition"
 import { PatientNavRoutes } from "@/components/dashboard/shared/side-bar-data"
-
-const SettingsComponent = lazy(() => import('@/components/dashboard/patient/settings'))
+import SettingsComponent from '@/components/dashboard/patient/settings'
 
 export default async function SettingsPage() {
     const session = await getServerSession(authOptions)

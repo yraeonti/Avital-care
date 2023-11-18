@@ -113,7 +113,7 @@ export default function DataTable<TData, TValue>({
                                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                             </TableCell>
                                         ) : (
-                                            <TableCell key={cell.id} className='text-center'>
+                                            <TableCell key={cell.id} className=''>
                                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                             </TableCell>
                                         )

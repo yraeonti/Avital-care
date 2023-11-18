@@ -24,6 +24,9 @@ export async function GET(req: NextRequest) {
                     }
                 }
             },
+            orderBy: {
+                sessionDate: 'desc'
+            }
         })
 
         const totalcount = await db.session.count()

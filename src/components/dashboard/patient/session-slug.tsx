@@ -1,5 +1,6 @@
 "use client"
 import useSWR from "swr"
+import { useSWRConfig } from "swr"
 import { fetcherPost } from "@/lib/utils"
 import { Skeleton } from "@/components/ui/skeleton"
 import { AxiosResponseMod } from "@/app/services/types"
@@ -12,6 +13,7 @@ import { useState } from "react"
 import { Separator } from "@/components/ui/separator"
 import { useToast } from "@/components/ui/use-toast"
 import axios from "axios"
+import { useRouter } from "next/navigation"
 import moment from "moment"
 import {
     Select,
@@ -24,6 +26,9 @@ import {
 export default function ScheduledSessionsSlug({ params }: { params: { slug: string } }) {
     const [sessionTimeId, setsessionTimeId] = useState('');
     const { toast } = useToast()
+
+    const router = useRouter()
+    const { mutate } = useSWRConfig()
 
     console.log(sessionTimeId);
 
@@ -40,7 +45,7 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
         if (sessionTimeId.length < 1) {
             toast({
                 variant: 'destructive',
-                description: 'Please pick a date'
+                description: 'Please pick a time'
             })
             return;
         }
@@ -70,6 +75,8 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
                         description: "Appointment has been booked",
                     })
 
+                    router.push('/patient/dashboard/bookings')
+
 
                 }
             }
@@ -86,6 +93,9 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
 
     }
 
+    const checkBookingStatus = !!data?.data.data.sessionTime.filter(item => item.status === true).length
+
+
 
     return (
         <section className="px-2 md:px-6">
@@ -93,7 +103,7 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
 
             <Link href="/patient/dashboard/sessions" className="">
 
-                <Button className="flex space-x-2 justify-center mt-4">
+                <Button className="flex space-x-2 justify-center mt-4 bg-blue-700 hover:bg-blue-800">
                     <MoveLeft className="w-4" />  <span>Back</span>
                 </Button>
             </Link>
@@ -101,7 +111,7 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
             <div className="mt-4">
                 {
                     isLoading && !data ? (
-                        <Skeleton className="w-full h-52 bg-stone-100" />
+                        <Skeleton className="w-full h-72 bg-stone-100" />
                     ) : (
                         <Card className="bg-stone-50">
 
@@ -176,8 +186,9 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
 
 
                                 <Button
-                                    className="bg-blue-700 hover:bg-blue-800 w-full my-3"
+                                    className={`bg-blue-700 hover:bg-blue-800 w-full my-3`}
                                     onClick={onBookNow}
+                                    disabled={checkBookingStatus}
                                 >
                                     Book Now
                                 </Button>

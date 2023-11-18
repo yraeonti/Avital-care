@@ -9,7 +9,7 @@ import { ModalType } from "@/components/hooks/modal-store"
 import { Skeleton } from "../ui/skeleton";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
-import moment from "moment";
+import { formatTime } from "@/lib/utils";
 
 export default function AdminViewSessions() {
     const { isOpen, onClose, type, data: { sessionData } } = useStore();
@@ -98,6 +98,23 @@ export default function AdminViewSessions() {
 
                     <div className="space-y-2">
                         <h1 className="font-semibold text-xl opacity-60">
+                            No of Available Time Slots
+                        </h1>
+
+                        <p className="">
+
+                            {sessionData ? (
+                                sessionData.sessionTime.filter(ses => ses.status === false).length
+                            ) : (
+                                <Skeleton className="h-4 w-10" />
+                            )}
+
+                        </p>
+                        <Separator />
+                    </div>
+
+                    <div className="space-y-2">
+                        <h1 className="font-semibold text-xl opacity-60">
                             Scheduled Time Slots
                         </h1>
 
@@ -112,9 +129,10 @@ export default function AdminViewSessions() {
                                             size="sm"
                                             key={i}
                                             type="button"
-                                            className="m-1 cursor-default "
+                                            disabled={item.status}
+                                            className={`m-1 ${item.status && 'bg-red-500 hover:bg-red-500  text-white opacity-70'} cursor-default`}
                                         >
-                                            {moment.utc(item.startTime).format('LT')} - {moment.utc(item.endTime).format('LT')}
+                                            {formatTime(item.startTime)} - {formatTime(item.endTime)}
                                         </Button>
                                     )
                                 })

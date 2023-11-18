@@ -58,7 +58,7 @@ export default function Overview({ session }: { session: Session }) {
             icon: <Bookmark className="stroke-[#157494]" />,
             desc: 'My Bookings',
             content: 'Track your past and future appointments history',
-            link: '#',
+            link: '/patient/dashboard/bookings',
             footer: 'Track History'
         },
     ]
