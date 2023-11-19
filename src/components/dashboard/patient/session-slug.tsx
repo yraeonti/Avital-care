@@ -143,7 +143,20 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
             <div className="mt-4">
                 {
                     isLoading && !data ? (
-                        <Skeleton className="w-full h-72 bg-stone-100" />
+                        <div className="w-full h-80 bg-stone-100">
+                            <Skeleton className=" w-[29%] h-7 bg-stone-200 mb-7" />
+
+                            <div className="space-y-8">
+                                {
+                                    [1, 2, 3, 4, 5, 6].map((_, i) => (
+                                        <div className="" key={i}>
+                                            <Skeleton className="w-[20%] h-4 bg-stone-200" />
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        </div>
+
                     ) : (
                         <Card className="bg-stone-50">
 

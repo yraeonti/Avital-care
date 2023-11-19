@@ -11,7 +11,9 @@ import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
 import { Trash2 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-import DataTable from "../shared/table/data-table-filter"
+import DataTable from "../shared/table/data-table"
+import { Input } from "@/components/ui/input"
+import { useState } from "react"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -35,8 +37,7 @@ export type AppointmentsData = {
 export default function Appointments() {
     const { onOpen } = useStore()
 
-    // const { data: doctorData } =
-    //     useSWR<AxiosResponseModCount<DoctorData[]>>('/api/doctors', fetcher)
+    const [searchFilter, setSearchFilter] = useState<string>('')
 
     const { data: tableData, isLoading: tableLoader } =
         useSWR<AxiosResponseModCount<AppointmentsData[]>>('/api/patients/appointments', fetcher)
@@ -60,18 +61,19 @@ export default function Appointments() {
         {
             accessorKey: "doctor",
             header: () => <div className="font-semibold">Doctor Name</div>,
-            enableGlobalFilter: true,
+            filterFn: 'includesString',
 
         },
 
         {
             accessorKey: "sessionTitle",
             header: () => <div className="font-semibold ">Session Title</div>,
-            enableGlobalFilter: true
+            filterFn: 'includesString',
         },
         {
             accessorKey: "sessionDate",
             header: () => <div className="font-semibold ">Session Date</div>,
+            filterFn: 'includesString',
             cell(props) {
                 const date = props.row.getValue("sessionDate") as string
                 return new Date(date).toLocaleDateString()
@@ -150,6 +152,18 @@ export default function Appointments() {
                     }
 
                 </div>
+
+                <div className='mt-3'>
+                    <Input
+                        placeholder="Search all fields"
+                        value={searchFilter ?? ""}
+                        onChange={(event) =>
+                            setSearchFilter(event.target.value)
+                        }
+                        className="max-w-sm"
+                    />
+                </div>
+
                 <div className="my-9">
 
                     <DataTable
@@ -158,6 +172,7 @@ export default function Appointments() {
                             && tableData?.data?.status ? tableData.data.data : []
                         }
                         loading={tableLoader}
+                        globalFilter={searchFilter}
                     />
                 </div>
             </div>
