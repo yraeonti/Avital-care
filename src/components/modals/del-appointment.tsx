@@ -17,12 +17,11 @@ import { useToast } from "../ui/use-toast";
 import { useSWRConfig } from "swr";
 import { Skeleton } from "../ui/skeleton";
 
-
-export default function AdminDelDoctor({ account }: { account: 'admin' | 'doctor' }) {
-    const { isOpen, onClose, type, data: { sessionData } } = useStore();
+export default function DelAppointment({ account }: { account: 'doctor' | 'admin' }) {
+    const { isOpen, onClose, type, data: { appointmentData } } = useStore();
     const [isLoading, setIsLoading] = useState(false)
 
-    const isModalOpen = isOpen && type === ModalType.ADMINDELSESSION;
+    const isModalOpen = isOpen && type === ModalType.DELAPPOINTMENT;
 
     const toast = useToast()
 
@@ -33,11 +32,12 @@ export default function AdminDelDoctor({ account }: { account: 'admin' | 'doctor
         setIsLoading(true)
         try {
 
-            if (sessionData?.id) {
+            if (appointmentData?.id) {
 
-                const res = await axios.delete('/api/doctor/session', {
+                const res = await axios.delete('/api/patient/appointment', {
                     data: {
-                        id: sessionData.id
+                        id: appointmentData.id,
+                        sessionTimeId: appointmentData.sessionTime.id
                     },
                     headers: {
                         'Content-Type': 'application/json'
@@ -48,13 +48,13 @@ export default function AdminDelDoctor({ account }: { account: 'admin' | 'doctor
                 if (res.status === 200) {
                     toast.toast({
                         variant: 'success',
-                        description: 'Session has been deleted'
+                        description: 'Appointment has been deleted'
                     })
 
                     if (account === 'admin') {
-                        mutate('/api/doctors/sessions')
+                        mutate('/api/patients/appointments')
                     } else {
-                        mutate('/api/doctor/session')
+                        mutate('/api/doctor/appointment')
                     }
 
 
@@ -66,7 +66,7 @@ export default function AdminDelDoctor({ account }: { account: 'admin' | 'doctor
             console.log(error);
             setIsLoading(false)
             toast.toast({
-                description: 'Session not deleted'
+                description: 'Appointment not deleted'
             })
         }
 
@@ -78,15 +78,12 @@ export default function AdminDelDoctor({ account }: { account: 'admin' | 'doctor
             <DialogContent className="bg-white text-black pt-4 pb-8 px-7 overflow-hidden">
                 <DialogHeader className="pt-8">
                     <DialogTitle className="text-3xl text-red-500 font-bold text-center">
-                        Session Deletion
+                        Appointment Deletion
                     </DialogTitle>
                     <DialogDescription className=" text-lg font-medium space-x-1 text-center">
                         Are you sure you want to delete
-                        {sessionData ?
-                            <span
-                                className="font-semibold text-black text-lg">{`${" "} ${sessionData.title.toLowerCase().includes('session')
-                                    ? sessionData.title : `${sessionData.title} Session?`}`}</span>
-                            : <Skeleton className="h-4 w-10" />}
+                        {appointmentData ? <span className="font-semibold text-black text-lg">{`${" "} ${appointmentData.patientName}'s`}</span>
+                            : <Skeleton className="h-4 w-10" />} appointment?
 
                     </DialogDescription>
 
@@ -105,7 +102,7 @@ export default function AdminDelDoctor({ account }: { account: 'admin' | 'doctor
                         {isLoading && (
                             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                         )}
-                        Delete Session
+                        Delete Appointment
                     </Button>
 
                 </div>

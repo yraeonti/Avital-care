@@ -48,6 +48,7 @@ export async function GET(req: NextRequest) {
         })
 
         const appointments = allAppointments.map((item) => ({
+            id: item.id,
             patientName: item.patient.profile?.name,
             appointmentNo: item.appointmentNo,
             sessionTitle: item.session.title,

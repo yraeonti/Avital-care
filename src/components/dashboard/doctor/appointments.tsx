@@ -22,16 +22,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { formatTime } from "@/lib/utils"
-
-export type AppointmentsData = {
-    patientName: string
-    appointmentNo: number
-    sessionTitle: string
-    sessionDate: string
-    status: APPOINTMENTSTATUS
-    appointmentDate: string
-    sessionTime: { startTime: string; endTime: string, status: boolean },
-}
+import { AppointmentsData } from "../admin/appointments"
 
 
 export default function Appointments() {
@@ -105,7 +96,7 @@ export default function Appointments() {
             id: "actions",
             header: () => <div className="font-semibold">Actions</div>,
             cell({ row }) {
-                const sessionData = row.original
+                const appointmentData = row.original
 
                 return (
                     <DropdownMenu>
@@ -118,7 +109,7 @@ export default function Appointments() {
                         <DropdownMenuContent align="end">
                             <DropdownMenuItem
                                 className="cursor-pointer"
-                            // onClick={() => onOpen(ModalType.ADMINDELSESSION, { sessionData })}
+                                onClick={() => onOpen(ModalType.UPDATEAPPOINTMENTSTATUS, { appointmentData })}
                             >
                                 <Pen className="mr-2 h-4 w-4" />
                                 <span>
@@ -128,7 +119,7 @@ export default function Appointments() {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                                 className="cursor-pointer"
-                            // onClick={() => onOpen(ModalType.ADMINDELSESSION, { sessionData })}
+                                onClick={() => onOpen(ModalType.DELAPPOINTMENT, { appointmentData })}
                             >
                                 <Trash2 className="mr-2 h-4 w-4" />
                                 <span>

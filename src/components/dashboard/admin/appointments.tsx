@@ -1,6 +1,5 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import { Plus } from "lucide-react"
 import { useStore } from "@/components/hooks/use-store"
 import { ModalType } from "@/components/hooks/modal-store"
 import useSWR from "swr"
@@ -8,7 +7,7 @@ import { AxiosResponseModCount, APPOINTMENTSTATUS } from "@/app/services/types"
 import { fetcher } from "@/lib/utils"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ColumnDef } from "@tanstack/react-table"
-import { MoreHorizontal } from "lucide-react"
+import { MoreHorizontal, Pen, XCircle } from "lucide-react"
 import { Trash2 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import DataTable from "../shared/table/data-table"
@@ -24,13 +23,14 @@ import {
 import { formatTime } from "@/lib/utils"
 
 export type AppointmentsData = {
+    id: number;
     patientName: string;
     appointmentNo: number;
     doctor: string;
     sessionTitle: string
     sessionDate: string
     status: APPOINTMENTSTATUS
-    sessionTime: { startTime: string; endTime: string, status: boolean },
+    sessionTime: { startTime: string; endTime: string, status: boolean, id: number },
 }
 
 
@@ -106,7 +106,7 @@ export default function Appointments() {
             id: "actions",
             header: () => <div className="font-semibold">Actions</div>,
             cell({ row }) {
-                const sessionData = row.original
+                const appointmentData = row.original
 
                 return (
                     <DropdownMenu>
@@ -119,11 +119,21 @@ export default function Appointments() {
                         <DropdownMenuContent align="end">
                             <DropdownMenuItem
                                 className="cursor-pointer"
-                            // onClick={() => onOpen(ModalType.ADMINDELSESSION, { sessionData })}
+                                onClick={() => onOpen(ModalType.UPDATEAPPOINTMENTSTATUS, { appointmentData })}
+                            >
+                                <Pen className="mr-2 h-4 w-4" />
+                                <span>
+                                    Update Status
+                                </span>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                                className="cursor-pointer"
+                                onClick={() => onOpen(ModalType.DELAPPOINTMENT, { appointmentData })}
                             >
                                 <Trash2 className="mr-2 h-4 w-4" />
                                 <span>
-                                    Cancel
+                                    Delete
                                 </span>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -155,7 +165,7 @@ export default function Appointments() {
 
                 <div className='mt-3'>
                     <Input
-                        placeholder="Search all fields"
+                        placeholder="Search all fields..."
                         value={searchFilter ?? ""}
                         onChange={(event) =>
                             setSearchFilter(event.target.value)

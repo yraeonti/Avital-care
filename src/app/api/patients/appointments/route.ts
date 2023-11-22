@@ -51,6 +51,7 @@ export async function GET(req: NextRequest) {
 
 
         const appointments = allAppointments.map((item) => ({
+            id: item.id,
             patientName: item.patient.profile?.name,
             appointmentNo: item.appointmentNo,
             doctor: item.session.doctor.profile?.name,

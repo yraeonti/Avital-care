@@ -143,8 +143,8 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
             <div className="mt-4">
                 {
                     isLoading && !data ? (
-                        <div className="w-full h-80 bg-stone-100">
-                            <Skeleton className=" w-[29%] h-7 bg-stone-200 mb-7" />
+                        <div className="w-full h-80 bg-stone-100 p-4">
+                            <Skeleton className=" w-[29%]  h-7 bg-stone-200 mb-7" />
 
                             <div className="space-y-8">
                                 {

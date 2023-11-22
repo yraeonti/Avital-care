@@ -64,7 +64,7 @@ export const DoctorNavRoutes: NavItems = [
     {
         icon: PatientsIcon,
         name: 'My Patients',
-        link: '#'
+        link: '/doctor/dashboard/patients'
     },
     {
         icon: SettingIcon,
