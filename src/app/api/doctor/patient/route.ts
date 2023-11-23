@@ -20,7 +20,8 @@ export async function GET(req: NextRequest) {
             include: {
                 patient: {
                     include: {
-                        profile: true
+                        profile: true,
+                        diagnosis: true
                     }
                 }
             }
@@ -34,7 +35,8 @@ export async function GET(req: NextRequest) {
                 email: item.patient.email,
                 telephone: item.patient.profile?.telephone,
                 date_of_birth: item.patient.profile?.date_of_birth,
-                address: item.patient.profile?.address
+                address: item.patient.profile?.address,
+                diagnosis: item.patient.diagnosis
             }
         })
 

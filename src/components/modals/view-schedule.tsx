@@ -30,33 +30,42 @@ import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Specialties } from "./admin-add-doctors";
+import { useRouter } from "next/navigation";
+import { Icons } from "../icons";
 
 const formSchema = z.object({
     specialty: z.string().min(1, { message: 'This field is required' }).or(z.number()),
-    id: z.string().uuid({ message: 'Please select a doctor' })
+    name: z.string().min(1, { message: 'Please select a doctor' })
 })
 
 
 export default function ViewScheduler() {
 
-    const { isOpen, onClose, type, data } = useStore();
+    const { isOpen, onClose, type, data, setSessionSearch } = useStore();
 
     const [open, setOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [doctorsList, setDoctorsList] = useState([])
+
+
+    const router = useRouter()
 
     const isModalOpen = isOpen && type === ModalType.VIEWSCHEDULE;
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            id: '',
+            name: '',
             specialty: ''
         }
     })
 
     const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values);
+        setIsLoading(true)
+        setSessionSearch(values.name)
+        router.push('/patient/dashboard/sessions')
+        onClose()
+        setIsLoading(false)
 
     }
 
@@ -96,7 +105,6 @@ export default function ViewScheduler() {
                                                         variant="outline"
                                                         role="combobox"
                                                         aria-expanded={open}
-                                                        disabled={!checkData}
                                                         className={cn(
                                                             " justify-between",
                                                             !field.value && "text-muted-foreground"
@@ -127,7 +135,7 @@ export default function ViewScheduler() {
                                                                         key={item.id}
                                                                         onSelect={() => {
                                                                             form.setValue("specialty", item.id)
-                                                                            form.setValue("id", '')
+                                                                            form.setValue("name", '')
                                                                             setOpen(false)
                                                                             setDoctorsList(item.profile)
                                                                         }}
@@ -157,7 +165,7 @@ export default function ViewScheduler() {
 
                             <FormField
                                 control={form.control}
-                                name="id"
+                                name="name"
                                 render={({ field }) => (
 
                                     <FormItem>
@@ -171,7 +179,7 @@ export default function ViewScheduler() {
 
                                             <SelectContent>
                                                 {doctorsList.map((item: { id: string, name: string }, i) => (
-                                                    <SelectItem value={item.id} key={i}>{item.name}</SelectItem>
+                                                    <SelectItem value={item.name} key={i}>{item.name}</SelectItem>
 
                                                 ))}
 
@@ -183,7 +191,7 @@ export default function ViewScheduler() {
 
                                 )}
                             />
-                            <Button type="submit">View Schedule</Button>
+                            <Button disabled={isLoading} type="submit">View Schedule</Button>
                         </form>
 
                     </Form>

@@ -8,7 +8,7 @@ import useSWR from "swr"
 import { AxiosResponseModCount, AxiosResponseMod } from "@/app/services/types"
 import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
-import { Pen, Eye, Trash2 } from "lucide-react"
+import { Pen, BookOpenText } from "lucide-react"
 import DataTable from "../shared/table/data-table"
 import { Input } from "@/components/ui/input"
 import { z } from "zod"
@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useState } from "react"
+import { diagnosisSchema } from "@/components/modals/diagnosis"
 
 
 export type PatientData = {
@@ -31,6 +32,16 @@ export type PatientData = {
     id: string;
     date_of_birth: string;
     address: string
+    diagnosis: {
+        complaint: string,
+        complaint_history: string,
+        recommended_tests: string,
+        diagnosis_confirmation: string,
+        prescription: string,
+        prescription_comment: string,
+        management_plan: string,
+        created_at: string
+    }[]
 }
 
 
@@ -106,9 +117,9 @@ export default function Doctors() {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                                 className="cursor-pointer"
-                            // onClick={() => onOpen(ModalType.VIEWDOCTORACCOUNT, { doctorData })}
+                                onClick={() => onOpen(ModalType.PATIENTHISTORY, { patientData })}
                             >
-                                <Eye className="mr-2 h-4 w-4" />
+                                <BookOpenText className="mr-2 h-4 w-4" />
                                 <span>
                                     History
                                 </span>

@@ -18,6 +18,7 @@ import { Textarea } from "../ui/textarea";
 import { Icons } from "../icons";
 import { useToast } from "../ui/use-toast";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import {
     Tabs,
     TabsContent,
@@ -36,7 +37,7 @@ enum DiagnosisTabs {
 
 }
 
-const diagnosisSchema = z.object({
+export const diagnosisSchema = z.object({
     complaint: z.string(),
     complaint_history: z.string(),
     recommended_tests: z.string(),
@@ -57,6 +58,8 @@ export default function Diagnosis() {
     const { toast } = useToast()
 
     const { data } = useSession()
+
+    const router = useRouter()
 
     const isModalOpen = isOpen && type === ModalType.DIAGNOSIS;
 
@@ -80,6 +83,9 @@ export default function Diagnosis() {
                     variant: 'success',
                     description: 'Diagnosis uploaded sucessfully'
                 })
+                router.refresh()
+
+
                 onClose()
             }
         } catch (error) {

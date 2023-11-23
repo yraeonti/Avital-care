@@ -59,7 +59,7 @@ export default function DataTable<TData, TValue>({
 
             <div className="rounded-md border shadow-md">
 
-                <Table className='whitespace-nowrap'>
+                <Table className=''>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id} className=''>

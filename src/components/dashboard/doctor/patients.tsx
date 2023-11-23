@@ -17,7 +17,6 @@ import { MoreHorizontal } from "lucide-react"
 import { Pen, BookOpenText, History } from "lucide-react"
 import DataTable from "../shared/table/data-table"
 import { Input } from "@/components/ui/input"
-import { z } from "zod"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -47,10 +46,6 @@ export default function Doctors() {
 
 
     const { onOpen } = useStore()
-
-
-    // const { data: tableData, isLoading: tableLoader } =
-    //     useSWR<AxiosResponseModCount<PatientData[]>>('/api/patients', fetcher)
 
 
     const getMyPatients = async () => {
@@ -150,7 +145,7 @@ export default function Doctors() {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                                 className="cursor-pointer"
-                            // onClick={() => onOpen(ModalType.VIEWDOCTORACCOUNT, { doctorData })}
+                                onClick={() => onOpen(ModalType.PATIENTHISTORY, { patientData })}
                             >
                                 <BookOpenText className="mr-2 h-4 w-4" />
                                 <span>

@@ -134,13 +134,16 @@ model Diagnosis {
   patientId String
 
   doctorName             String
-  complaint              String?
-  complaint_history      String?
-  recommended_tests      String?
-  diagnosis_confirmation String?
-  prescription           String?
-  prescription_comment   String?
-  management_plan        String?
+  complaint              String? @db.MediumText()
+  complaint_history      String? @db.MediumText()
+  recommended_tests      String? @db.MediumText()
+  diagnosis_confirmation String? @db.MediumText()
+  prescription           String? @db.MediumText()
+  prescription_comment   String? @db.MediumText()
+  management_plan        String? @db.MediumText()
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@index([patientId])
 }

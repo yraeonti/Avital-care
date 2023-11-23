@@ -21,7 +21,8 @@ export async function GET(req: NextRequest) {
                 createdAt: 'desc'
             },
             include: {
-                profile: true
+                profile: true,
+                diagnosis: true
             },
         })
 
@@ -39,9 +40,13 @@ export async function GET(req: NextRequest) {
                 email: item.email,
                 telephone: item.profile?.telephone,
                 date_of_birth: item.profile?.date_of_birth,
-                address: item.profile?.address
+                address: item.profile?.address,
+                diagnosis: item.diagnosis
             }
         })
+
+        console.log(data[0].diagnosis);
+
 
         return NextResponse.json({ status: true, data, totalcount })
 
