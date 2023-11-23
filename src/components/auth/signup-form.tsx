@@ -26,6 +26,8 @@ import {
 } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
 import { Role } from "@/app/services/types"
+import avitaCare from '../../../public/Avita Health.png'
+import Image from "next/image"
 
 
 type ProfileForm = {
@@ -61,10 +63,7 @@ const profileSchema = z.object({
     last_name: z.string().min(1, { message: 'This field is required' }),
     address: z.string().min(1, { message: 'This field is required' }),
     nin: z.string().length(11, { message: 'Invalid Nin' }),
-    date_of_birth: z.date().max(new Date(), { message: "Invalid date" }).refine((val) => val.toString().length > 1, {
-        message: 'This field is required',
-        path: ['date_of_birth']
-    }).or(z.string())
+    date_of_birth: z.string().min(1, { message: "This field is required" })
 
 })
 
@@ -94,7 +93,7 @@ export default function SignUpForm() {
             last_name: "",
             address: "",
             nin: "",
-            date_of_birth: new Date().toDateString(),
+            date_of_birth: ""
         }
     })
 
@@ -197,13 +196,13 @@ const ProfileDetails = (
     return (
         <div className="py-20">
             <Form {...profileForm}>
-                <form onSubmit={profileForm.handleSubmit(onNextClick)} className="border-2 border-neutral-100 py-10 px-10 md:px-28
+                <form onSubmit={profileForm.handleSubmit(onNextClick)} className="border-2 border-neutral-100 py-8 px-10 md:px-28
                          w-11/12 sm:w-4/5 lg:w-1/2 bg-white mx-auto space-y-6 shadow-lg">
 
 
 
-                    <div className="flex flex-col items-center space-y-5">
-                        <p>Logo</p>
+                    <div className="flex flex-col items-center space-y-2">
+                        <Image src={avitaCare} alt="AvitaCare logo for the Website" width={180} height={180} />
 
 
 
@@ -387,10 +386,10 @@ const UserDetails = (
         <div className="py-20">
 
             <Form {...userForm}>
-                <form onSubmit={userForm.handleSubmit(onSubmit)} className="border-2 border-neutral-100 py-10 px-10 md:px-28
+                <form onSubmit={userForm.handleSubmit(onSubmit)} className="border-2 border-neutral-100 py-8 px-10 md:px-28
                          w-11/12 sm:w-4/5 lg:w-1/2 bg-white mx-auto space-y-6 shadow-lg">
-                    <div className="flex flex-col items-center space-y-5">
-                        <p>Logo</p>
+                    <div className="flex flex-col items-center space-y-2">
+                        <Image src={avitaCare} alt="AvitaCare logo for the Website" width={180} height={180} />
 
 
 

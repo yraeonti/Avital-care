@@ -22,7 +22,7 @@ export default function ViewPatientAccount() {
             <DialogContent className="bg-white text-black pt-4 pb-8 px-7 overflow-hidden">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-2xl text-center font-bold">
-                        Doctor Details
+                        Patient Details
                     </DialogTitle>
 
                 </DialogHeader>
@@ -139,7 +139,7 @@ export default function ViewPatientAccount() {
                         <p className="">
 
                             {patientData ? (
-                                patientData.date_of_birth
+                                new Date(patientData.date_of_birth).toLocaleDateString()
                             ) : (
                                 <Skeleton className="h-4 w-10" />
                             )}

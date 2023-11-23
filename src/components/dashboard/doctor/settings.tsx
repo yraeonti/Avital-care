@@ -1,82 +1,87 @@
-"use client"
-import { User2, Eye, Trash2, LockKeyhole } from "lucide-react"
+"use client";
+import { User2, Eye, Trash2, LockKeyhole } from "lucide-react";
 
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import { useStore } from "@/components/hooks/use-store"
-import { ModalType } from "@/components/hooks/modal-store"
-import { fetcher } from '@/lib/utils'
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useStore } from "@/components/hooks/use-store";
+import { ModalType } from "@/components/hooks/modal-store";
+import { fetcher } from "@/lib/utils";
 
-import useSWR from 'swr'
-import { AxiosResponseMod } from "@/app/services/types"
+import useSWR from "swr";
+import { AxiosResponseMod } from "@/app/services/types";
 
 export default function Settings() {
+  const { onOpen } = useStore();
 
-    const { onOpen } = useStore()
+  const { data, isLoading, error } = useSWR<AxiosResponseMod<any>>(
+    "/api/doctor",
+    fetcher
+  );
 
-    const { data, isLoading, error } = useSWR<AxiosResponseMod<any>>('/api/doctor', fetcher)
+  const { data: specialtiesData } = useSWR<AxiosResponseMod<any>>(
+    "/api/doctors/specialties",
+    fetcher
+  );
 
-    const settingsdata = [
-        {
-            icon: <User2 className="stroke-[#7678ed] w-8 h-8" />,
-            desc: 'Account Settings',
-            content: 'Edit your Account Details',
-            onclick: onOpen,
-            modaltype: ModalType.DOCTORACCOUNTSETTINGS
-        },
-        {
-            icon: <Eye className="stroke-[#157494] w-8 h-8" />,
-            desc: 'View Account Details',
-            content: 'View Profile Information on your Account',
-            onclick: onOpen,
-            modaltype: ModalType.DOCTORVIEWACCOUNT
-        },
-        {
-            icon: <Trash2 className="stroke-red-500 w-8 h-8" />,
-            desc: 'Delete Account',
-            content: 'Permanently Remove your Account',
-            onclick: onOpen,
-            modaltype: ModalType.DOCTORDELACCOUNT
-        },
-    ]
-    return (
-        <section className="px-6 py-8">
+  const settingsdata = [
+    {
+      icon: <User2 className="stroke-[#7678ed] w-8 h-8" />,
+      desc: "Account Settings",
+      content: "Edit your Account Details",
+      onclick: onOpen,
+      modaltype: ModalType.DOCTORACCOUNTSETTINGS,
+    },
+    {
+      icon: <Eye className="stroke-[#157494] w-8 h-8" />,
+      desc: "View Account Details",
+      content: "View Profile Information on your Account",
+      onclick: onOpen,
+      modaltype: ModalType.DOCTORVIEWACCOUNT,
+    },
+    {
+      icon: <Trash2 className="stroke-red-500 w-8 h-8" />,
+      desc: "Delete Account",
+      content: "Permanently Remove your Account",
+      onclick: onOpen,
+      modaltype: ModalType.DOCTORDELACCOUNT,
+    },
+  ];
+  return (
+    <section className="px-6 py-8">
+      <div className="grid grid-cols-1  gap-y-6">
+        {settingsdata.map((item, i) => (
+          <Card key={i}>
+            <CardContent
+              className="flex items-center space-x-6 p-3 cursor-pointer"
+              onClick={() =>
+                item.onclick(item.modaltype, {
+                  networkData: data,
+                  specialtiesData,
+                })
+              }
+            >
+              <div>{item.icon}</div>
 
-            <div className="grid grid-cols-1  gap-y-6">
-                {
-                    settingsdata.map((item, i) => (
-                        <Card key={i}>
-
-                            <CardContent className="flex items-center space-x-6 p-3 cursor-pointer"
-                                onClick={() => item.onclick(item.modaltype, { networkData: data })}>
-
-                                <div>
-                                    {item.icon}
-                                </div>
-
-                                <div className="space-y-1">
-                                    <p className={`text-xl font-semibold ${item.desc.includes('Delete') && 'text-red-500'}`}>
-                                        {item.desc}
-                                    </p>
-                                    <p className="opacity-75">
-                                        {item.content}
-                                    </p>
-                                </div>
-
-                            </CardContent>
-
-                        </Card>
-                    ))
-                }
-
-            </div>
-
-        </section>
-    )
+              <div className="space-y-1">
+                <p
+                  className={`text-xl font-semibold ${
+                    item.desc.includes("Delete") && "text-red-500"
+                  }`}
+                >
+                  {item.desc}
+                </p>
+                <p className="opacity-75">{item.content}</p>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </section>
+  );
 }

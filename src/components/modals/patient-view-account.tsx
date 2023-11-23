@@ -46,7 +46,7 @@ export default function PatientViewAccount() {
                 det: 'Address', val: address
             },
             {
-                det: 'Date of Birth', val: date_of_birth
+                det: 'Date of Birth', val: new Date(date_of_birth).toLocaleDateString()
             },
         ]
 

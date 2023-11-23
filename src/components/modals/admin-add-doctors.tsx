@@ -249,7 +249,7 @@ export default function AdminAddDoctor() {
                                                     <Command>
                                                         <CommandInput placeholder="Search specialties" />
                                                         <CommandEmpty>No specialty found.</CommandEmpty>
-                                                        <CommandGroup className="overflow-y-scroll max-h-screen py-4">
+                                                        <CommandGroup className="overflow-y-scroll max-h-96 py-4">
                                                             {checkData && data.specialtiesData ? (
                                                                 data.specialtiesData.data.data.map((item: any) => (
                                                                     <CommandItem

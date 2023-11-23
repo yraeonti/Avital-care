@@ -1,5 +1,5 @@
 import { db } from "@/app/services/db";
-import { Token } from "@/lib/utils";
+import { Authorize, Token } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
 import { Role } from "@/app/services/types";
 
@@ -11,21 +11,25 @@ export async function GET(req: NextRequest) {
 
         if (!token) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
 
-        if (token.role !== 'ADMIN') return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
+        if (!Authorize(['ADMIN', Role.DOCTOR], token.role)) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
 
         const patients = await db.user.findMany({
             where: {
                 role: Role.PATIENT
             },
+            orderBy: {
+                createdAt: 'desc'
+            },
             include: {
-                profile: true
+                profile: true,
+                diagnosis: true
             },
         })
 
         const totalcount = await db.user.count({
             where: {
                 role: Role.PATIENT
-            }
+            },
         })
 
         const data = patients.map((item) => {
@@ -36,9 +40,13 @@ export async function GET(req: NextRequest) {
                 email: item.email,
                 telephone: item.profile?.telephone,
                 date_of_birth: item.profile?.date_of_birth,
-                address: item.profile?.address
+                address: item.profile?.address,
+                diagnosis: item.diagnosis
             }
         })
+
+        console.log(data[0].diagnosis);
+
 
         return NextResponse.json({ status: true, data, totalcount })
 

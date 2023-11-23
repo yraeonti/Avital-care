@@ -7,7 +7,10 @@ import { SheetClose } from "@/components/ui/sheet";
 export default function SideBarItem({ icon, name, link, mobile }: NavItems[number] & { mobile?: boolean }) {
 
     const path = usePathname()
-    const checkActive = (type: string) => path.endsWith(type);
+    const checkActive = (type: string) => {
+        return type.endsWith('dashboard') ? path.endsWith('dashboard') :
+            path.includes(type);
+    }
     return mobile ? (
         <SheetClose>
             <Link href={link} className={`flex space-x-4 items-center 

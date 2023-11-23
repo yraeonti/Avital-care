@@ -1,8 +1,12 @@
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import Link from "next/link"
+import { Role, SessionWithExtraData } from "@/app/services/types"
+import { Icons } from "@/components/icons"
+import {
+    Alert,
+    AlertDescription
+} from "@/components/ui/alert"
+import { Button } from "@/components/ui/button"
 import {
     Form,
     FormControl,
@@ -11,22 +15,18 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import {
-    Alert,
-    AlertDescription,
-    AlertTitle,
-} from "@/components/ui/alert"
-import { AlertCircle } from "lucide-react"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import * as z from "zod"
-import { signIn } from "next-auth/react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { AlertCircle } from "lucide-react"
+import { getSession, signIn } from "next-auth/react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Icons } from "@/components/icons"
 import { useState } from "react"
-import { getSession } from "next-auth/react"
-import { SessionWithExtraData } from "@/app/services/types"
-import { Role } from "@/app/services/types"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+import avitaCare from '../../../public/Avita Health.png'
+import Image from "next/image"
+
 
 const formSchema = z.object({
     email: z.string().email({ message: 'Invalid email' }),
@@ -80,10 +80,10 @@ export default function LoginForm() {
 
     }
     return (
-        <div className="border border-neutral-100 py-10 px-10 md:px-28 w-11/12 sm:w-4/5 lg:w-1/2 bg-white mt-32 shadow-lg">
+        <div className="border border-neutral-100 py-7 px-10 md:px-28 w-11/12 sm:w-4/5 lg:w-1/2 bg-white shadow-lg">
 
-            <div className="flex flex-col items-center space-y-5">
-                <p>Logo</p>
+            <div className="flex flex-col items-center space-y-2">
+                <Image src={avitaCare} alt="AvitaCare logo for the Website" width={180} height={180} />
 
                 <h1 className="text-3xl font-semibold">Welcome Back</h1>
             </div>

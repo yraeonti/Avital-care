@@ -7,7 +7,8 @@ import {
     ScheduleIcon,
     AppointmentIcon,
     DashboardIcon,
-    PatientsIcon
+    PatientsIcon,
+    SessionIcon
 } from "./nav-icons";
 
 export type NavItems = {
@@ -26,17 +27,17 @@ export const PatientNavRoutes: NavItems = [
     {
         icon: DoctorIcon,
         name: 'All Doctors',
-        link: '#'
+        link: '/patient/dashboard/doctors'
     },
     {
         icon: ScheduleIcon,
         name: 'Scheduled Sessions',
-        link: '#'
+        link: '/patient/dashboard/sessions'
     },
     {
         icon: BookingIcon,
         name: 'My Bookings',
-        link: '#'
+        link: '/patient/dashboard/bookings'
     },
     {
         icon: SettingIcon,
@@ -53,17 +54,17 @@ export const DoctorNavRoutes: NavItems = [
     {
         icon: AppointmentIcon,
         name: 'My Appointments',
-        link: '#'
+        link: '/doctor/dashboard/appointments'
     },
     {
         icon: ScheduleIcon,
         name: 'My Sessions',
-        link: '#'
+        link: '/doctor/dashboard/sessions'
     },
     {
         icon: PatientsIcon,
         name: 'My Patients',
-        link: '#'
+        link: '/doctor/dashboard/patients'
     },
     {
         icon: SettingIcon,
@@ -84,14 +85,14 @@ export const AdminNavRoutes: NavItems = [
         link: '/admin/dashboard/doctors'
     },
     {
-        icon: ScheduleIcon,
-        name: 'Schedule',
-        link: '#'
+        icon: SessionIcon,
+        name: 'Sessions',
+        link: '/admin/dashboard/sessions'
     },
     {
         icon: AppointmentIcon,
         name: 'Appointments',
-        link: '#'
+        link: '/admin/dashboard/appointments'
     },
     {
         icon: PatientsIcon,

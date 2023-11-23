@@ -3,9 +3,15 @@ import { useEffect, useState, lazy } from "react";
 
 const AddDoctor = lazy(() => import("../modals/admin-add-doctors"))
 const EditDoctor = lazy(() => import("../modals/admin-edit-doctors"))
-const ViewDoctor = lazy(() => import("../modals/view-doctor-account"))
 const DeleteDoctor = lazy(() => import("../modals/admin-del-doctors"))
 const ViewPatientAccount = lazy(() => import("../modals/view-patient-account"))
+const AddSession = lazy(() => import("../modals/admin-add-session"))
+const DeleteSession = lazy(() => import("../modals/admin-del-session"))
+const ViewDoctor = lazy(() => import("../modals/view-doctor-account"))
+const ViewSession = lazy(() => import("../modals/admin-view-sessions"))
+const DelAppointment = lazy(() => import("../modals/del-appointment"))
+const UpdateAppointment = lazy(() => import("../modals/update-appointment-status"))
+const History = lazy(() => import("../modals/patient-history"))
 export const ModalProvider = () => {
     const [isMounted, setIsMounted] = useState(false);
 
@@ -21,10 +27,15 @@ export const ModalProvider = () => {
         <>
             <AddDoctor />
             <EditDoctor />
-            <ViewDoctor />
             <DeleteDoctor />
             <ViewPatientAccount />
-
+            <AddSession />
+            <DeleteSession account="admin" />
+            <ViewDoctor />
+            <ViewSession />
+            <History />
+            <DelAppointment account="admin" />
+            <UpdateAppointment account="admin" />
         </>
     )
 }
