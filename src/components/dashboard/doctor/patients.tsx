@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select"
 import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
-import { Pen, Eye, Trash2 } from "lucide-react"
+import { Pen, BookOpenText, History } from "lucide-react"
 import DataTable from "../shared/table/data-table"
 import { Input } from "@/components/ui/input"
 import { z } from "zod"
@@ -152,7 +152,7 @@ export default function Doctors() {
                                 className="cursor-pointer"
                             // onClick={() => onOpen(ModalType.VIEWDOCTORACCOUNT, { doctorData })}
                             >
-                                <Eye className="mr-2 h-4 w-4" />
+                                <BookOpenText className="mr-2 h-4 w-4" />
                                 <span>
                                     History
                                 </span>
@@ -160,9 +160,9 @@ export default function Doctors() {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                                 className="cursor-pointer"
-                            // onClick={() => onOpen(ModalType.VIEWDOCTORACCOUNT, { doctorData })}
+                                onClick={() => onOpen(ModalType.DIAGNOSIS, { patientData })}
                             >
-                                <Eye className="mr-2 h-4 w-4" />
+                                <History className="mr-2 h-4 w-4" />
                                 <span>
                                     Diagnosis
                                 </span>

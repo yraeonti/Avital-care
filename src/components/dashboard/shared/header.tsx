@@ -6,6 +6,8 @@ import { CalendarDays } from "lucide-react"
 import { NavItems } from "./side-bar-data"
 import { } from "./side-bar-data";
 import { Role, SessionWithExtraData } from "@/app/services/types"
+import avitaCare from '../../../../public/Avita Health.png'
+import Image from "next/image"
 
 export default function Header({ session, navRoutes }: { session: SessionWithExtraData, navRoutes: NavItems }) {
     const pathname = usePathname()
@@ -14,11 +16,21 @@ export default function Header({ session, navRoutes }: { session: SessionWithExt
 
             <MobileToggler session={session} navRoutes={navRoutes} />
 
-            <h1 className="text-xl capitalize">
+
+
+
+
+
+            <h1 className="text-xl capitalize hidden md:block">
                 {pathname.endsWith('dashboard') && session.role === Role.PATIENT
-                    ? 'Home' : pathname.split('/').slice(-1)
+                    ? 'Home' : /^[0-9]*$/.test(pathname.split('/').slice(-1)[0])
+                        ? pathname.split('/').slice(-2)[0]
+                        : pathname.split('/').slice(-1)[0]
                 }
             </h1>
+
+
+
 
             <div className="flex items-center space-x-2">
 

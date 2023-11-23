@@ -25,6 +25,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import avitaCare from '../../../public/Avita Health.png'
+import Image from "next/image"
 
 
 const formSchema = z.object({
@@ -79,10 +80,10 @@ export default function LoginForm() {
 
     }
     return (
-        <div className="border border-neutral-100 py-10 px-10 md:px-28 w-11/12 sm:w-4/5 lg:w-1/2 bg-white mt-32 shadow-lg">
+        <div className="border border-neutral-100 py-7 px-10 md:px-28 w-11/12 sm:w-4/5 lg:w-1/2 bg-white shadow-lg">
 
-            <div className="flex flex-col items-center space-y-5">
-                <img src={avitaCare} alt="AvitaCare logo for the Website" />
+            <div className="flex flex-col items-center space-y-2">
+                <Image src={avitaCare} alt="AvitaCare logo for the Website" width={180} height={180} />
 
                 <h1 className="text-3xl font-semibold">Welcome Back</h1>
             </div>

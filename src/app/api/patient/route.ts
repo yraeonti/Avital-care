@@ -51,6 +51,12 @@ export async function DELETE(req: NextRequest) {
 
         const { id } = token
 
+        const appointments = db.appointment.deleteMany({
+            where: {
+                patientId: token.id
+            }
+        })
+
         const profile = db.profile.delete({
             where: {
                 userId: id
@@ -63,13 +69,15 @@ export async function DELETE(req: NextRequest) {
             },
         })
 
-        const res = await prisma?.$transaction([profile, user])
+        const res = await prisma?.$transaction([appointments, profile, user])
 
         if (!res) return NextResponse.json({ status: false, message: 'User not found' }, { status: 401 })
 
         return NextResponse.json({ status: true, message: 'User deleted' })
 
     } catch (error) {
+        console.log(error);
+
         return NextResponse.json({ status: false, message: 'Something went wrong..' }, { status: 500 })
     }
 
@@ -92,7 +100,7 @@ export async function PATCH(req: NextRequest) {
             nin: z.string().min(10),
             telephone: z.string().min(10),
             address: z.string(),
-            imageUrl: z.string().url()
+            imageUrl: z.string().url().nullable()
         })
 
         const partialPatientred = patientCred.partial({

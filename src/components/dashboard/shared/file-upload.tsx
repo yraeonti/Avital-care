@@ -15,8 +15,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 
 type Props = {
-    value: string;
-    onchange: (url?: string) => void;
+    value: string | null;
+    onchange: (url?: string | null) => void;
 }
 
 export default function FileUpload({ value, onchange }: Props) {
@@ -48,22 +48,28 @@ export default function FileUpload({ value, onchange }: Props) {
 
     const onFileChange = async () => {
         if (file) {
-            const res = await edgestore.publicFiles.upload({
-                file,
-                options: {
-                    replaceTargetUrl: value,
-                },
-                onProgressChange: (progress) => {
-                    // you can use this to show a progress bar
-                    console.log(progress);
-                    setIsLoading(true)
-                },
-            });
+            if (value) {
+                const res = await edgestore.publicFiles.upload({
+                    file,
+                    options: {
+                        replaceTargetUrl: value,
+                    },
+                    onProgressChange: (progress) => {
+                        // you can use this to show a progress bar
+                        console.log(progress);
+                        setIsLoading(true)
+                    },
+                });
+                console.log('File change ooooo', res);
+                setIsLoading(false)
+                onchange(res.url)
+            }
 
-            console.log('File change ooooo', res);
 
-            setIsLoading(false)
-            onchange(res.url)
+
+
+
+
         }
 
     }

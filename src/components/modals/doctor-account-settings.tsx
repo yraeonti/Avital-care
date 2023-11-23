@@ -41,6 +41,8 @@ import { useToast } from "../ui/use-toast";
 import { useSWRConfig } from "swr";
 import axios from "axios";
 import FileUpload from "../dashboard/shared/file-upload";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const doctorSchema = z
   .object({
@@ -52,10 +54,9 @@ const doctorSchema = z
       .string()
       .min(10, { message: "Please provide valid Phone Number" }),
     nin: z.string().length(11, { message: "Please provide valid NIN" }),
-    address: z.string().min(1, { message: "This field is required" }),
     specialty: z.string().or(z.number()),
-    imageUrl: z.string(),
-    password: z.string().min(6, { message: "Enter at least 6 Characters" }),
+    imageUrl: z.string().nullable(),
+    password: z.string()
   })
   .partial({
     password: true,
@@ -68,6 +69,9 @@ type Specialties = {
 
 export default function DoctorAccountSettings() {
   const { isOpen, onClose, type, data } = useStore();
+
+  const router = useRouter()
+  const { update } = useSession()
 
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -87,9 +91,13 @@ export default function DoctorAccountSettings() {
       nin: "",
       id: "",
       specialty: "",
-      imageUrl: "",
+      imageUrl: null,
+      password: ""
     },
   });
+
+  console.log(form.formState.errors);
+
 
   const { mutate } = useSWRConfig();
 
@@ -114,9 +122,13 @@ export default function DoctorAccountSettings() {
     }
   }, [data.networkData]);
 
+
+
+
   const onSubmit = async (values: z.infer<typeof doctorSchema>) => {
     const data = { ...values };
     setIsLoading(true);
+    console.log(data);
 
     try {
       const response = await axios.patch(
@@ -136,8 +148,11 @@ export default function DoctorAccountSettings() {
           variant: "success",
           description: "Doctor has been successfully edited",
         });
+        onClose()
+        mutate("/api/doctor");
+        await update()
+        router.refresh()
 
-        mutate("/api/doctors");
       }
     } catch (error) {
       toast({
@@ -275,11 +290,11 @@ export default function DoctorAccountSettings() {
                           >
                             {checkData && data.specialtiesData && field.value
                               ? data.specialtiesData.data.data.find(
-                                  (item: Specialties) => item.id === field.value
-                                )?.name
+                                (item: Specialties) => item.id === field.value
+                              )?.name
                               : data.doctorData?.specialty
-                              ? data.doctorData.specialty
-                              : "Choose a Specialty"}
+                                ? data.doctorData.specialty
+                                : "Choose a Specialty"}
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           </Button>
                         </FormControl>

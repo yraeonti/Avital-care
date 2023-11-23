@@ -1,11 +1,6 @@
 import { Token } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
-import { fromZodError } from 'zod-validation-error';
 import { db } from "@/app/services/db";
-import { z, ZodError } from 'zod'
-import { hashPassword } from "@/app/utils/password";
-import { Role } from "@/app/services/types";
-import { Authorize } from "@/lib/utils";
 
 
 export async function GET(req: NextRequest) {

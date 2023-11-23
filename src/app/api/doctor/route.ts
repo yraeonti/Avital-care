@@ -85,7 +85,9 @@ export async function DELETE(req: NextRequest) {
 
         return NextResponse.json({ status: true, message: 'User deleted' })
     } catch (error) {
-        return NextResponse.json({ status: false, message: 'Something went wrong..' }, { status: 500 })
+        console.log(error);
+
+        return NextResponse.json({ status: false, message: 'Something went wrong..', errorMessage: error }, { status: 500 })
     }
 
 
@@ -113,7 +115,8 @@ export async function PATCH(req: NextRequest) {
             password: z.string(),
             nin: z.string().min(10),
             telephone: z.string().min(10),
-            specialty: z.coerce.number()
+            specialty: z.coerce.number(),
+            imageUrl: z.string().nullable()
         })
 
         const partialDoctorCred = doctorCred.partial({
@@ -123,7 +126,8 @@ export async function PATCH(req: NextRequest) {
             password: true,
             nin: true,
             telephone: true,
-            specialty: true
+            specialty: true,
+            imageUrl: true
         })
 
         type DoctorCred = z.infer<typeof partialDoctorCred>
@@ -137,11 +141,12 @@ export async function PATCH(req: NextRequest) {
             nin,
             telephone,
             specialty,
+            imageUrl
         }: DoctorCred = await req.json()
 
         let doctorVal: { success: true; data: any; } | { success: false; error: ZodError; }
 
-        doctorVal = partialDoctorCred.safeParse({ id, email, first_name, last_name, password, nin, telephone, specialty })
+        doctorVal = partialDoctorCred.safeParse({ id, email, first_name, last_name, password, nin, telephone, specialty, imageUrl })
 
 
         if (!doctorVal.success) {
@@ -165,6 +170,7 @@ export async function PATCH(req: NextRequest) {
                     profile: {
                         update: {
                             data: {
+                                imageUrl,
                                 name,
                                 nin,
                                 specialtyId: specialty,
@@ -191,6 +197,7 @@ export async function PATCH(req: NextRequest) {
                 profile: {
                     update: {
                         data: {
+                            imageUrl,
                             name,
                             nin,
                             specialtyId: specialty,

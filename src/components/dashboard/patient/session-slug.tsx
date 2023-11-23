@@ -74,11 +74,11 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
 
                         router.push('/patient/dashboard/bookings')
 
-
+                        setLoader(false)
                     }
                 }).catch(error => {
                     console.log(error);
-
+                    setLoader(false)
                 })
 
 
@@ -87,13 +87,14 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
 
 
         } catch (error) {
+            setLoader(false)
             toast({
                 title: 'Session not added',
                 variant: 'destructive',
                 description: "Something went wrong..",
             })
         }
-        setLoader(false)
+
     };
 
     // you can call this function anything
@@ -143,17 +144,19 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
             <div className="mt-4">
                 {
                     isLoading && !data ? (
-                        <div className="w-full h-80 bg-stone-100 p-4">
-                            <Skeleton className=" w-[29%]  h-7 bg-stone-200 mb-7" />
+                        <div className="w-full h-[26rem] bg-stone-100 p-4">
+                            <Skeleton className=" w-[30%]  h-8 bg-stone-200 mb-7" />
 
                             <div className="space-y-8">
                                 {
                                     [1, 2, 3, 4, 5, 6].map((_, i) => (
                                         <div className="" key={i}>
-                                            <Skeleton className="w-[20%] h-4 bg-stone-200" />
+                                            <Skeleton className="w-[24%] h-4 bg-stone-200" />
                                         </div>
+
                                     ))
                                 }
+                                <Skeleton className="w-full h-7 bg-stone-200 mb-3" />
                             </div>
                         </div>
 
