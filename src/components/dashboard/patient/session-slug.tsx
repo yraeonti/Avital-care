@@ -136,7 +136,7 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
 
             <Link href="/patient/dashboard/sessions" className="">
 
-                <Button className="flex space-x-2 justify-center mt-4 bg-blue-700 hover:bg-blue-800">
+                <Button className="flex space-x-2 justify-center mt-4">
                     <MoveLeft className="w-4" />  <span>Back</span>
                 </Button>
             </Link>
@@ -237,7 +237,7 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
 
 
                                 <Button
-                                    className={`bg-blue-700 hover:bg-blue-800 w-full my-3`}
+                                    className={`w-full my-3`}
                                     onClick={onBookNow}
                                     disabled={checkBookingStatus}
                                 >
