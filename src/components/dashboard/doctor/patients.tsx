@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select"
 import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
-import { Pen, BookOpenText, History } from "lucide-react"
+import { Pen, BookOpenText, History, Upload } from "lucide-react"
 import DataTable from "../shared/table/data-table"
 import { Input } from "@/components/ui/input"
 import {
@@ -28,6 +28,8 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { PatientData } from "../admin/patients"
+import { useSession } from "next-auth/react"
+import { SessionWithExtraData } from "@/app/services/types"
 
 
 enum PATIENTDATA {
@@ -46,6 +48,10 @@ export default function Doctors() {
 
 
     const { onOpen } = useStore()
+
+    const { data } = useSession()
+
+    const session = data as SessionWithExtraData | null
 
 
     const getMyPatients = async () => {
@@ -162,6 +168,24 @@ export default function Doctors() {
                                     Diagnosis
                                 </span>
                             </DropdownMenuItem>
+                            {
+                                session &&
+                                session.specialty &&
+                                session.specialty.toLowerCase() === 'laboratory' && (
+                                    <>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem
+                                            className="cursor-pointer"
+                                            onClick={() => onOpen(ModalType.LABRESULT, { patientData })}
+                                        >
+                                            <Upload className="mr-2 h-4 w-4" />
+                                            <span>
+                                                Upload Lab Result
+                                            </span>
+                                        </DropdownMenuItem>
+                                    </>
+                                )
+                            }
                         </DropdownMenuContent>
                     </DropdownMenu>
                 )

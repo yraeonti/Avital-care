@@ -228,7 +228,7 @@ export default function ViewScheduler() {
                                         modifiers={{ booked: bookedDays }}
                                         modifiersClassNames={
                                             {
-                                                booked: 'rounded-full border-2 border-red-300 bg-red-200 text-white hover:bg-red-300 hover:text-white'
+                                                booked: 'rounded-full border-2 border-red-500 bg-red-500 text-white hover:text-black'
                                             }}
                                         footer={footer}
                                         numberOfMonths={2}

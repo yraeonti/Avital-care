@@ -19,7 +19,7 @@ export default async function DoctorLayout({
     if (!(session.role === Role.DOCTOR)) return redirect('/login')
     return (
         <main className="h-full md:flex">
-            <div className="hidden md:block h-full w-[25%] lg:w-80 z-30 fixed inset-y-0 border-r border-neutral-200 shadow-md">
+            <div className="hidden md:block h-full w-[25%] lg:w-80 z-30 fixed inset-y-0 border-r border-neutral-200 overflow-auto shadow-md">
                 <NavigationSideBar session={session} navitems={DoctorNavRoutes} />
 
 

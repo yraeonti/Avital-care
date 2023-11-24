@@ -92,7 +92,7 @@ export default function Overview() {
                 <AnalyticsCard title="Today Sessions" figure={isLoading ? <Skeleton className="h-2 w-7" /> : data?.data.data.todaySessions} bg="bg-[#babbec]" icon={<CalendarCheck className="stroke-[#3537b7]" />} />
             </div>
 
-            <section className="grid grid-cols-1 md:grid-cols-2 pt-10 gap-5 pb-7">
+            <section className="grid grid-cols-1 md:grid-cols-2 pt-14 md:mt-16 gap-5 pb-7">
 
                 <div className="">
                     <Summary

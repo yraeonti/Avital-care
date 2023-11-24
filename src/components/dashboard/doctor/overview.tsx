@@ -47,9 +47,9 @@ export default function Overview() {
     return (
         <section className="px-6">
 
-            {/* <div className="bg-[url('/doc-bg.jpg')] bg-no-repeat bg-cover bg-origin-border h-64 m">
+            <div className="bg-[url('/doc-bg.jpg')] bg-no-repeat bg-cover bg-origin-border h-64 m">
 
-            </div> */}
+            </div>
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
                 <AnalyticsCard title="All Doctors" figure={isLoading ? <Skeleton className="h-2 w-7" /> : data?.data.data.doctors} bg="bg-[#f7e1d7]" icon={<Stethoscope className="stroke-[#a9491d]" />} />
