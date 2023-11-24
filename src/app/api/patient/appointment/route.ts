@@ -41,6 +41,9 @@ export async function GET(req: NextRequest) {
                     }
                 },
                 sessionTime: true
+            },
+            orderBy: {
+                appointmentDate: 'desc'
             }
         })
 
@@ -265,7 +268,7 @@ export async function PUT(req: NextRequest) {
                 id: sessionTimeId,
             },
             data: {
-                status: false
+                status: status === APPOINTMENTSTATUS.CANCELLED ? false : true
             }
         })
 
@@ -277,12 +280,9 @@ export async function PUT(req: NextRequest) {
                 status
             }
         })
-        let res;
-        if (status === APPOINTMENTSTATUS.CANCELLED) {
-            res = await db.$transaction([updateAppointment, updateSessionTime])
-        } else {
-            res = await db.$transaction([updateAppointment])
-        }
+
+        const res = await db.$transaction([updateAppointment, updateSessionTime])
+
 
 
 

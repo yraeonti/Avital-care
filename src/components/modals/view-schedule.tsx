@@ -31,7 +31,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Specialties } from "./admin-add-doctors";
 import { useRouter } from "next/navigation";
-import { Icons } from "../icons";
+import { Calendar } from "@/components/ui/calendar"
+import { DayClickEventHandler } from 'react-day-picker';
+import { on } from "events";
+
 
 const formSchema = z.object({
     specialty: z.string().min(1, { message: 'This field is required' }).or(z.number()),
@@ -45,7 +48,21 @@ export default function ViewScheduler() {
 
     const [open, setOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-    const [doctorsList, setDoctorsList] = useState([])
+    const [doctorsList, setDoctorsList] = useState<any[]>([])
+
+    // const [booked, setBooked] = useState(false);
+
+    console.log(doctorsList);
+
+    const handleDayClick: DayClickEventHandler = (day, modifiers) => {
+
+        if (day && modifiers.booked) {
+            setSessionSearch(form.getValues().name)
+            router.push('/patient/dashboard/sessions')
+            onClose()
+        }
+    };
+
 
 
     const router = useRouter()
@@ -60,16 +77,24 @@ export default function ViewScheduler() {
         }
     })
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        setIsLoading(true)
-        setSessionSearch(values.name)
-        router.push('/patient/dashboard/sessions')
-        onClose()
-        setIsLoading(false)
+    const oneYearFromNow = new Date();
 
-    }
+
+
+
+
+    console.log(doctorsList);
+
+
+
 
     const checkData = data.specialtiesData && data.specialtiesData.data.status ? true : false
+
+    const bookedDays: Date[] = doctorsList.length > 0 &&
+        form.watch().name.length > 0 &&
+        doctorsList.find(doc => doc.name === form.watch().name).sessionDates.map((sess: string) => new Date(sess))
+
+    const footer = bookedDays.length < 1 && <div className="text-center text-red-400">No Scheduled days</div>
 
     console.log(data.specialtiesData);
 
@@ -86,7 +111,7 @@ export default function ViewScheduler() {
                 </DialogHeader>
                 <div className="">
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-7">
+                        <form className="space-y-7">
 
 
                             <FormField
@@ -122,12 +147,12 @@ export default function ViewScheduler() {
 
                                             <PopoverContent className="w-[250px] p-0">
 
-                                                <div className="max-h-96">
+                                                <div className="max-h-80">
 
                                                     <Command className="">
                                                         <CommandInput placeholder="Search specialties" />
                                                         <CommandEmpty>No specialty found.</CommandEmpty>
-                                                        <CommandGroup className="overflow-y-scroll max-h-96 py-4">
+                                                        <CommandGroup className="overflow-y-scroll max-h-80 py-4">
                                                             {checkData && data.specialtiesData ? (
                                                                 data.specialtiesData.data.data.map((item: any) => (
                                                                     <CommandItem
@@ -191,7 +216,29 @@ export default function ViewScheduler() {
 
                                 )}
                             />
-                            <Button disabled={isLoading} type="submit">View Schedule</Button>
+                            <Popover>
+                                <PopoverTrigger asChild disabled={!(form.watch().name.length > 0)}>
+                                    <Button type="button">View Schedule</Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0 max-h-[30rem] overflow-scroll">
+                                    <Calendar
+                                        mode="single"
+                                        onDayClick={handleDayClick}
+                                        defaultMonth={bookedDays[0] ?? new Date()}
+                                        modifiers={{ booked: bookedDays }}
+                                        modifiersClassNames={
+                                            {
+                                                booked: 'rounded-full border-2 border-red-300 bg-red-200 text-white hover:bg-red-300 hover:text-white'
+                                            }}
+                                        footer={footer}
+                                        numberOfMonths={2}
+                                        showOutsideDays={false}
+                                        fromMonth={bookedDays[0] ?? oneYearFromNow}
+                                        toMonth={bookedDays[bookedDays.length - 1] ?? oneYearFromNow.getFullYear()}
+                                    />
+                                </PopoverContent>
+                            </Popover>
+
                         </form>
 
                     </Form>

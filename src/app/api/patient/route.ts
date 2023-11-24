@@ -57,6 +57,12 @@ export async function DELETE(req: NextRequest) {
             }
         })
 
+        const diagnosis = db.diagnosis.deleteMany({
+            where: {
+                patientId: token.id
+            }
+        })
+
         const profile = db.profile.delete({
             where: {
                 userId: id
@@ -69,7 +75,7 @@ export async function DELETE(req: NextRequest) {
             },
         })
 
-        const res = await prisma?.$transaction([appointments, profile, user])
+        const res = await prisma?.$transaction([appointments, diagnosis, profile, user])
 
         if (!res) return NextResponse.json({ status: false, message: 'User not found' }, { status: 401 })
 
