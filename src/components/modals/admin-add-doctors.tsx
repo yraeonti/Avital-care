@@ -4,6 +4,7 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
+    DialogClose
 } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormMessage, FormLabel } from "../ui/form";
 import { useStore } from "../hooks/use-store";
@@ -312,7 +313,12 @@ export default function AdminAddDoctor() {
                                     </FormItem>
                                 )}
                             />
-                            <div className="flex justify-center">
+                            <div className="flex justify-center space-x-2">
+                                <DialogClose asChild>
+                                    <Button type="button" variant="secondary">
+                                        Close
+                                    </Button>
+                                </DialogClose>
                                 <Button
                                     type="submit"
                                     className="mt-5 mx-auto bg-blue-700

@@ -4,6 +4,7 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
+    DialogClose
 } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormMessage, FormLabel } from "../ui/form";
 import { useStore } from "../hooks/use-store";
@@ -124,7 +125,7 @@ export default function AdminAddDoctor() {
 
     return (
         <Dialog open={isModalOpen} onOpenChange={onClose}>
-            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 overflow-y-scroll max-h-screen min-w-max">
+            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 overflow-y-scroll max-h-screen lg:min-w-max">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-2xl text-center font-bold">
                         Add New Laboratory Personnel
@@ -260,7 +261,12 @@ export default function AdminAddDoctor() {
                                     </FormItem>
                                 )}
                             />
-                            <div className="flex justify-center">
+                            <div className="flex justify-center space-x-3">
+                                <DialogClose asChild>
+                                    <Button type="button" variant="secondary">
+                                        Close
+                                    </Button>
+                                </DialogClose>
                                 <Button
                                     type="submit"
                                     className="mt-5 mx-auto bg-blue-700
