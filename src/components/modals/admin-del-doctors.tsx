@@ -49,8 +49,9 @@ export default function AdminDelDoctor() {
                         variant: 'success',
                         description: 'Doctor has been deleted'
                     })
-
+                    onClose()
                     mutate('/api/doctors')
+
                 }
 
             }

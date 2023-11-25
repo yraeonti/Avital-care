@@ -6,7 +6,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { useStore } from "../hooks/use-store";
 import { ModalType } from "@/components/hooks/modal-store"
 import * as z from "zod"
@@ -20,9 +20,11 @@ import axios from "axios";
 import { useToast } from "../ui/use-toast";
 import { useSWRConfig } from "swr";
 import { useSession } from "next-auth/react";
+import { Input } from "../ui/input";
 
 const testResultSchema = z.object({
     test_url: z.string().url({ message: 'Please upload result before saving..' }),
+    testName: z.string().min(1, { message: 'This field is required' }),
 })
 
 export default function UploadLabResult() {
@@ -54,7 +56,8 @@ export default function UploadLabResult() {
                     {
                         test_url: values.test_url,
                         patientId: patientData.id,
-                        doctorName: session.user?.name
+                        doctorName: session.user?.name,
+                        testName: values.testName
                     },
                     {
                         headers: {
@@ -97,6 +100,22 @@ export default function UploadLabResult() {
                 <div>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} >
+
+
+                            <FormField
+                                control={form.control}
+                                name="testName"
+                                render={({ field }) => (
+                                    <FormItem className="mt-2">
+                                        <FormLabel>Lab Test Name</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder='Test Name' {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
                             <FormField
                                 control={form.control}
                                 name="test_url"
@@ -105,6 +124,7 @@ export default function UploadLabResult() {
 
                                         <FormControl>
                                             <TestResultUpload
+                                                testName={form.watch().testName}
                                                 value={field.value}
                                                 onchange={field.onChange}
                                             />

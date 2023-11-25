@@ -140,6 +140,14 @@ export default function Doctors() {
                     <Plus className="stroke-white" /> <span>Add New Doctor</span>
                 </Button>
 
+                <Button
+                    className="flex self-end space-x-2 mt-4 hover:bg-blue-800 text-xs sm:text-sm bg-blue-700 text-white opacity-90 shadow-md"
+
+                    onClick={() => onOpen(ModalType.ADMINADDLABORATORY, { specialtiesData })}>
+
+                    <Plus className="stroke-white" /> <span>Add Lab Personnel</span>
+                </Button>
+
 
 
 

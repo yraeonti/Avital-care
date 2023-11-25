@@ -13,11 +13,12 @@ import { FileIcon, X } from 'lucide-react';
 
 
 type Props = {
+    testName: string;
     value: string | null;
     onchange: (url?: string | null) => void;
 }
 
-export default function TestResultUpload({ value, onchange }: Props) {
+export default function TestResultUpload({ value, onchange, testName }: Props) {
 
     const { edgestore } = useEdgeStore();
     const [file, setFile] = React.useState<File>();
@@ -55,7 +56,7 @@ export default function TestResultUpload({ value, onchange }: Props) {
                     rel="noopener noreferrer"
                     className="ml-2 text-sm text-indigo-500 dark:text-indigo-400 hover:underline truncate max-w-[15rem]"
                 >
-                    {new Date().toISOString()}-test_result
+                    {new Date().toISOString()}-{testName}
                 </a>
             </div>
         )

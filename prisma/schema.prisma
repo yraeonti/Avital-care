@@ -154,6 +154,8 @@ model TestResults {
 
   test_url String
 
+  testName String
+
   patient   User   @relation(fields: [patientId], references: [id])
   patientId String
 

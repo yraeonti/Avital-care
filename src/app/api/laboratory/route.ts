@@ -19,7 +19,8 @@ export async function POST(req: NextRequest) {
         const testResultCred = z.object({
             test_url: z.string().url(),
             patientId: z.string(),
-            doctorName: z.string()
+            doctorName: z.string(),
+            testName: z.string().min(1)
         })
 
         type TestResultCred = z.infer<typeof testResultCred>
@@ -27,13 +28,15 @@ export async function POST(req: NextRequest) {
         const {
             test_url,
             patientId,
-            doctorName
+            doctorName,
+            testName
         }: TestResultCred = await req.json()
 
         const testResultVal = testResultCred.safeParse({
             test_url,
             patientId,
-            doctorName
+            doctorName,
+            testName
         })
 
         if (!testResultVal.success) {
@@ -47,7 +50,8 @@ export async function POST(req: NextRequest) {
             data: {
                 test_url,
                 patientId,
-                doctorName
+                doctorName,
+                testName
             }
         })
 
