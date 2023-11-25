@@ -250,7 +250,7 @@ export default function PatientAccountSettings() {
                             />
 
 
-                            <div className="flex justify-center space-x-3">
+                            <div className="flex justify-center items-center space-x-3 mt-5">
                                 <DialogClose asChild>
                                     <Button type="button" variant="secondary">
                                         Close
@@ -258,7 +258,7 @@ export default function PatientAccountSettings() {
                                 </DialogClose>
                                 <Button
                                     type="submit"
-                                    className="mt-5 mx-auto bg-blue-700
+                                    className=" mx-auto bg-blue-700
                                      hover:bg-blue-800 opacity-90 px-6"
                                     disabled={isLoading}
                                 >
