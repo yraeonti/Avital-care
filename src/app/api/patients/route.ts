@@ -51,7 +51,7 @@ export async function GET(req: NextRequest) {
     } catch (error) {
         console.log(error);
 
-        return NextResponse.json({ status: false, message: 'Something went wrong' }, { status: 500 })
+        return NextResponse.json({ status: false, message: 'Something went wrong', error }, { status: 500 })
     }
 
 
