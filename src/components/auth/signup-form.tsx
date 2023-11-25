@@ -1,13 +1,11 @@
 "use client"
-import { SetStateAction, useState } from "react"
-import { Transition } from "@headlessui/react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, UseFormReturn } from "react-hook-form"
-import * as z from "zod"
-import { type Dispatch } from "react"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
-import axios from 'axios'
+import { Role } from "@/app/services/types"
+import { Icons } from "@/components/icons"
+import {
+    Alert,
+    AlertDescription
+} from "@/components/ui/alert"
+import { Button } from "@/components/ui/button"
 import {
     Form,
     FormControl,
@@ -17,15 +15,16 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Icons } from "@/components/icons"
-import {
-    Alert,
-    AlertDescription,
-    AlertTitle,
-} from "@/components/ui/alert"
+import { Transition } from "@headlessui/react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import axios from 'axios'
 import { AlertCircle } from "lucide-react"
-import { Role } from "@/app/services/types"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { SetStateAction, useState, type Dispatch } from "react"
+import { UseFormReturn, useForm } from "react-hook-form"
+import * as z from "zod"
+import Logo from "../ui/logo"
 
 
 type ProfileForm = {
@@ -200,11 +199,10 @@ const ProfileDetails = (
 
 
                     <div className="flex flex-col items-center space-y-5">
-                        <p>Logo</p>
+                       <Logo/>
 
 
-
-                        <h1 className="text-3xl font-semibold">Let's Get Started</h1>
+                        <h1 className="text-3xl font-semibold">Let&apos;s Get Started</h1>
                     </div>
 
                     {
@@ -314,11 +312,11 @@ const ProfileDetails = (
 
 
                     <div className="flex justify-center mt-10">
-                        <Button className="w-full">Next</Button>
+                        <Button className="w-full hover:scale-105 active:scale-95 transition-all ease-in-out">Next</Button>
                     </div>
 
                     <div className="font-extralight mt-5 flex justify-center space-x-2">
-                        <p className="">Already have an account? {" "} </p><Link href="/login" className="font-semibold ">Login</Link>
+                        <p className="">Already have an account? {" "} </p><Link href="/login" className="font-semibold hover:scale-110 active:scale-90 transitio-all ease-in-out">Login</Link>
                     </div>
 
 
@@ -387,11 +385,11 @@ const UserDetails = (
                 <form onSubmit={userForm.handleSubmit(onSubmit)} className="border-2 border-neutral-100 py-10 px-10 md:px-28
                          w-11/12 sm:w-4/5 lg:w-1/2 bg-white mx-auto space-y-6 shadow-lg">
                     <div className="flex flex-col items-center space-y-5">
-                        <p>Logo</p>
+                        <Logo/>
 
 
 
-                        <h1 className="text-3xl font-semibold">Let's Get Started</h1>
+                        <h1 className="text-3xl font-semibold">Let&apos;s Get Started</h1>
                     </div>
 
 
@@ -477,8 +475,8 @@ const UserDetails = (
 
 
                     <div className="flex justify-center mt-10 space-x-3">
-                        <Button type="button" className="w-full" disabled={isLoading} onClick={() => pageTo && setpage(pageTo)}>Back</Button>
-                        <Button type="submit" className="w-full bg-black text-white text-center" disabled={isLoading}>
+                        <Button type="button" className="w-full active:scale-95 hover:scale-105 transition-all ease-in-out active:duration-75" disabled={isLoading} onClick={() => pageTo && setpage(pageTo)}>Back</Button>
+                        <Button type="submit" className="w-full bg-black text-white text-center active:scale-95 hover:scale-105 transition-all ease-in-out active:duration-75" disabled={isLoading}>
                             {isLoading && (
                                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                             )}
@@ -487,7 +485,7 @@ const UserDetails = (
                     </div>
 
                     <div className="font-extralight mt-5 flex justify-center space-x-2">
-                        <p>Already have an account? {" "} </p><Link href="/login" className="font-semibold ">Login</Link>
+                        <p>Already have an account? {" "} </p><Link href="/login" className="font-semibold hover:scale-110 active:scale-90 transition-all ease-in-out active:duration-75">Login</Link>
                     </div>
 
                 </form>
