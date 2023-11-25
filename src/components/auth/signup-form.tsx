@@ -206,7 +206,7 @@ const ProfileDetails = (
 
 
 
-                        <h1 className="text-3xl font-semibold">Let's Get Started</h1>
+                        <h1 className="text-3xl font-semibold">Let&apos;s Get Started</h1>
                     </div>
 
                     {
@@ -393,7 +393,7 @@ const UserDetails = (
 
 
 
-                        <h1 className="text-3xl font-semibold">Let's Get Started</h1>
+                        <h1 className="text-3xl font-semibold">Let&apos;s Continue</h1>
                     </div>
 
 
