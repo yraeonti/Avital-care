@@ -28,10 +28,12 @@ import { ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useState, useEffect, useReducer } from "react";
 import { Specialties } from "./admin-add-doctors";
 import { useRouter } from "next/navigation";
-import { Icons } from "../icons";
+import { Calendar } from "@/components/ui/calendar"
+import { DayClickEventHandler } from 'react-day-picker';
+
 
 const formSchema = z.object({
     specialty: z.string().min(1, { message: 'This field is required' }).or(z.number()),
@@ -45,7 +47,22 @@ export default function ViewScheduler() {
 
     const [open, setOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-    const [doctorsList, setDoctorsList] = useState([])
+    const [doctorsList, setDoctorsList] = useState<any[]>([])
+    const rerender = useReducer(() => ({}), {})[1]
+
+    // const [booked, setBooked] = useState(false);
+
+    console.log(doctorsList);
+
+    const handleDayClick: DayClickEventHandler = (day, modifiers) => {
+
+        if (day && modifiers.booked) {
+            setSessionSearch(form.getValues().name)
+            router.push('/patient/dashboard/sessions')
+            onClose()
+        }
+    };
+
 
 
     const router = useRouter()
@@ -60,22 +77,28 @@ export default function ViewScheduler() {
         }
     })
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        setIsLoading(true)
-        setSessionSearch(values.name)
-        router.push('/patient/dashboard/sessions')
-        onClose()
-        setIsLoading(false)
+    const currentDate = new Date();
 
-    }
+
+
 
     const checkData = data.specialtiesData && data.specialtiesData.data.status ? true : false
 
-    console.log(data.specialtiesData);
+    const bookedDays: Date[] = doctorsList.length > 0 &&
+        form.watch().name.length > 0 &&
+        doctorsList.find(doc => doc.name === form.watch().name).sessionDates.map((sess: string) => new Date(sess))
+
+    const footer = bookedDays.length < 1 && <div className="text-center text-red-400">No Scheduled days</div>
+
+    useEffect(() => {
+        if (data.specialtiesData) {
+            rerender()
+        }
+    }, [data.specialtiesData])
 
     return (
         <Dialog open={isModalOpen} onOpenChange={onClose}>
-            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 max-h-screen">
+            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 max-h-screen min-w-max">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-2xl text-center font-bold">
                         Schedule a Doctor
@@ -86,7 +109,7 @@ export default function ViewScheduler() {
                 </DialogHeader>
                 <div className="">
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-7">
+                        <form className="space-y-7">
 
 
                             <FormField
@@ -122,12 +145,12 @@ export default function ViewScheduler() {
 
                                             <PopoverContent className="w-[250px] p-0">
 
-                                                <div className="max-h-96">
+                                                <div className="max-h-80">
 
                                                     <Command className="">
                                                         <CommandInput placeholder="Search specialties" />
                                                         <CommandEmpty>No specialty found.</CommandEmpty>
-                                                        <CommandGroup className="overflow-y-scroll max-h-96 py-4">
+                                                        <CommandGroup className="overflow-y-scroll max-h-80 py-4">
                                                             {checkData && data.specialtiesData ? (
                                                                 data.specialtiesData.data.data.map((item: any) => (
                                                                     <CommandItem
@@ -191,7 +214,29 @@ export default function ViewScheduler() {
 
                                 )}
                             />
-                            <Button disabled={isLoading} type="submit">View Schedule</Button>
+                            <Popover>
+                                <PopoverTrigger asChild disabled={!(form.watch().name.length > 0)}>
+                                    <Button type="button">View Schedule</Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0 max-h-[30rem] overflow-scroll">
+                                    <Calendar
+                                        mode="single"
+                                        onDayClick={handleDayClick}
+                                        defaultMonth={bookedDays[0] ?? new Date()}
+                                        modifiers={{ booked: bookedDays }}
+                                        modifiersClassNames={
+                                            {
+                                                booked: 'rounded-full border-2 border-red-500 bg-red-500 text-white hover:text-black'
+                                            }}
+                                        footer={footer}
+                                        numberOfMonths={bookedDays[0] ? 2 : 1}
+                                        showOutsideDays={false}
+                                        fromMonth={bookedDays[0] ?? currentDate}
+                                        toMonth={bookedDays[bookedDays.length - 1] ?? currentDate.getFullYear()}
+                                    />
+                                </PopoverContent>
+                            </Popover>
+
                         </form>
 
                     </Form>

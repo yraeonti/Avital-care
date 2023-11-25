@@ -18,10 +18,10 @@ import {
 import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AlertCircle } from "lucide-react"
-import { getSession, signIn } from "next-auth/react"
+import { getSession, signIn, signOut } from "next-auth/react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import avitaCare from '../../../public/Avita Health.png'
@@ -79,6 +79,10 @@ export default function LoginForm() {
         setIsLoading(false)
 
     }
+
+    useEffect(() => {
+        signOut({ redirect: false })
+    }, [])
     return (
         <div className="border border-neutral-100 py-7 px-10 md:px-28 w-11/12 sm:w-4/5 lg:w-1/2 bg-white shadow-lg">
 

@@ -2,8 +2,6 @@
 
 import * as React from 'react';
 import { useEdgeStore } from '@/lib/edgestore';
-import Image from 'next/image';
-import { UserCircleIcon } from 'lucide-react';
 import { Input } from "@/components/ui/input"
 import { Label } from '@/components/ui/label';
 import { Button } from "@/components/ui/button"
@@ -97,7 +95,7 @@ export default function FileUpload({ value, onchange }: Props) {
 
 
 
-            <Input type='file' className='my-2' onChange={(e) => {
+            <Input type='file' accept="image/png, image/jpeg, image/jpg" className='my-2' onChange={(e) => {
                 setFile(e.target.files?.[0]);
             }} />
 

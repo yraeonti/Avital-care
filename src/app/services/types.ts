@@ -15,6 +15,7 @@ export enum APPOINTMENTSTATUS {
 
 export type SessionWithExtraData = Session & {
     role?: string,
+    specialty?: string
 }
 
 export interface JWTWithExtraData extends JWT {

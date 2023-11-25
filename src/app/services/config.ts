@@ -40,7 +40,15 @@ const providers = [
                         email: credentials.email.toLocaleLowerCase()
                     },
                     include: {
-                        profile: true
+                        profile: {
+                            include: {
+                                specialty: {
+                                    select: {
+                                        name: true
+                                    }
+                                }
+                            }
+                        }
                     }
                 })
 
@@ -55,7 +63,8 @@ const providers = [
                     name: user.profile?.name ?? 'N/A',
                     email: user.email,
                     role: user.role,
-                    image: user.profile?.imageUrl ?? null
+                    image: user.profile?.imageUrl ?? null,
+                    specialty: user.profile?.specialty?.name ?? null
                 }
 
             } catch (error: any) {

@@ -23,12 +23,12 @@ export default async function AdminLayout({
 
     return (
         <main className="h-full md:flex">
-            <div className="hidden md:block h-full w-[25%] lg:w-80 z-30 fixed inset-y-0 border-r border-neutral-200 shadow-md">
+            <div className="hidden md:block h-full w-[25%] lg:w-80 z-30 fixed inset-y-0 border-r border-neutral-200 overflow-auto shadow-md">
                 <NavigationSideBar session={session} navitems={AdminNavRoutes} />
 
 
             </div>
-            <main className="md:flex-1  pl-0 md:pl-[25%] lg:pl-80 h-full overflow-x-hidden ">
+            <main className="md:flex-1  pl-0 md:pl-[25%] lg:pl-80 h-full overflow-x-hidden">
                 {children}
             </main>
             <ModalProvider />

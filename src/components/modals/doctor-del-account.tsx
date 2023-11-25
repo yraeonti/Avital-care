@@ -14,12 +14,15 @@ import axios from "axios";
 import { useState } from "react";
 import { Icons } from "../icons";
 import { signOut } from "next-auth/react";
+import { useToast } from "../ui/use-toast";
 
 export default function DoctorDelAccount() {
     const { isOpen, onClose, type, data: { networkData } } = useStore();
     const [isLoading, setIsLoading] = useState(false)
 
     const isModalOpen = isOpen && type === ModalType.DOCTORDELACCOUNT;
+
+    const { toast } = useToast()
 
 
     const onDelete = async () => {
@@ -56,7 +59,11 @@ export default function DoctorDelAccount() {
 
 
         } catch (error) {
-            console.log(error);
+            toast({
+                variant: 'destructive',
+                title: 'Something went wrong..',
+                description: 'Please delete all sessions'
+            })
             setIsLoading(false)
         }
     }

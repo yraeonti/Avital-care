@@ -7,21 +7,77 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form";
 import { useStore } from "../hooks/use-store";
 import { ModalType } from "@/components/hooks/modal-store"
 import DataTable from "../dashboard/shared/table/data-table-non";
 import { PatientData } from "../dashboard/admin/patients";
 import { ColumnDef } from "@tanstack/react-table";
+import {
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger,
+} from "@/components/ui/tabs"
+import { Label } from "../ui/label";
+import { FileIcon } from "lucide-react";
+import useSWR from "swr";
+import { fetcher, fetcherPost } from "@/lib/utils";
+import { AxiosResponseMod } from "@/app/services/types";
+
+enum PatientHistoryEnum {
+    DIAGNOSIS = 'DIAGNOSIS',
+    TESTRESULT = 'TESTRESULT'
+}
+
+type TestResult = {
+    test_url: string;
+    doctorName: string,
+    createdAt: string,
+    testName: string
+}
+
+type Diagnosis = {
+    complaint: string,
+    complaint_history: string,
+    recommended_tests: string,
+    diagnosis_confirmation: string,
+    prescription: string,
+    prescription_comment: string,
+    management_plan: string,
+    created_at: string
+}
 
 export default function PatientHistory() {
     const { isOpen, onClose, type, data: { patientData } } = useStore();
 
     const isModalOpen = isOpen && type === ModalType.PATIENTHISTORY;
 
+
+    const { data: testResultData, isLoading: testResultLoader }
+        = useSWR<AxiosResponseMod<TestResult[]>>
+            (isModalOpen && patientData && patientData?.id ?
+                `/api/laboratory?query=${patientData.id}` : null, fetcher, {
+                revalidateOnFocus: false,
+                revalidateOnReconnect: false
+            })
+
+    const { data: historyData, isLoading: historyLoader }
+        = useSWR<AxiosResponseMod<Diagnosis[]>>
+            (isModalOpen && patientData && patientData?.id ?
+                `/api/patient/history?query=${patientData.id}` : null, fetcher, {
+                revalidateOnFocus: false,
+                revalidateOnReconnect: false
+            })
+
+    console.log(testResultData);
+
+
+
     const headerClassName = 'font-semibold w-[150px] whitespace-nowrap'
 
-    const columns: ColumnDef<PatientData['diagnosis'][number]>[] = [
+
+
+    const columns: ColumnDef<Diagnosis>[] = [
         {
             accessorKey: "complaint",
             header: () => <div className={headerClassName}>Complaint</div>,
@@ -54,36 +110,124 @@ export default function PatientHistory() {
         },
         {
             accessorKey: "doctorName",
-            header: () => <div className="font-semibold ">Doctor</div>,
+            header: () => <div className={headerClassName}>Doctor</div>,
         },
         {
             accessorKey: "createdAt",
-            header: () => <div className="font-semibold ">Date Created</div>,
+            header: () => <div className={headerClassName}>Date Created</div>,
             cell(props) {
                 const date = props.row.getValue("createdAt") as string
                 return new Date(date).toLocaleDateString()
             },
         },
     ]
-    console.log(patientData?.diagnosis);
+
+    const testResultColumn: ColumnDef<TestResult>[] = [
+        {
+            accessorKey: "test_url",
+            header: () => <div className={headerClassName}>Test Result</div>,
+            cell(props) {
+                const test_url = props.getValue() as string
+
+                const createdAt = props.row.getValue('createdAt') as string
+                const name = props.row.getValue('testName') as string
+
+                return (
+                    <div className="flex items-center space-x-2">
+                        <FileIcon className="h-10 w-10 fill-indigo-200 stroke-indigo-400" />
+                        <a
+                            href={test_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="ml-2 text-sm text-indigo-500 dark:text-indigo-400 hover:underline truncate max-w-[14rem]"
+                        >
+                            {`${createdAt}-${name}`}
+                        </a>
+                    </div>
+
+                )
+            },
+        },
+        {
+            accessorKey: "testName",
+            header: () => <div className={headerClassName}>Test Name</div>,
+            cell(props) {
+                const value = props.getValue() as string
+                return <div className="truncate max-w-[10rem]">{value}</div>
+            },
+        },
+        {
+            accessorKey: "doctorName",
+            header: () => <div className={headerClassName}>Doctor Name</div>,
+        },
+        {
+            accessorKey: "createdAt",
+            header: () => <div className={headerClassName}>Date Created</div>,
+            cell(props) {
+                const date = props.row.getValue("createdAt") as string
+                return new Date(date).toLocaleDateString()
+            },
+        }
+    ]
 
     return (
         <Dialog open={isModalOpen} onOpenChange={onClose}>
-            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 max-w-screen-xl overflow-scroll max-h-screen">
+            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 max-w-screen-xl overflow-auto max-h-screen">
                 <DialogHeader className="pt-8 px-6">
-                    <DialogTitle className="text-2xl text-center font-bold">
-                        Patient History
+                    <DialogTitle className="text-2xl text-center font-semibold">
+                        Patient History & Test Results
                     </DialogTitle>
+
+                    <DialogDescription className="text-center text-lg mt-2">
+                        History and Lab results for: <span
+                            className="font-semibold text-stone-800 capitalize">
+                            {patientData?.name}</span>
+                    </DialogDescription>
 
                 </DialogHeader>
 
-                <div className="">
-                    <DataTable
-                        loading={false}
-                        columns={columns}
-                        data={patientData?.diagnosis ?? []}
-                    />
-                </div>
+                <Tabs defaultValue={PatientHistoryEnum.DIAGNOSIS} className="w-full">
+                    <TabsList className="grid w-full grid-cols-2 mx-auto">
+                        <TabsTrigger value={PatientHistoryEnum.DIAGNOSIS}>PATIENT HISTORY</TabsTrigger>
+                        <TabsTrigger value={PatientHistoryEnum.TESTRESULT}>TEST RESULTS</TabsTrigger>
+                    </TabsList>
+                    <TabsContent value={PatientHistoryEnum.DIAGNOSIS}
+                        className="outline-none flex flex-col items-center justify-center">
+                        <Label className="my-4 text-2xl font-semibold">
+                            PATIENT HISTORY
+                        </Label>
+                        <div className="overflow-scroll max-w-full">
+                            <DataTable
+                                loading={historyLoader}
+                                columns={columns}
+                                data={(typeof historyData?.data !== undefined)
+                                    && historyData?.data?.status ? historyData.data.data : []
+                                }
+                            />
+                        </div>
+
+                    </TabsContent>
+                    <TabsContent value={PatientHistoryEnum.TESTRESULT}
+                        className="outline-none flex flex-col"
+                    >
+                        <Label className="my-4 text-2xl font-semibold self-center">
+                            TEST RESULTS
+                        </Label>
+
+                        <div className="overflow-scroll">
+                            <DataTable
+                                loading={testResultLoader}
+                                columns={testResultColumn}
+                                data={(typeof testResultData?.data !== undefined)
+                                    && testResultData?.data?.status ? testResultData.data.data : []
+                                }
+                            />
+                        </div>
+
+                    </TabsContent>
+                </Tabs>
+
+
 
 
             </DialogContent>
