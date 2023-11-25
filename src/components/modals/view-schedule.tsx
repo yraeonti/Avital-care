@@ -28,12 +28,11 @@ import { ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useState, useEffect, useReducer } from "react";
 import { Specialties } from "./admin-add-doctors";
 import { useRouter } from "next/navigation";
 import { Calendar } from "@/components/ui/calendar"
 import { DayClickEventHandler } from 'react-day-picker';
-import { on } from "events";
 
 
 const formSchema = z.object({
@@ -49,6 +48,7 @@ export default function ViewScheduler() {
     const [open, setOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [doctorsList, setDoctorsList] = useState<any[]>([])
+    const rerender = useReducer(() => ({}), {})[1]
 
     // const [booked, setBooked] = useState(false);
 
@@ -77,13 +77,7 @@ export default function ViewScheduler() {
         }
     })
 
-    const oneYearFromNow = new Date();
-
-
-
-
-
-    console.log(doctorsList);
+    const currentDate = new Date();
 
 
 
@@ -96,7 +90,11 @@ export default function ViewScheduler() {
 
     const footer = bookedDays.length < 1 && <div className="text-center text-red-400">No Scheduled days</div>
 
-    console.log(data.specialtiesData);
+    useEffect(() => {
+        if (data.specialtiesData) {
+            rerender()
+        }
+    }, [data.specialtiesData])
 
     return (
         <Dialog open={isModalOpen} onOpenChange={onClose}>
@@ -233,8 +231,8 @@ export default function ViewScheduler() {
                                         footer={footer}
                                         numberOfMonths={bookedDays[0] ? 2 : 1}
                                         showOutsideDays={false}
-                                        fromMonth={bookedDays[0] ?? oneYearFromNow}
-                                        toMonth={bookedDays[bookedDays.length - 1] ?? oneYearFromNow.getFullYear()}
+                                        fromMonth={bookedDays[0] ?? currentDate}
+                                        toMonth={bookedDays[bookedDays.length - 1] ?? currentDate.getFullYear()}
                                     />
                                 </PopoverContent>
                             </Popover>
