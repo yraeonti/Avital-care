@@ -249,7 +249,7 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
 
 
                                             return (
-                                                <div className={` ${item.status && 'cursor-not-allowed'}`}>
+                                                <div className={` ${item.status && 'cursor-not-allowed'}`} key={i}>
                                                     <SelectItem value={item.id} key={i} disabled={item.status} className={`${item.status ? 'bg-red-500 text-white' : 'cursor-pointer'} flex justify-center`}>
                                                         <div className={`w-full flex justify-start ${item.status && 'opacity-75'}`}>
                                                             {startTime} - {endTime}

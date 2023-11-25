@@ -152,7 +152,7 @@ export default function LoginForm() {
             </Form>
 
             <div className="font-light mt-5 flex justify-center space-x-2">
-                <p>Don't have an account? {" "} </p><Link href="/signup" className="font-semibold ">Sign Up</Link>
+                <p>Don&apos;t have an account? {" "} </p><Link href="/signup" className="font-semibold ">Sign Up</Link>
             </div>
 
 
