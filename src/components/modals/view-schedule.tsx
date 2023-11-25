@@ -231,7 +231,7 @@ export default function ViewScheduler() {
                                                 booked: 'rounded-full border-2 border-red-500 bg-red-500 text-white hover:text-black'
                                             }}
                                         footer={footer}
-                                        numberOfMonths={2}
+                                        numberOfMonths={bookedDays[0] ? 2 : 1}
                                         showOutsideDays={false}
                                         fromMonth={bookedDays[0] ?? oneYearFromNow}
                                         toMonth={bookedDays[bookedDays.length - 1] ?? oneYearFromNow.getFullYear()}
