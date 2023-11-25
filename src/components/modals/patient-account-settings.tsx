@@ -3,6 +3,7 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
+    DialogClose
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage, FormLabel } from "../ui/form";
@@ -249,7 +250,12 @@ export default function PatientAccountSettings() {
                             />
 
 
-                            <div className="flex justify-center">
+                            <div className="flex justify-center space-x-3">
+                                <DialogClose asChild>
+                                    <Button type="button" variant="secondary">
+                                        Close
+                                    </Button>
+                                </DialogClose>
                                 <Button
                                     type="submit"
                                     className="mt-5 mx-auto bg-blue-700
