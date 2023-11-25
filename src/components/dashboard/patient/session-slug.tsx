@@ -15,7 +15,7 @@ import axios from "axios"
 import { useRouter } from "next/navigation"
 import { Icons } from "@/components/icons"
 import { formatTime } from "@/lib/utils"
-import { usePaystackPayment } from 'react-paystack';
+import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 import {
     Select,
     SelectContent,
@@ -23,28 +23,48 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { useSession } from "next-auth/react"
 
 
-
-const config = {
-    reference: (new Date()).getTime().toString(),
-    email: "user@example.com",
-    amount: 20000 * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
-    publicKey: 'pk_test_ef34446ef81a0ca7c86ddfd79c85aa6efb7429e4',
-};
 
 export default function ScheduledSessionsSlug({ params }: { params: { slug: string } }) {
     const [sessionTimeId, setsessionTimeId] = useState('');
     const [loader, setLoader] = useState(false);
     const { toast } = useToast()
 
-    const initializePayment = usePaystackPayment(config);
+    const { data: session } = useSession()
+
+    const { slug } = params
+
+    const { isLoading, data } = useSWR<AxiosResponseMod<SessionCardProps>>(['/api/patient/session', { id: Number(slug) }], ([url, slug]) => fetcherPost(url, slug as {}))
 
     const router = useRouter()
 
+    const config = {
+        public_key: 'FLWPUBK_TEST-3dd3de3dc0723cd1d9c674cacd8b4e41-X',
+        tx_ref: Date.now().toString(),
+        amount: 20000,
+        currency: 'NGN',
+        payment_options: 'card,mobilemoney,ussd',
+        customer: {
+            email: session!.user?.email as string,
+            phone_number: '',
+            name: session!.user?.name as string,
+        },
+        customizations: {
+            title: 'Booking Payment',
+            description: 'Payment for booking',
+            logo: ''
+        },
+    };
+
+
+
+    const handlePayment = useFlutterwave(config)
+
     console.log(sessionTimeId);
 
-    const onSuccess = () => {
+    const onSuccess = async () => {
         // Implementation for whatever you want to do with reference and after success call.
         try {
             setLoader(true)
@@ -59,33 +79,26 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
                     sessionTimeId
                 }
 
-                const response = axios.post('/api/patient/appointment', {
+                const response = await axios.post('/api/patient/appointment', {
                     ...appointmentPayload
                 }, {
                     headers: {
                         'Content-Type': 'application/json'
                     }
-                }).then(response => {
-                    if (response.status === 200) {
-                        toast({
-                            variant: 'success',
-                            description: "Appointment has been booked",
-                        })
-
-                        router.push('/patient/dashboard/bookings')
-
-                        setLoader(false)
-                    }
-                }).catch(error => {
-                    console.log(error);
-                    setLoader(false)
                 })
+                if (response.status === 200) {
+                    toast({
+                        variant: 'success',
+                        description: "Appointment has been booked",
+                    })
+
+                    router.push('/patient/dashboard/bookings')
+
+
+                }
 
 
             }
-
-
-
         } catch (error) {
             setLoader(false)
             toast({
@@ -93,23 +106,20 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
                 variant: 'destructive',
                 description: "Something went wrong..",
             })
+            setLoader(false)
         }
+
 
     };
 
-    // you can call this function anything
-    const onClose = () => {
-        console.log('closed ooo')
-    }
 
 
-    const { slug } = params
 
-    const { isLoading, data } = useSWR<AxiosResponseMod<SessionCardProps>>(['/api/patient/session', { id: Number(slug) }], ([url, slug]) => fetcherPost(url, slug as {}))
+
+
 
 
     const onBookNow = async () => {
-        console.log(sessionTimeId);
 
         if (sessionTimeId.length < 1) {
             toast({
@@ -119,8 +129,33 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
             return;
         }
         setLoader(true)
-        initializePayment(onSuccess, onClose)
-        setLoader(false)
+
+
+
+
+        handlePayment({
+            callback(data) {
+                console.log(data.status);
+                if (data.status === 'successful') {
+                    closePaymentModal()
+                    onSuccess()
+
+                    return;
+                }
+
+                closePaymentModal()
+                toast({
+                    variant: 'destructive',
+                    description: "Payment not successful",
+                })
+                setLoader(false)
+            },
+            onClose() {
+
+            }
+        })
+
+
     }
 
     const checkBookingStatus = (

@@ -21,10 +21,11 @@ export async function GET(req: NextRequest) {
                 patient: {
                     include: {
                         profile: true,
-                        diagnosis: true
-                    }
+                    },
+
                 }
-            }
+            },
+            distinct: ['patientId']
         })
 
         const data = myPatients.map((item) => {
@@ -36,7 +37,6 @@ export async function GET(req: NextRequest) {
                 telephone: item.patient.profile?.telephone,
                 date_of_birth: item.patient.profile?.date_of_birth,
                 address: item.patient.profile?.address,
-                diagnosis: item.patient.diagnosis
             }
         })
 

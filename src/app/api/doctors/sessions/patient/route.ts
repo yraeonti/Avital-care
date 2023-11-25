@@ -32,14 +32,16 @@ export async function GET(req: NextRequest) {
                             }
                         }
                     }
-                }
+                },
+                sessionTime: true
             }
         })
 
         const patients = allPatients.map(item => ({
             patientName: item.patient.profile?.name,
             patientTel: item.patient.profile?.telephone,
-            appointmentNo: item.appointmentNo
+            appointmentNo: item.appointmentNo,
+            sessionTime: item.sessionTime
         }))
 
         return NextResponse.json({ status: true, data: patients })

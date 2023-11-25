@@ -32,16 +32,6 @@ export type PatientData = {
     id: string;
     date_of_birth: string;
     address: string
-    diagnosis: {
-        complaint: string,
-        complaint_history: string,
-        recommended_tests: string,
-        diagnosis_confirmation: string,
-        prescription: string,
-        prescription_comment: string,
-        management_plan: string,
-        created_at: string
-    }[]
 }
 
 

@@ -100,7 +100,7 @@ export default function ViewScheduler() {
 
     return (
         <Dialog open={isModalOpen} onOpenChange={onClose}>
-            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 max-h-screen">
+            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 max-h-screen min-w-max">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-2xl text-center font-bold">
                         Schedule a Doctor

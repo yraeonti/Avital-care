@@ -19,7 +19,8 @@ import { ColumnDef } from "@tanstack/react-table";
 type PatientSummary = {
     patientName: string
     patientTel: string
-    appointmentNo: number
+    appointmentNo: number,
+    sessionTime: { startTime: string; endTime: string, status: boolean, id: number }
 }
 
 const patientsColumn: ColumnDef<PatientSummary>[] = [
@@ -29,12 +30,21 @@ const patientsColumn: ColumnDef<PatientSummary>[] = [
     },
     {
         accessorKey: 'patientName',
-        header: 'Patient Name'
+        header: 'Name'
     },
     {
         accessorKey: 'patientTel',
-        header: 'Patient Telephone'
-    }
+        header: 'Telephone'
+    },
+    {
+        accessorKey: "sessionTime",
+        header: () => <div className="font-semibold ">Appointment Time</div>,
+        cell(props) {
+            const time = props.row.getValue("sessionTime") as PatientSummary['sessionTime']
+
+            return `${formatTime(time.startTime)}-${formatTime(time.endTime)} `
+        },
+    },
 ]
 
 export default function AdminViewSessions() {

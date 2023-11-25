@@ -53,37 +53,42 @@ export default function TestResultUpload({ value, onchange }: Props) {
                     href={value}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="ml-2 text-sm text-indigo-500 dark:text-indigo-400 hover:underline truncate max-w-xs"
+                    className="ml-2 text-sm text-indigo-500 dark:text-indigo-400 hover:underline truncate max-w-[15rem]"
                 >
-                    {value}
+                    {new Date().toISOString()}-test_result
                 </a>
             </div>
         )
     }
 
-    return <div className='flex justify-center items-center space-x-3'>
-
+    return <div className=''>
         <Label>
-            (Upload pdf only)
+            (Upload pdf file only)
         </Label>
 
-        <Input type='file' accept="application/pdf" className='my-2' onChange={(e) => {
-            setFile(e.target.files?.[0]);
-        }} />
+        <div className='flex justify-center items-center space-x-3'>
 
-        <div className=''>
-            <Button
-                className='bg-blue-800 hover:bg-blue-900'
-                onClick={onFileUpload}
-                disabled={isLoading}
-            >
-                {isLoading && (
-                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                )}
-                Upload
-            </Button>
+
+
+            <Input type='file' accept="application/pdf" placeholder='(Upload pdf only)' className='my-2' onChange={(e) => {
+                setFile(e.target.files?.[0]);
+            }} />
+
+            <div className=''>
+                <Button
+                    className='bg-blue-800 hover:bg-blue-900'
+                    onClick={onFileUpload}
+                    disabled={isLoading}
+                >
+                    {isLoading && (
+                        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                    )}
+                    Upload
+                </Button>
+            </div>
         </div>
     </div>
+
 
 
 

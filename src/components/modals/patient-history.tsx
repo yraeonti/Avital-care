@@ -35,6 +35,17 @@ type TestResult = {
     createdAt: string
 }
 
+type Diagnosis = {
+    complaint: string,
+    complaint_history: string,
+    recommended_tests: string,
+    diagnosis_confirmation: string,
+    prescription: string,
+    prescription_comment: string,
+    management_plan: string,
+    created_at: string
+}
+
 export default function PatientHistory() {
     const { isOpen, onClose, type, data: { patientData } } = useStore();
 
@@ -49,13 +60,21 @@ export default function PatientHistory() {
                 revalidateOnReconnect: false
             })
 
+    const { data: historyData, isLoading: historyLoader }
+        = useSWR<AxiosResponseMod<Diagnosis[]>>
+            (isModalOpen && patientData && patientData?.id ?
+                `/api/patient/history?query=${patientData.id}` : null, fetcher, {
+                revalidateOnFocus: false,
+                revalidateOnReconnect: false
+            })
+
 
 
     const headerClassName = 'font-semibold w-[150px] whitespace-nowrap'
 
 
 
-    const columns: ColumnDef<PatientData['diagnosis'][number]>[] = [
+    const columns: ColumnDef<Diagnosis>[] = [
         {
             accessorKey: "complaint",
             header: () => <div className={headerClassName}>Complaint</div>,
@@ -137,7 +156,6 @@ export default function PatientHistory() {
             },
         }
     ]
-    console.log(patientData?.diagnosis);
 
     return (
         <Dialog open={isModalOpen} onOpenChange={onClose}>
@@ -167,9 +185,11 @@ export default function PatientHistory() {
                         </Label>
                         <div className="overflow-scroll max-w-full">
                             <DataTable
-                                loading={false}
+                                loading={historyLoader}
                                 columns={columns}
-                                data={patientData?.diagnosis ?? []}
+                                data={(typeof historyData?.data !== undefined)
+                                    && historyData?.data?.status ? historyData.data.data : []
+                                }
                             />
                         </div>
 
