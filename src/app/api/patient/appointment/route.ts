@@ -42,9 +42,11 @@ export async function GET(req: NextRequest) {
                 },
                 sessionTime: true
             },
-            orderBy: {
-                appointmentDate: 'desc'
-            }
+            orderBy: [
+
+                { appointmentDate: 'desc' },
+                { createdAt: 'desc' }
+            ]
         })
 
         const appointments = allAppointments.map((item) => ({

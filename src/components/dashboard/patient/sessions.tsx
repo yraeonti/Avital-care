@@ -96,6 +96,7 @@ export default function ScheduledSessions() {
                     onClick={async () => {
                         await onSubmit()
                     }}
+                    className='bg-blue-800 hover:bg-blue-900'
                 >
                     Search
                 </Button>
