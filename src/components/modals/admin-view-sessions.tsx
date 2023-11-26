@@ -66,7 +66,7 @@ export default function AdminViewSessions() {
 
     return (
         <Dialog open={isModalOpen} onOpenChange={onClose}>
-            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 overflow-y-scroll max-h-full max-w-full lg:min-w-max">
+            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 overflow-auto max-h-full max-w-full lg:min-w-max">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-2xl text-center font-bold">
                         View Session Details
@@ -194,12 +194,12 @@ export default function AdminViewSessions() {
 
 
 
-                    <div className="mt-4">
+                    <div className="mt-4 overflow-x-hidden">
                         <h3 className="font-semibold text-xl">
                             Patients registered for this session ({patientsData && patientsData.data && patientsData.data.data.length})
                         </h3>
 
-                        <div className="pt-4">
+                        <div className="pt-4 ">
                             <DataTable
                                 loading={patientsLoader}
                                 columns={patientsColumn}
