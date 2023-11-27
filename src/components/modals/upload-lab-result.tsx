@@ -89,7 +89,7 @@ export default function UploadLabResult() {
 
     return (
         <Dialog open={isModalOpen} onOpenChange={onClose}>
-            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 overflow-auto max-h-full lg:min-w-max">
+            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 overflow-auto max-h-full max-w-full">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-2xl text-center font-bold">
                         Test Result Upload
