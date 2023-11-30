@@ -53,7 +53,7 @@ export default function PatientViewAccount() {
 
         return (
             <Dialog open={isModalOpen} onOpenChange={onClose}>
-                <DialogContent className="bg-white text-black pt-4 pb-8 px-7 overflow-hidden">
+                <DialogContent className="bg-white text-black pt-4 pb-8 px-7 overflow-auto max-h-full">
                     <DialogHeader className="pt-8 px-6">
                         <DialogTitle className="text-2xl text-center font-bold">
                             View Account Details

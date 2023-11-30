@@ -130,7 +130,7 @@ export default function PatientAccountSettings() {
 
     return (
         <Dialog open={isModalOpen} onOpenChange={onClose}>
-            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 max-h-full overflow-y-scroll">
+            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 max-h-full overflow-scroll">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-2xl text-center font-bold">
                         Account Settings

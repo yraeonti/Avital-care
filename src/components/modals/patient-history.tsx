@@ -172,7 +172,7 @@ export default function PatientHistory() {
 
     return (
         <Dialog open={isModalOpen} onOpenChange={onClose}>
-            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 overflow-auto max-h-full max-w-full">
+            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 overflow-auto max-h-full">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-2xl text-center font-semibold">
                         Patient History & Test Results

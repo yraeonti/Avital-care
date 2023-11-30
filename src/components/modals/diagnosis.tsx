@@ -103,7 +103,7 @@ export default function Diagnosis() {
 
     return (
         <Dialog open={isModalOpen} onOpenChange={onClose}>
-            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 max-w-screen-xl overflow-scroll max-h-full mx-w-full">
+            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 max-w-screen-xl overflow-scroll max-h-full">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-xl text-center text-white font-semibold bg-stone-500 p-2 rounded-md capitalize">
                         Patient: {patientData?.name}
