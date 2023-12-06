@@ -10,7 +10,7 @@ import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/custpopover"
 import { useStore } from "../hooks/use-store";
 import { ModalType } from "@/components/hooks/modal-store"
 import * as z from "zod"
@@ -117,9 +117,10 @@ export default function AddSession() {
 
 
     }
+
     return (
         <Dialog open={isModalOpen} onOpenChange={onClose}>
-            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 overflow-y-scroll max-h-screen">
+            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 max-h-screen">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-2xl text-center font-bold">
                         Add New Session
@@ -177,11 +178,11 @@ export default function AddSession() {
 
                                             <PopoverContent className="w-[250px] p-0">
 
-                                                <div className="max-h-full">
+                                                <div className="max-h-96">
                                                     <Command>
                                                         <CommandInput placeholder="Search doctors" />
                                                         <CommandEmpty>No doctor found.</CommandEmpty>
-                                                        <CommandGroup className="overflow-y-scroll max-h-full py-4">
+                                                        <CommandGroup className="overflow-y-scroll max-h-96 py-4">
                                                             {checkData && data.networkData ? (
                                                                 data.networkData.data.data.map((item: any) => (
                                                                     <CommandItem

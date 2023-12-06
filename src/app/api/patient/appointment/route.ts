@@ -41,6 +41,9 @@ export async function GET(req: NextRequest) {
                     }
                 },
                 sessionTime: true
+            },
+            orderBy: {
+                appointmentDate: 'desc'
             }
         })
 
@@ -193,3 +196,104 @@ export async function PATCH(req: NextRequest) {
         return NextResponse.json({ status: false, message: 'Something went wrong..' }, { status: 500 })
     }
 }
+
+export async function DELETE(req: NextRequest) {
+    try {
+
+        const token = await Token(req)
+
+        if (!token) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
+
+        if (!Authorize([Role.DOCTOR, 'ADMIN'], token.role)) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
+
+        const {
+            id,
+            sessionTimeId
+        } = await req.json()
+
+        const updateSessionTime = db.sessionTime.update({
+            where: {
+                id: sessionTimeId
+            },
+            data: {
+                status: false
+            }
+        })
+
+        const deleteAppointment = db.appointment.delete({
+            where: {
+                id
+            }
+        })
+
+        const res = await db.$transaction([updateSessionTime, deleteAppointment])
+
+        if (!res) return NextResponse.json({ status: false, message: 'Appointment not Deleted' }, { status: 400 })
+
+        return NextResponse.json({ status: true, message: 'Appointment Deleted Successfully' })
+
+    } catch (error) {
+        console.log(error);
+
+        return NextResponse.json({ status: false, message: 'Something went wrong..' }, { status: 500 })
+    }
+}
+
+
+export async function PUT(req: NextRequest) {
+
+    try {
+
+        const token = await Token(req)
+
+        if (!token) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
+
+        const appointmentUpdateCred = z.object({
+            id: z.number().min(1),
+            sessionTimeId: z.number().min(1),
+            status: z.nativeEnum(APPOINTMENTSTATUS)
+        })
+
+        type AppointmentUpdateCred = z.infer<typeof appointmentUpdateCred>
+
+        const {
+            id,
+            sessionTimeId,
+            status
+        }: AppointmentUpdateCred = await req.json()
+
+
+        const updateSessionTime = db.sessionTime.update({
+            where: {
+                id: sessionTimeId,
+            },
+            data: {
+                status: status === APPOINTMENTSTATUS.CANCELLED ? false : true
+            }
+        })
+
+        const updateAppointment = db.appointment.update({
+            where: {
+                id,
+            },
+            data: {
+                status
+            }
+        })
+
+        const res = await db.$transaction([updateAppointment, updateSessionTime])
+
+
+
+
+        if (!res) return NextResponse.json({ status: false, message: 'Appointment not Updated' }, { status: 400 })
+
+        return NextResponse.json({ status: true, message: 'Appointment Updated Successfully' })
+
+    } catch (error) {
+        console.log(error);
+
+        return NextResponse.json({ status: false, message: 'Something went wrong..' }, { status: 500 })
+    }
+}
+

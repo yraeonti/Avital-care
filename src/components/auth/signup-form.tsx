@@ -193,7 +193,7 @@ const ProfileDetails = (
     return (
         <div className="py-20">
             <Form {...profileForm}>
-                <form onSubmit={profileForm.handleSubmit(onNextClick)} className="border-2 border-neutral-100 py-10 px-10 md:px-28
+                <form onSubmit={profileForm.handleSubmit(onNextClick)} className="border-2 border-neutral-100 py-8 px-10 md:px-28
                          w-11/12 sm:w-4/5 lg:w-1/2 bg-white mx-auto space-y-6 shadow-lg">
 
 
@@ -382,7 +382,7 @@ const UserDetails = (
         <div className="py-20">
 
             <Form {...userForm}>
-                <form onSubmit={userForm.handleSubmit(onSubmit)} className="border-2 border-neutral-100 py-10 px-10 md:px-28
+                <form onSubmit={userForm.handleSubmit(onSubmit)} className="border-2 border-neutral-100 py-8 px-10 md:px-28
                          w-11/12 sm:w-4/5 lg:w-1/2 bg-white mx-auto space-y-6 shadow-lg">
                     <div className="flex flex-col items-center space-y-5">
                         <Logo/>

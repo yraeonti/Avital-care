@@ -2,8 +2,6 @@
 
 import * as React from 'react';
 import { useEdgeStore } from '@/lib/edgestore';
-import Image from 'next/image';
-import { UserCircleIcon } from 'lucide-react';
 import { Input } from "@/components/ui/input"
 import { Label } from '@/components/ui/label';
 import { Button } from "@/components/ui/button"
@@ -15,8 +13,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 
 type Props = {
-    value: string;
-    onchange: (url?: string) => void;
+    value: string | null;
+    onchange: (url?: string | null) => void;
 }
 
 export default function FileUpload({ value, onchange }: Props) {
@@ -48,22 +46,28 @@ export default function FileUpload({ value, onchange }: Props) {
 
     const onFileChange = async () => {
         if (file) {
-            const res = await edgestore.publicFiles.upload({
-                file,
-                options: {
-                    replaceTargetUrl: value,
-                },
-                onProgressChange: (progress) => {
-                    // you can use this to show a progress bar
-                    console.log(progress);
-                    setIsLoading(true)
-                },
-            });
+            if (value) {
+                const res = await edgestore.publicFiles.upload({
+                    file,
+                    options: {
+                        replaceTargetUrl: value,
+                    },
+                    onProgressChange: (progress) => {
+                        // you can use this to show a progress bar
+                        console.log(progress);
+                        setIsLoading(true)
+                    },
+                });
+                console.log('File change ooooo', res);
+                setIsLoading(false)
+                onchange(res.url)
+            }
 
-            console.log('File change ooooo', res);
 
-            setIsLoading(false)
-            onchange(res.url)
+
+
+
+
         }
 
     }
@@ -91,7 +95,7 @@ export default function FileUpload({ value, onchange }: Props) {
 
 
 
-            <Input type='file' className='my-2' onChange={(e) => {
+            <Input type='file' accept="image/png, image/jpeg, image/jpg" className='my-2' onChange={(e) => {
                 setFile(e.target.files?.[0]);
             }} />
 

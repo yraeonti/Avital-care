@@ -23,7 +23,7 @@ export default function Overview({ session }: { session: Session }) {
     const router = useRouter()
 
     const { data: specialtiesData } =
-        useSWR<AxiosResponseMod<any>>('/api/doctors/specialties', fetcher)
+        useSWR<AxiosResponseMod<any>>('/api/doctors/schedules', fetcher)
 
     // console.log(networkData);
 

@@ -18,7 +18,7 @@ import { useSWRConfig } from "swr";
 import { Skeleton } from "../ui/skeleton";
 
 
-export default function AdminDelDoctor() {
+export default function AdminDelDoctor({ account }: { account: 'admin' | 'doctor' }) {
     const { isOpen, onClose, type, data: { sessionData } } = useStore();
     const [isLoading, setIsLoading] = useState(false)
 
@@ -51,7 +51,13 @@ export default function AdminDelDoctor() {
                         description: 'Session has been deleted'
                     })
 
-                    mutate('/api/doctors/sessions')
+                    if (account === 'admin') {
+                        mutate('/api/doctors/sessions')
+                    } else {
+                        mutate('/api/doctor/session')
+                    }
+
+
                 }
 
             }
@@ -76,8 +82,11 @@ export default function AdminDelDoctor() {
                     </DialogTitle>
                     <DialogDescription className=" text-lg font-medium space-x-1 text-center">
                         Are you sure you want to delete
-                        {sessionData ? <span className="font-semibold text-black text-lg">{`${" "} ${sessionData.title}'s`}</span>
-                            : <Skeleton className="h-4 w-10" />} Session?
+                        {sessionData ?
+                            <span
+                                className="font-semibold text-black text-lg">{`${" "} ${sessionData.title.toLowerCase().includes('session')
+                                    ? sessionData.title : `${sessionData.title} Session?`}`}</span>
+                            : <Skeleton className="h-4 w-10" />}
 
                     </DialogDescription>
 

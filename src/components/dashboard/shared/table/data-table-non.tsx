@@ -21,7 +21,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Input } from "@/components/ui/input"
 
 
-interface DataTableProps<TData, TValue> {
+export interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
     loading: boolean
@@ -59,7 +59,7 @@ export default function DataTable<TData, TValue>({
 
             <div className="rounded-md border shadow-md">
 
-                <Table className='whitespace-nowrap'>
+                <Table className=''>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id} className=''>
@@ -80,7 +80,7 @@ export default function DataTable<TData, TValue>({
                     </TableHeader>
                     <TableBody>
                         {loading ? (
-                            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((_, i) => (
+                            [1, 2, 3, 4, 5].map((_, i) => (
                                 <TableRow key={i}>
                                     {
                                         table.getAllColumns().map((_, i) => (

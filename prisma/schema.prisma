@@ -30,6 +30,8 @@ model User {
   profile     Profile?
   session     Session[]
   appointment Appointment[]
+  diagnosis   Diagnosis[]
+  testresults TestResults[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -124,4 +126,39 @@ model Appointment {
   updatedAt DateTime @updatedAt
 
   @@index([sessionId])
+}
+
+model Diagnosis {
+  id Int @id @default(autoincrement())
+
+  patient   User   @relation(fields: [patientId], references: [id])
+  patientId String
+
+  doctorName             String
+  complaint              String? @db.MediumText()
+  complaint_history      String? @db.MediumText()
+  recommended_tests      String? @db.MediumText()
+  diagnosis_confirmation String? @db.MediumText()
+  prescription           String? @db.MediumText()
+  prescription_comment   String? @db.MediumText()
+  management_plan        String? @db.MediumText()
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@index([patientId])
+}
+
+model TestResults {
+  id Int @id @default(autoincrement())
+
+  test_url String
+
+  patient   User   @relation(fields: [patientId], references: [id])
+  patientId String
+
+  doctorName String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }

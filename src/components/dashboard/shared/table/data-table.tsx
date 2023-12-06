@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/table"
 import { Skeleton } from '@/components/ui/skeleton'
 import { Input } from "@/components/ui/input"
+import ReactPaginate from "react-paginate"
 
 
 interface DataTableProps<TData, TValue> {
@@ -59,7 +60,9 @@ export default function DataTable<TData, TValue>({
     table.getAllColumns()
 
 
-
+    const handlePageChange = ({ selected }: { selected: number }) => {
+        table.setPageIndex(selected)
+    }
 
     return (
         <div>
@@ -135,7 +138,7 @@ export default function DataTable<TData, TValue>({
             {
                 table.getPageCount() > 1 && (
                     <div className="flex items-center justify-end space-x-2 py-4">
-                        <Button
+                        {/* <Button
                             variant="outline"
                             size="sm"
                             onClick={() => table.previousPage()}
@@ -150,8 +153,23 @@ export default function DataTable<TData, TValue>({
                             disabled={!table.getCanNextPage()}
                         >
                             Next
-                        </Button>
+                        </Button> */}
+
+
+                        <ReactPaginate
+                            pageCount={table.getPageCount()}
+                            activeClassName="text-[#0202CB] bg-stone-400"
+                            className="flex space-x-3 "
+                            forcePage={table.getState().pagination.pageIndex}
+                            onPageChange={handlePageChange}
+                            pageClassName="border border-stone-200 px-2 rounded-md"
+                            previousClassName={`border border-stone-200 px-2 rounded-md 
+                            ${!table.getCanPreviousPage() && 'opacity-50'}`}
+                            nextClassName={`border border-stone-200 px-2 rounded-md 
+                            ${!table.getCanNextPage() && 'opacity-50'}`}
+                        />
                     </div>
+
                 )
             }
 

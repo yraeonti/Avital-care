@@ -47,7 +47,7 @@ export default function AdminDelDoctor() {
                 if (res.status === 200) {
                     toast.toast({
                         variant: 'success',
-                        description: 'Account has been deleted'
+                        description: 'Doctor has been deleted'
                     })
 
                     mutate('/api/doctors')
@@ -59,7 +59,8 @@ export default function AdminDelDoctor() {
             console.log(error);
             setIsLoading(false)
             toast.toast({
-                description: 'Account not deleted'
+                title: 'Something went wrong...',
+                description: 'Please delete doctor sessions'
             })
         }
 

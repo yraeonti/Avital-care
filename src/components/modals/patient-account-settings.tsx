@@ -31,7 +31,7 @@ const patientSchema = z.object({
     telephone: z.string().min(10, { message: 'Please provide valid Phone Number' }),
     nin: z.string().length(11, { message: 'Please provide valid NIN' }),
     address: z.string().min(1, { message: 'This field is required' }),
-    imageUrl: z.string()
+    imageUrl: z.string().nullable(),
 })
 
 export default function PatientAccountSettings() {
@@ -52,7 +52,7 @@ export default function PatientAccountSettings() {
             email: "",
             telephone: "",
             nin: "",
-            imageUrl: "",
+            imageUrl: null,
             id: "",
         },
     })

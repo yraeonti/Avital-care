@@ -5,6 +5,7 @@ import { DoctorData } from "../dashboard/admin/doctors";
 import { PatientData } from "../dashboard/admin/patients";
 import { AxiosResponseMod } from "@/app/services/types";
 import { SessionData } from "../dashboard/admin/sessions";
+import { AppointmentsData } from "../dashboard/admin/appointments";
 
 export enum ModalType {
     VIEWSCHEDULE = 'VIEWSCHEDULE',
@@ -23,6 +24,11 @@ export enum ModalType {
     ADMINADDSESSION = 'ADMINADDSESSION',
     ADMINVIEWSESSION = 'ADMINVIEWSESSION',
     ADMINDELSESSION = 'ADMINDELSESSION',
+    DELAPPOINTMENT = 'DELAPPOINTMENT',
+    UPDATEAPPOINTMENTSTATUS = 'UPDATEAPPOINTMENTSTATUS',
+    DIAGNOSIS = 'DIAGNOSIS',
+    PATIENTHISTORY = 'PATIENTHISTORY',
+    LABRESULT = 'LABRESULT',
 }
 
 
@@ -32,6 +38,7 @@ export interface ModalData {
     doctorData?: DoctorData
     patientData?: PatientData
     sessionData?: SessionData
+    appointmentData?: AppointmentsData
 }
 
 export interface ModalStore {

@@ -11,7 +11,9 @@ import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
 import { Trash2 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-import DataTable from "../shared/table/data-table-filter"
+import { Input } from "@/components/ui/input"
+import { useState } from "react"
+import DataTable from "../shared/table/data-table"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -20,20 +22,13 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { formatTime } from "@/lib/utils"
-
-export type AppointmentsData = {
-    patientName: string
-    appointmentNo: number
-    sessionTitle: string
-    sessionDate: string
-    status: APPOINTMENTSTATUS
-    appointmentDate: string
-    sessionTime: { startTime: string; endTime: string, status: boolean },
-}
+import { AppointmentsData } from "../admin/appointments"
 
 
 export default function Appointments() {
     const { onOpen } = useStore()
+
+    const [searchFilter, setSearchFilter] = useState<string>('')
 
     // const { data: doctorData } =
     //     useSWR<AxiosResponseModCount<DoctorData[]>>('/api/doctors', fetcher)
@@ -61,11 +56,13 @@ export default function Appointments() {
         {
             accessorKey: "sessionTitle",
             header: () => <div className="font-semibold ">Session Title</div>,
+            filterFn: 'includesString',
             enableGlobalFilter: true
         },
         {
             accessorKey: "sessionDate",
             header: () => <div className="font-semibold ">Session Date</div>,
+            filterFn: 'includesString',
             cell(props) {
                 const date = props.row.getValue("sessionDate") as string
                 return new Date(date).toLocaleDateString()
@@ -74,6 +71,7 @@ export default function Appointments() {
         {
             accessorKey: "status",
             header: () => <div className="font-semibold ">Appointment Status</div>,
+            filterFn: 'includesString',
             cell(props) {
                 const status = props.row.getValue("status") as string
                 return (
@@ -98,7 +96,7 @@ export default function Appointments() {
             id: "actions",
             header: () => <div className="font-semibold">Actions</div>,
             cell({ row }) {
-                const sessionData = row.original
+                const appointmentData = row.original
 
                 return (
                     <DropdownMenu>
@@ -111,7 +109,7 @@ export default function Appointments() {
                         <DropdownMenuContent align="end">
                             <DropdownMenuItem
                                 className="cursor-pointer"
-                            // onClick={() => onOpen(ModalType.ADMINDELSESSION, { sessionData })}
+                                onClick={() => onOpen(ModalType.UPDATEAPPOINTMENTSTATUS, { appointmentData })}
                             >
                                 <Pen className="mr-2 h-4 w-4" />
                                 <span>
@@ -121,7 +119,7 @@ export default function Appointments() {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                                 className="cursor-pointer"
-                            // onClick={() => onOpen(ModalType.ADMINDELSESSION, { sessionData })}
+                                onClick={() => onOpen(ModalType.DELAPPOINTMENT, { appointmentData })}
                             >
                                 <Trash2 className="mr-2 h-4 w-4" />
                                 <span>
@@ -154,14 +152,27 @@ export default function Appointments() {
                     }
 
                 </div>
-                <div className="my-9">
 
+                <div className='mt-3'>
+                    <Input
+                        placeholder="Search all fields"
+                        value={searchFilter ?? ""}
+                        onChange={(event) =>
+                            setSearchFilter(event.target.value)
+                        }
+                        className="max-w-sm"
+                    />
+                </div>
+
+
+                <div className="my-9">
                     <DataTable
                         columns={columns}
                         data={(typeof tableData?.data !== undefined)
                             && tableData?.data?.status ? tableData.data.data : []
                         }
                         loading={tableLoader}
+                        globalFilter={searchFilter}
                     />
                 </div>
             </div>

@@ -22,9 +22,12 @@ import { getSession, signIn } from "next-auth/react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { FaEye, FaEyeSlash } from "react-icons/fa"
+
 import { useForm } from "react-hook-form"
-import Logo from "../ui/logo"
 import * as z from "zod"
+import Logo from "../ui/logo"
+import { text } from "stream/consumers"
 
 
 const formSchema = z.object({
@@ -37,9 +40,9 @@ export default function LoginForm() {
 
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState('')
+    const [visible,setVisible] = useState(false);
     const router = useRouter()
 
-    const classes = 'w-full active:scale-95 hover:scale-105'
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -128,7 +131,10 @@ export default function LoginForm() {
                             <FormItem>
                                 <FormLabel>Password</FormLabel>
                                 <FormControl>
-                                    <Input type="password" placeholder="Password" {...field} />
+                                    <div className="relative">
+                                    <Input type={visible ? 'text' :'password'} placeholder="Password" {...field} />
+                                    <span onClick={()=>setVisible(!visible)} className='absolute right-2.5 top-0.5 cursor-pointer translate-y-1/2 text-lg text-gray-500'>{visible ? <FaEye/> : <FaEyeSlash/>}</span>
+                                    </div>
                                 </FormControl>
 
                                 < FormMessage />

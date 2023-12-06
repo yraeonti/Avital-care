@@ -10,7 +10,9 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
 import { Pen, Eye, Trash2 } from "lucide-react"
-import DataTable from "../shared/table/data-table-filter"
+import { Input } from "@/components/ui/input"
+import { useState } from "react"
+import DataTable from "../shared/table/data-table"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -32,7 +34,7 @@ export type SessionData = {
 export default function Sessions() {
     const { onOpen } = useStore()
 
-
+    const [searchFilter, setSearchFilter] = useState<string>('')
 
     const { data: tableData, isLoading: tableLoader } =
         useSWR<AxiosResponseModCount<SessionData[]>>('/api/doctor/session', fetcher)
@@ -50,6 +52,7 @@ export default function Sessions() {
         {
             accessorKey: "sessionDate",
             header: () => <div className="font-semibold">Session Date</div>,
+            filterFn: 'includesString',
             enableGlobalFilter: true,
             cell(props) {
                 const date = props.row.getValue("sessionDate") as string
@@ -96,7 +99,7 @@ export default function Sessions() {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                                 className="cursor-pointer"
-                            // onClick={() => onOpen(ModalType.ADMINDELSESSION, { sessionData })}
+                                onClick={() => onOpen(ModalType.ADMINDELSESSION, { sessionData })}
                             >
                                 <Trash2 className="mr-2 h-4 w-4" />
                                 <span>
@@ -128,6 +131,19 @@ export default function Sessions() {
                     }
 
                 </div>
+
+                <div className='mt-3'>
+                    <Input
+                        placeholder="Search title or date"
+                        value={searchFilter ?? ""}
+                        onChange={(event) =>
+                            setSearchFilter(event.target.value)
+                        }
+                        className="max-w-sm"
+                    />
+                </div>
+
+
                 <div className="my-9">
 
                     <DataTable
@@ -136,6 +152,7 @@ export default function Sessions() {
                             && tableData?.data?.status ? tableData.data.data : []
                         }
                         loading={tableLoader}
+                        globalFilter={searchFilter}
                     />
                 </div>
             </div>

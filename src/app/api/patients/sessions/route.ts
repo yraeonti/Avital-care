@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
 
         console.log(search);
 
-
+        const today = new Date().toISOString().split('T')[0]
         const allsessions = await db.session.findMany({
             where: {
                 OR: [
@@ -87,7 +87,10 @@ export async function POST(req: NextRequest) {
                             }
                         }
                     }
-                ]
+                ],
+                sessionDate: {
+                    gte: new Date(today)
+                }
             },
             include: {
                 doctor: {
