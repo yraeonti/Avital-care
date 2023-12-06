@@ -21,7 +21,8 @@ import { useRouter } from "next/navigation";
 import { SetStateAction, useState, type Dispatch } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
 import * as z from "zod";
-import Logo from "../ui/logo";
+import avitaCare from '../../../public/Avita Health.png'
+import Image from "next/image"
 
 type ProfileForm = {
   first_name: string;
@@ -175,8 +176,8 @@ const ProfileDetails = ({
           className="border-2 border-neutral-100 py-8 px-10 md:px-28
                          w-11/12 sm:w-4/5 lg:w-1/2 bg-white mx-auto space-y-6 shadow-lg"
         >
-          <div className="flex flex-col items-center space-y-5">
-            <Logo />
+          <div className="flex flex-col items-center space-y-2">
+            <Image src={avitaCare} alt="AvitaCare logo for the Website" width={180} height={180} />
 
             <h1 className="text-3xl font-semibold">Let&apos;s Get Started</h1>
           </div>
@@ -338,8 +339,8 @@ const UserDetails = ({
           className="border-2 border-neutral-100 py-8 px-10 md:px-28
                          w-11/12 sm:w-4/5 lg:w-1/2 bg-white mx-auto space-y-6 shadow-lg"
         >
-          <div className="flex flex-col items-center space-y-5">
-            <Logo />
+          <div className="flex flex-col items-center space-y-2">
+            <Image src={avitaCare} alt="AvitaCare logo for the Website" width={180} height={180} />
 
             <h1 className="text-3xl font-semibold">Let&apos;s Continue</h1>
           </div>

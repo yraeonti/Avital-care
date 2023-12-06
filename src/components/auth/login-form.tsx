@@ -18,16 +18,16 @@ import {
 import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AlertCircle } from "lucide-react"
-import { getSession, signIn } from "next-auth/react"
+import { getSession, signIn, signOut } from "next-auth/react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { FaEye, FaEyeSlash } from "react-icons/fa"
+import avitaCare from '../../../public/Avita Health.png'
+import Image from "next/image"
 
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import Logo from "../ui/logo"
-import { text } from "stream/consumers"
 
 
 const formSchema = z.object({
@@ -40,7 +40,7 @@ export default function LoginForm() {
 
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState('')
-    const [visible,setVisible] = useState(false);
+    const [visible, setVisible] = useState(false);
     const router = useRouter()
 
 
@@ -83,12 +83,15 @@ export default function LoginForm() {
         setIsLoading(false)
 
     }
-    return (
-        <div className="border border-neutral-100 py-10 px-10 md:px-28 w-11/12 sm:w-4/5 lg:w-1/2 bg-white mt-32 shadow-lg">
 
-            <div className="flex flex-col items-center space-y-5">
-                
-                <Logo/>
+    useEffect(() => {
+        signOut({ redirect: false })
+    }, [])
+    return (
+        <div className="border border-neutral-100 py-7 px-10 md:px-28 w-11/12 sm:w-4/5 lg:w-1/2 bg-white shadow-lg">
+
+            <div className="flex flex-col items-center space-y-2">
+                <Image src={avitaCare} alt="AvitaCare logo for the Website" width={180} height={180} />
 
                 <h1 className="text-3xl font-semibold">Welcome Back</h1>
             </div>
@@ -132,8 +135,8 @@ export default function LoginForm() {
                                 <FormLabel>Password</FormLabel>
                                 <FormControl>
                                     <div className="relative">
-                                    <Input type={visible ? 'text' :'password'} placeholder="Password" {...field} />
-                                    <span onClick={()=>setVisible(!visible)} className='absolute right-2.5 top-0.5 cursor-pointer translate-y-1/2 text-lg text-gray-500'>{visible ? <FaEye/> : <FaEyeSlash/>}</span>
+                                        <Input type={visible ? 'text' : 'password'} placeholder="Password" {...field} />
+                                        <span onClick={() => setVisible(!visible)} className='absolute right-2.5 top-0.5 cursor-pointer translate-y-1/2 text-lg text-gray-500'>{visible ? <FaEye /> : <FaEyeSlash />}</span>
                                     </div>
                                 </FormControl>
 
