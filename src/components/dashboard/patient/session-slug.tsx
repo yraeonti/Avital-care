@@ -151,7 +151,7 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
                 setLoader(false)
             },
             onClose() {
-
+                setLoader(false)
             }
         })
 
@@ -171,7 +171,7 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
 
             <Link href="/patient/dashboard/sessions" className="">
 
-                <Button className="flex space-x-2 justify-center mt-4">
+                <Button className="flex space-x-2 justify-center mt-4 bg-blue-800 hover:bg-blue-900">
                     <MoveLeft className="w-4" />  <span>Back</span>
                 </Button>
             </Link>
@@ -249,7 +249,7 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
 
 
                                             return (
-                                                <div className={` ${item.status && 'cursor-not-allowed'}`}>
+                                                <div className={` ${item.status && 'cursor-not-allowed'}`} key={i}>
                                                     <SelectItem value={item.id} key={i} disabled={item.status} className={`${item.status ? 'bg-red-500 text-white' : 'cursor-pointer'} flex justify-center`}>
                                                         <div className={`w-full flex justify-start ${item.status && 'opacity-75'}`}>
                                                             {startTime} - {endTime}
@@ -272,7 +272,7 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
 
 
                                 <Button
-                                    className={`w-full my-3`}
+                                    className={`w-full my-3 bg-blue-800 hover:bg-blue-900`}
                                     onClick={onBookNow}
                                     disabled={checkBookingStatus}
                                 >

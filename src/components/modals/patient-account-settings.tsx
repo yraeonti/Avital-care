@@ -3,6 +3,7 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
+    DialogClose
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage, FormLabel } from "../ui/form";
@@ -129,7 +130,7 @@ export default function PatientAccountSettings() {
 
     return (
         <Dialog open={isModalOpen} onOpenChange={onClose}>
-            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 max-h-screen overflow-y-scroll">
+            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 max-h-full overflow-scroll">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-2xl text-center font-bold">
                         Account Settings
@@ -249,10 +250,15 @@ export default function PatientAccountSettings() {
                             />
 
 
-                            <div className="flex justify-center">
+                            <div className="flex justify-center items-center space-x-3 mt-5">
+                                <DialogClose asChild>
+                                    <Button type="button" variant="secondary">
+                                        Close
+                                    </Button>
+                                </DialogClose>
                                 <Button
                                     type="submit"
-                                    className="mt-5 mx-auto bg-blue-700
+                                    className=" mx-auto bg-blue-700
                                      hover:bg-blue-800 opacity-90 px-6"
                                     disabled={isLoading}
                                 >

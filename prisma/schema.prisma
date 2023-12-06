@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 enum ROLE {
@@ -55,6 +56,7 @@ model Profile {
   updatedAt DateTime @updatedAt
 
   @@index([userId])
+  @@index([specialtyId])
 }
 
 model Specialties {
@@ -103,6 +105,8 @@ model SessionTime {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([sessionId])
 }
 
 model Appointment {
@@ -126,6 +130,7 @@ model Appointment {
   updatedAt DateTime @updatedAt
 
   @@index([sessionId])
+  @@index([patientId])
 }
 
 model Diagnosis {
@@ -154,6 +159,8 @@ model TestResults {
 
   test_url String
 
+  testName String
+
   patient   User   @relation(fields: [patientId], references: [id])
   patientId String
 
@@ -161,4 +168,6 @@ model TestResults {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+
+  @@index([patientId])
 }

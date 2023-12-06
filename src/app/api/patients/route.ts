@@ -22,7 +22,6 @@ export async function GET(req: NextRequest) {
             },
             include: {
                 profile: true,
-                diagnosis: true
             },
         })
 
@@ -41,17 +40,18 @@ export async function GET(req: NextRequest) {
                 telephone: item.profile?.telephone,
                 date_of_birth: item.profile?.date_of_birth,
                 address: item.profile?.address,
-                diagnosis: item.diagnosis
             }
         })
 
-        console.log(data[0].diagnosis);
+
 
 
         return NextResponse.json({ status: true, data, totalcount })
 
     } catch (error) {
-        return NextResponse.json({ status: false, message: 'Something went wrong' }, { status: 500 })
+        console.log(error);
+
+        return NextResponse.json({ status: false, message: 'Something went wrong', error }, { status: 500 })
     }
 
 

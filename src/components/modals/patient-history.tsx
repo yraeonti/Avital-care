@@ -32,7 +32,8 @@ enum PatientHistoryEnum {
 type TestResult = {
     test_url: string;
     doctorName: string,
-    createdAt: string
+    createdAt: string,
+    testName: string
 }
 
 type Diagnosis = {
@@ -67,6 +68,8 @@ export default function PatientHistory() {
                 revalidateOnFocus: false,
                 revalidateOnReconnect: false
             })
+
+    console.log(testResultData);
 
 
 
@@ -127,6 +130,8 @@ export default function PatientHistory() {
                 const test_url = props.getValue() as string
 
                 const createdAt = props.row.getValue('createdAt') as string
+                const name = props.row.getValue('testName') as string
+
                 return (
                     <div className="flex items-center space-x-2">
                         <FileIcon className="h-10 w-10 fill-indigo-200 stroke-indigo-400" />
@@ -136,11 +141,19 @@ export default function PatientHistory() {
                             rel="noopener noreferrer"
                             className="ml-2 text-sm text-indigo-500 dark:text-indigo-400 hover:underline truncate max-w-[14rem]"
                         >
-                            {`${createdAt}-test_result`}
+                            {`${createdAt}-${name}`}
                         </a>
                     </div>
 
                 )
+            },
+        },
+        {
+            accessorKey: "testName",
+            header: () => <div className={headerClassName}>Test Name</div>,
+            cell(props) {
+                const value = props.getValue() as string
+                return <div className="truncate max-w-[10rem]">{value}</div>
             },
         },
         {
@@ -159,7 +172,7 @@ export default function PatientHistory() {
 
     return (
         <Dialog open={isModalOpen} onOpenChange={onClose}>
-            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 max-w-screen-xl overflow-auto max-h-screen">
+            <DialogContent className="bg-white text-black pt-4 pb-8 px-7 overflow-auto max-h-full max-w-screen-xl">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-2xl text-center font-semibold">
                         Patient History & Test Results

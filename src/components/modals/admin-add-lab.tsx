@@ -13,17 +13,9 @@ import * as z from "zod"
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/custpopover"
 import { Button } from "../ui/button";
 import { Role } from "@/app/services/types";
-import { cn } from "@/lib/utils"
-import { ChevronsUpDown } from "lucide-react"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast"
 import axios from "axios";
 import { Icons } from "../icons";
@@ -53,19 +45,13 @@ export type Specialties = {
 export default function AdminAddDoctor() {
     const { isOpen, onClose, type, data } = useStore();
 
-    const [open, setOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
     const { toast } = useToast()
 
     const { mutate } = useSWRConfig()
 
-    const isModalOpen = isOpen && type === ModalType.ADMINADDDOCTOR;
-
-    const checkData = (
-        data.specialtiesData?.data.status &&
-        data.specialtiesData.data.data
-    )
+    const isModalOpen = isOpen && type === ModalType.ADMINADDLABORATORY;
 
     const form = useForm<z.infer<typeof doctorSchema>>({
         resolver: zodResolver(doctorSchema),
@@ -82,35 +68,42 @@ export default function AdminAddDoctor() {
     })
 
     const onSubmit = async (values: z.infer<typeof doctorSchema>) => {
-        const data = { ...values, role: Role.DOCTOR }
-
-        console.log(data);
+        const postData = { ...values, role: Role.DOCTOR }
         setIsLoading(true)
+
+
 
         try {
 
-            const response = await axios.post('/api/auth/register', {
-                ...data
-            }, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
+            if (data?.specialtiesData) {
 
-            if (response.status === 200) {
-                toast({
-                    variant: 'success',
-                    description: "Doctor has been added",
+                const response = await axios.post('/api/auth/register', {
+                    ...postData, specialty: data.specialtiesData.data.data.find((item: Specialties) =>
+                        (item.name.toLowerCase() === 'laboratory')).id
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 })
 
-                mutate('/api/doctors')
+                if (response.status === 200) {
+                    toast({
+                        variant: 'success',
+                        description: "Lab personnel has been added",
+                    })
+
+                    mutate('/api/doctors')
+                }
+
             }
+
+
 
 
 
         } catch (error) {
             toast({
-                title: 'Doctor not added',
+                title: 'Lab personnel not added',
                 description: "Something went wrong..",
             })
         }
@@ -120,12 +113,22 @@ export default function AdminAddDoctor() {
 
     }
 
+    useEffect(() => {
+
+        if (data.specialtiesData) {
+            form.reset({
+                specialty: data.specialtiesData.data.data.find((item: Specialties) => (item.name.toLowerCase() === 'laboratory')).name
+            })
+        }
+
+    }, [data.specialtiesData])
+
     return (
         <Dialog open={isModalOpen} onOpenChange={onClose}>
             <DialogContent className="bg-white text-black pt-4 pb-8 px-7 overflow-y-scroll max-h-full">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-2xl text-center font-bold">
-                        Add New Doctor
+                        Add New Laboratory Personnel
                     </DialogTitle>
 
                 </DialogHeader>
@@ -215,67 +218,12 @@ export default function AdminAddDoctor() {
                                 name="specialty"
                                 render={({ field }) => (
                                     <FormItem className="mt-2 flex flex-col">
-                                        <FormLabel>Specialties</FormLabel>
-
-                                        <Popover open={open} onOpenChange={setOpen}>
-
-                                            <PopoverTrigger asChild>
-                                                <FormControl>
-                                                    <Button
-                                                        variant="outline"
-                                                        role="combobox"
-                                                        aria-expanded={open}
-                                                        disabled={!checkData}
-                                                        className={cn(
-                                                            " justify-between",
-                                                            !field.value && "text-muted-foreground"
-                                                        )}
-                                                    >
-                                                        {checkData && data.specialtiesData && field.value
-                                                            ? data.specialtiesData.data.data.find(
-                                                                (item: Specialties) => item.id === field.value
-                                                            )?.name
-                                                            : "Choose a Specialty"}
-                                                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                                    </Button>
-                                                </FormControl>
-                                            </PopoverTrigger>
-
-                                            <PopoverContent className="w-[250px] p-0">
-
-                                                <div className="max-h-96">
+                                        <FormLabel>Specialty</FormLabel>
 
 
-
-                                                    <Command>
-                                                        <CommandInput placeholder="Search specialties" />
-                                                        <CommandEmpty>No specialty found.</CommandEmpty>
-                                                        <CommandGroup className="overflow-y-scroll max-h-96 py-4">
-                                                            {checkData && data.specialtiesData ? (
-                                                                data.specialtiesData.data.data.map((item: any) => (
-                                                                    <CommandItem
-                                                                        value={item.name}
-                                                                        key={item.id}
-                                                                        onSelect={() => {
-                                                                            form.setValue("specialty", item.id)
-                                                                            setOpen(false)
-                                                                        }}
-                                                                    >
-
-                                                                        {item.name}
-                                                                    </CommandItem>
-                                                                ))
-                                                            ) : (
-                                                                <CommandItem>
-                                                                    loading...
-                                                                </CommandItem>
-                                                            )}
-                                                        </CommandGroup>
-                                                    </Command>
-                                                </div>
-                                            </PopoverContent>
-                                        </Popover>
-
+                                        <FormControl>
+                                            <Input readOnly {...field} />
+                                        </FormControl>
 
                                         < FormMessage />
                                     </FormItem>
@@ -313,9 +261,9 @@ export default function AdminAddDoctor() {
                                     </FormItem>
                                 )}
                             />
-                            <div className="flex justify-center items-center space-x-2 mt-5">
+                            <div className="flex justify-center items-center mt-5 space-x-3">
                                 <DialogClose asChild>
-                                    <Button type="button" variant="secondary">
+                                    <Button type="button" variant="outline">
                                         Close
                                     </Button>
                                 </DialogClose>
@@ -328,7 +276,7 @@ export default function AdminAddDoctor() {
                                     {isLoading && (
                                         <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                                     )}
-                                    Add Doctor
+                                    Add Laboratory
                                 </Button>
                             </div>
 

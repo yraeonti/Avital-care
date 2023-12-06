@@ -2,6 +2,7 @@
 import { useEffect, useState, lazy } from "react";
 
 const AddDoctor = lazy(() => import("../modals/admin-add-doctors"))
+const AddLaboratory = lazy(() => import("../modals/admin-add-lab"))
 const EditDoctor = lazy(() => import("../modals/admin-edit-doctors"))
 const DeleteDoctor = lazy(() => import("../modals/admin-del-doctors"))
 const ViewPatientAccount = lazy(() => import("../modals/view-patient-account"))
@@ -26,6 +27,7 @@ export const ModalProvider = () => {
     return (
         <>
             <AddDoctor />
+            <AddLaboratory />
             <EditDoctor />
             <DeleteDoctor />
             <ViewPatientAccount />
