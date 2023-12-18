@@ -21,11 +21,13 @@ import { AlertCircle } from "lucide-react"
 import { getSession, signIn, signOut } from "next-auth/react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
+import { useState, useEffect } from "react"
+import { FaEye, FaEyeSlash } from "react-icons/fa"
 import avitaCare from '../../../public/Avita Health.png'
 import Image from "next/image"
+
+import { useForm } from "react-hook-form"
+import * as z from "zod"
 
 
 const formSchema = z.object({
@@ -38,7 +40,9 @@ export default function LoginForm() {
 
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState('')
+    const [visible, setVisible] = useState(false);
     const router = useRouter()
+
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -130,7 +134,10 @@ export default function LoginForm() {
                             <FormItem>
                                 <FormLabel>Password</FormLabel>
                                 <FormControl>
-                                    <Input type="password" placeholder="Password" {...field} />
+                                    <div className="relative">
+                                        <Input type={visible ? 'text' : 'password'} placeholder="Password" {...field} />
+                                        <span onClick={() => setVisible(!visible)} className='absolute right-2.5 top-0.5 cursor-pointer translate-y-1/2 text-lg text-gray-500'>{visible ? <FaEye /> : <FaEyeSlash />}</span>
+                                    </div>
                                 </FormControl>
 
                                 < FormMessage />
@@ -139,7 +146,7 @@ export default function LoginForm() {
                         )}
                     />
                     <div className="flex justify-center">
-                        <Button type="submit" className="w-full" disabled={isLoading}>
+                        <Button type="submit" className="w-full active:scale-95 hover:scale-105 transition-all ease-in-out" disabled={isLoading}>
                             {isLoading && (
                                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                             )}
