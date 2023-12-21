@@ -23,16 +23,24 @@ enum APPOINTMENTSTATUS {
   DONE
 }
 
+enum REQUESTHISTORY {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model User {
-  id          String        @id @default(uuid())
-  email       String        @unique
-  password    String
-  role        ROLE          @default(PATIENT)
-  profile     Profile?
-  session     Session[]
-  appointment Appointment[]
-  diagnosis   Diagnosis[]
-  testresults TestResults[]
+  id              String           @id @default(uuid())
+  email           String           @unique
+  password        String
+  role            ROLE             @default(PATIENT)
+  profile         Profile?
+  session         Session[]
+  appointment     Appointment[]
+  diagnosis       Diagnosis[]
+  testresults     TestResults[]
+  patientApproval RequestHistory[] @relation("Patient")
+  doctorRequest   RequestHistory[] @relation("Doctor")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -170,4 +178,22 @@ model TestResults {
   updatedAt DateTime @default(now()) @updatedAt
 
   @@index([patientId])
+}
+
+model RequestHistory {
+  id String @id @default(uuid())
+
+  doctor   User   @relation("Doctor", fields: [doctorId], references: [id], onDelete: Cascade)
+  doctorId String
+
+  patient   User   @relation("Patient", fields: [patientId], references: [id], onDelete: Cascade)
+  patientId String
+
+  approval REQUESTHISTORY @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@index([patientId])
+  @@index([doctorId])
 }

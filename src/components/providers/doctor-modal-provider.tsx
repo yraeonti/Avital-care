@@ -13,6 +13,7 @@ const UpdateAppointment = lazy(() => import("../modals/update-appointment-status
 const Diagnosis = lazy(() => import("../modals/diagnosis"))
 const History = lazy(() => import("../modals/patient-history"))
 const LabResultUpload = lazy(() => import("../modals/upload-lab-result"))
+const RequestApproval = lazy(() => import("../modals/request-approval"))
 export const ModalProvider = () => {
     const [isMounted, setIsMounted] = useState(false);
 
@@ -35,6 +36,7 @@ export const ModalProvider = () => {
             <Diagnosis />
             <History />
             <LabResultUpload />
+            <RequestApproval />
             <DeleteSession account="doctor" />
             <DelAppointment account="doctor" />
             <UpdateAppointment account="doctor" />
