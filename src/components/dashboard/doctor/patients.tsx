@@ -143,7 +143,7 @@ export default function Doctors() {
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem
                                             className="cursor-pointer"
-                                            onClick={() => onOpen(ModalType.REQUESTAPPROVAL, { patientData })}
+                                            onClick={() => onOpen(ModalType.LABRESULT, { patientData })}
                                         >
                                             <Upload className="mr-2 h-4 w-4" />
                                             <span>

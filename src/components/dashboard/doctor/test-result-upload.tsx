@@ -46,7 +46,7 @@ export default function TestResultUpload({ value, onchange, testName }: Props) {
     }
 
 
-    if (value && fileType === 'pdf') {
+    if (value) {
         return (
             <div className="relative flex items-center p-2 mt-2 rounded-md bg-background/10">
                 <FileIcon className="h-10 w-10 fill-indigo-200 stroke-indigo-400" />
@@ -64,14 +64,14 @@ export default function TestResultUpload({ value, onchange, testName }: Props) {
 
     return <div className=''>
         <Label>
-            (Upload pdf file only)
+            (Upload test result)
         </Label>
 
         <div className='flex justify-center items-center space-x-3'>
 
 
 
-            <Input type='file' accept="application/pdf" placeholder='(Upload pdf only)' className='my-2' onChange={(e) => {
+            <Input type='file' accept="application/pdf image/png, image/jpeg, image/jpg" placeholder='(Upload pdf only)' className='my-2' onChange={(e) => {
                 setFile(e.target.files?.[0]);
             }} />
 
