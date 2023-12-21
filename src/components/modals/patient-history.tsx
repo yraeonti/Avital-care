@@ -24,19 +24,19 @@ import useSWR from "swr";
 import { fetcher, fetcherPost } from "@/lib/utils";
 import { AxiosResponseMod } from "@/app/services/types";
 
-enum PatientHistoryEnum {
+export enum PatientHistoryEnum {
     DIAGNOSIS = 'DIAGNOSIS',
     TESTRESULT = 'TESTRESULT'
 }
 
-type TestResult = {
+export type TestResult = {
     test_url: string;
     doctorName: string,
     createdAt: string,
     testName: string
 }
 
-type Diagnosis = {
+export type Diagnosis = {
     complaint: string,
     complaint_history: string,
     recommended_tests: string,
@@ -46,6 +46,107 @@ type Diagnosis = {
     management_plan: string,
     created_at: string
 }
+
+const headerClassName = 'font-semibold w-[150px] whitespace-nowrap'
+
+export const columns: ColumnDef<Diagnosis>[] = [
+    {
+        accessorKey: "complaint",
+        header: () => <div className={headerClassName}>Complaint</div>,
+        enableGlobalFilter: false
+    },
+
+    {
+        accessorKey: "complaint_history",
+        header: () => <div className={headerClassName}>History of Complaint</div>,
+        enableGlobalFilter: false
+    },
+    {
+        accessorKey: "recommended_tests",
+        header: () => <div className={headerClassName}>Recommended Tests</div>,
+        enableGlobalFilter: false
+    },
+    {
+        accessorKey: "diagnosis_confirmation",
+        header: () => <div className={headerClassName}>Diagnosis Confirmation</div>,
+        enableGlobalFilter: false
+    },
+    {
+        accessorKey: "prescription",
+        header: () => <div className={headerClassName}>Prescription</div>,
+        enableGlobalFilter: false
+    },
+    {
+        accessorKey: "prescription_comment",
+        header: () => <div className={headerClassName}>Prescription Comment</div>,
+        enableGlobalFilter: false
+    },
+    {
+        accessorKey: "management_plan",
+        header: () => <div className={headerClassName}>Management Plan</div>,
+        enableGlobalFilter: false
+    },
+    {
+        accessorKey: "doctorName",
+        header: () => <div className={headerClassName}>Doctor</div>,
+    },
+    {
+        accessorKey: "createdAt",
+        header: () => <div className={headerClassName}>Date Added</div>,
+        cell(props) {
+            const date = props.row.getValue("createdAt") as string
+            return new Date(date).toLocaleDateString()
+        },
+    },
+]
+
+export const testResultColumn: ColumnDef<TestResult>[] = [
+    {
+        accessorKey: "test_url",
+        header: () => <div className={headerClassName}>Test Result</div>,
+        cell(props) {
+            const test_url = props.getValue() as string
+
+            const createdAt = props.row.getValue('createdAt') as string
+            const name = props.row.getValue('testName') as string
+
+            return (
+                <div className="flex items-center space-x-2">
+                    <FileIcon className="h-10 w-10 fill-indigo-200 stroke-indigo-400" />
+                    <a
+                        href={test_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="ml-2 text-sm text-indigo-500 dark:text-indigo-400 hover:underline truncate max-w-[14rem]"
+                    >
+                        {`${createdAt}-${name}`}
+                    </a>
+                </div>
+
+            )
+        },
+    },
+    {
+        accessorKey: "testName",
+        header: () => <div className={headerClassName}>Test Name</div>,
+        cell(props) {
+            const value = props.getValue() as string
+            return <div className="truncate max-w-[10rem]">{value}</div>
+        },
+    },
+    {
+        accessorKey: "doctorName",
+        header: () => <div className={headerClassName}>Doctor Name</div>,
+    },
+    {
+        accessorKey: "createdAt",
+        header: () => <div className={headerClassName}>Date Added</div>,
+        cell(props) {
+            const date = props.row.getValue("createdAt") as string
+            return new Date(date).toLocaleDateString()
+        },
+    }
+]
 
 export default function PatientHistory() {
     const { isOpen, onClose, type, data: { patientData } } = useStore();
@@ -73,102 +174,11 @@ export default function PatientHistory() {
 
 
 
-    const headerClassName = 'font-semibold w-[150px] whitespace-nowrap'
 
 
 
-    const columns: ColumnDef<Diagnosis>[] = [
-        {
-            accessorKey: "complaint",
-            header: () => <div className={headerClassName}>Complaint</div>,
-        },
 
-        {
-            accessorKey: "complaint_history",
-            header: () => <div className={headerClassName}>History of Complaint</div>,
 
-        },
-        {
-            accessorKey: "recommended_tests",
-            header: () => <div className={headerClassName}>Recommended Tests</div>,
-        },
-        {
-            accessorKey: "diagnosis_confirmation",
-            header: () => <div className={headerClassName}>Diagnosis Confirmation</div>,
-        },
-        {
-            accessorKey: "prescription",
-            header: () => <div className={headerClassName}>Prescription</div>,
-        },
-        {
-            accessorKey: "prescription_comment",
-            header: () => <div className={headerClassName}>Prescription Comment</div>,
-        },
-        {
-            accessorKey: "management_plan",
-            header: () => <div className={headerClassName}>Management Plan</div>,
-        },
-        {
-            accessorKey: "doctorName",
-            header: () => <div className={headerClassName}>Doctor</div>,
-        },
-        {
-            accessorKey: "createdAt",
-            header: () => <div className={headerClassName}>Date Created</div>,
-            cell(props) {
-                const date = props.row.getValue("createdAt") as string
-                return new Date(date).toLocaleDateString()
-            },
-        },
-    ]
-
-    const testResultColumn: ColumnDef<TestResult>[] = [
-        {
-            accessorKey: "test_url",
-            header: () => <div className={headerClassName}>Test Result</div>,
-            cell(props) {
-                const test_url = props.getValue() as string
-
-                const createdAt = props.row.getValue('createdAt') as string
-                const name = props.row.getValue('testName') as string
-
-                return (
-                    <div className="flex items-center space-x-2">
-                        <FileIcon className="h-10 w-10 fill-indigo-200 stroke-indigo-400" />
-                        <a
-                            href={test_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="ml-2 text-sm text-indigo-500 dark:text-indigo-400 hover:underline truncate max-w-[14rem]"
-                        >
-                            {`${createdAt}-${name}`}
-                        </a>
-                    </div>
-
-                )
-            },
-        },
-        {
-            accessorKey: "testName",
-            header: () => <div className={headerClassName}>Test Name</div>,
-            cell(props) {
-                const value = props.getValue() as string
-                return <div className="truncate max-w-[10rem]">{value}</div>
-            },
-        },
-        {
-            accessorKey: "doctorName",
-            header: () => <div className={headerClassName}>Doctor Name</div>,
-        },
-        {
-            accessorKey: "createdAt",
-            header: () => <div className={headerClassName}>Date Created</div>,
-            cell(props) {
-                const date = props.row.getValue("createdAt") as string
-                return new Date(date).toLocaleDateString()
-            },
-        }
-    ]
 
     return (
         <Dialog open={isModalOpen} onOpenChange={onClose}>

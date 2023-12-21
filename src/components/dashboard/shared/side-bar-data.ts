@@ -8,7 +8,8 @@ import {
     AppointmentIcon,
     DashboardIcon,
     PatientsIcon,
-    SessionIcon
+    SessionIcon,
+    HistoryIcon
 } from "./nav-icons";
 
 export type NavItems = {
@@ -38,6 +39,11 @@ export const PatientNavRoutes: NavItems = [
         icon: BookingIcon,
         name: 'My Bookings',
         link: '/patient/dashboard/bookings'
+    },
+    {
+        icon: HistoryIcon,
+        name: 'My History',
+        link: '/patient/dashboard/history'
     },
     {
         icon: SettingIcon,
