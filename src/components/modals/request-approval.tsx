@@ -181,7 +181,7 @@ export default function RequestApproval() {
                                 setRequestStatus(REQUESTHISTORY.PENDING)
                                 setRequestStamp('')
                             }}>
-                                Go back
+                                Cancel
                             </Button>
                         ) : (
                             <Button type="button" variant="default">
