@@ -10,7 +10,6 @@ import {
 import { useStore } from "../hooks/use-store";
 import { ModalType } from "@/components/hooks/modal-store"
 import DataTable from "../dashboard/shared/table/data-table-non";
-import { PatientData } from "../dashboard/admin/patients";
 import { ColumnDef } from "@tanstack/react-table";
 import {
     Tabs,
