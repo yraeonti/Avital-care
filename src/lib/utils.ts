@@ -32,3 +32,9 @@ export function Authorize<T>(roles: T[], role: T) {
 export function formatTime(date: string) {
   return moment.utc(date).format('LT')
 }
+
+export const furtureMinutes = (date: string, minutes: number) => {
+  const requestDate = new Date(date);
+
+  return new Date(requestDate.setMinutes(requestDate.getMinutes() + minutes))
+}

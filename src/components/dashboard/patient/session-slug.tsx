@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/select"
 import { useSession } from "next-auth/react"
 
-
+const price = 5000
 
 export default function ScheduledSessionsSlug({ params }: { params: { slug: string } }) {
     const [sessionTimeId, setsessionTimeId] = useState('');
@@ -43,7 +43,7 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
     const config = {
         public_key: 'FLWPUBK_TEST-3dd3de3dc0723cd1d9c674cacd8b4e41-X',
         tx_ref: Date.now().toString(),
-        amount: 20000,
+        amount: price,
         currency: 'NGN',
         payment_options: 'card,mobilemoney,ussd',
         customer: {
@@ -225,7 +225,7 @@ export default function ScheduledSessionsSlug({ params }: { params: { slug: stri
                                         Session Date: <span className="font-semibold text-lg">{data && new Date(data.data.data.sessionDate).toLocaleDateString()}</span>
                                     </h3>
                                     <h3>
-                                        Session Fee: <span className="font-semibold text-lg">N20,000</span>
+                                        Session Fee: <span className="font-semibold text-lg">N5,000</span>
                                     </h3>
                                 </div>
                                 <Separator className="my-4 w-full" />

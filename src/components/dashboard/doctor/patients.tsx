@@ -29,69 +29,36 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import { PatientData } from "../admin/patients"
 import { useSession } from "next-auth/react"
-import { SessionWithExtraData } from "@/app/services/types"
+import { AxiosResponseMod, AxiosResponseModCount, SessionWithExtraData } from "@/app/services/types"
+import useSWR from "swr"
+import { fetcher } from "@/lib/utils"
 
 
-enum PATIENTDATA {
-    MY = 'MY',
-    ALL = 'ALL'
-}
+
 
 
 export default function Doctors() {
 
     const [searchFilter, setSearchFilter] = useState<string>('')
-    const [tableData, setTableData] = useState<{ status: Boolean, data: PatientData[], totalcount: number }>()
-    const [tableLoader, setTableLoader] = useState(false)
-    const [type, setType] = useState<PATIENTDATA>(PATIENTDATA.MY)
+
+    const { data: tableData, isLoading: tableLoader } = useSWR<AxiosResponseModCount<PatientData[]>>('/api/doctor/patient', fetcher)
 
 
 
-    const { onOpen } = useStore()
+    const { onOpen, requestId, type: modalType } = useStore()
+
 
     const { data } = useSession()
 
     const session = data as SessionWithExtraData | null
 
 
-    const getMyPatients = async () => {
-        setTableLoader(true)
-        setType(PATIENTDATA.MY)
-        try {
-            const response = await axios.get('/api/doctor/patient')
-
-            if (response.status === 200) {
-                setTableData(response.data)
-            }
-        } catch (error) {
-
-        }
-        setTableLoader(false)
-    }
-
-    console.log(tableData);
 
 
-    const getAllPatients = async () => {
-        setTableLoader(true)
-        setType(PATIENTDATA.ALL)
-        try {
-            const response = await axios.get('/api/patients')
 
-            if (response.status === 200) {
-                setTableData(response.data)
-            }
-        } catch (error) {
 
-        }
-        setTableLoader(false)
-    }
 
-    useEffect(() => {
-        (async () => {
-            await getMyPatients()
-        })()
-    }, [])
+
 
 
     const columns: ColumnDef<PatientData>[] = [
@@ -151,7 +118,7 @@ export default function Doctors() {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                                 className="cursor-pointer"
-                                onClick={() => onOpen(ModalType.PATIENTHISTORY, { patientData })}
+                                onClick={() => onOpen(ModalType.REQUESTAPPROVAL, { patientData })}
                             >
                                 <BookOpenText className="mr-2 h-4 w-4" />
                                 <span>
@@ -211,37 +178,18 @@ export default function Doctors() {
 
 
                 <div className="mt-3 flex items-center space-x-2 font-semibold text-lg">
-                    <span className="">{type === PATIENTDATA.MY ? 'My' : 'All'} Patients</span> {
-                        tableLoader ? (
+                    <span className="">My Patients</span> {
+                        tableLoader || !tableData ? (
                             <Skeleton className="h-4 w-24 bg-stone-200" />
                         ) : (
                             <h1 className="">
-                                ({tableData?.totalcount})
+                                ({tableData.data.totalcount})
                             </h1>
                         )
                     }
 
                 </div>
 
-                <div className="my-4 flex w-full justify-end">
-                    <Select defaultValue={PATIENTDATA.MY} onValueChange={async (value) => {
-                        if (value === PATIENTDATA.MY) {
-                            await getMyPatients()
-                            return;
-                        }
-                        await getAllPatients()
-                    }}>
-                        <SelectTrigger className="w-[240px]">
-                            <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectGroup>
-                                <SelectItem value={PATIENTDATA.MY} >My Patients</SelectItem>
-                                <SelectItem value={PATIENTDATA.ALL}>All Patients</SelectItem>
-                            </SelectGroup>
-                        </SelectContent>
-                    </Select>
-                </div>
 
                 <div className='mt-3'>
                     <Input
@@ -260,7 +208,7 @@ export default function Doctors() {
                     <DataTable
                         columns={columns}
                         data={(typeof tableData?.data !== undefined)
-                            && tableData?.status ? tableData.data : []
+                            && tableData?.data?.status ? tableData.data.data : []
                         }
                         loading={tableLoader}
                         globalFilter={searchFilter}

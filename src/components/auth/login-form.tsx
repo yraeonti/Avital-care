@@ -68,6 +68,8 @@ export default function LoginForm() {
 
                 const { role } = session
                 if (role === Role.PATIENT) {
+                    const previousURL = document.referrer
+                    if (previousURL.includes('user/request_approval')) return router.push(previousURL)
                     return router.push('/patient/dashboard')
                 } else if (role === Role.DOCTOR) {
                     return router.push('/doctor/dashboard')
