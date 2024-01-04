@@ -121,7 +121,7 @@ export default function RequestApproval() {
                                     onClick={() => onOpen(ModalType.PATIENTHISTORY, { patientData })}
                                 >
 
-                                    Go to {patientData?.name}'s history
+                                    Go to {patientData?.name}&apos;s history
                                 </Button>
                             </>
                         ) :
@@ -129,10 +129,10 @@ export default function RequestApproval() {
                                 <>
                                     <DialogHeader className="pt-8">
                                         <DialogTitle className="text-2xl font-bold">
-                                            Awaiting <b>{patientData.name}'s</b> Approval
+                                            Awaiting <b>{patientData.name}&apos;s</b> Approval
                                         </DialogTitle>
                                         <DialogDescription>
-                                            Awaiting <b>{patientData.name}'s</b> Aproval or Rejection
+                                            Awaiting <b>{patientData.name}&apos;s</b> Aproval or Rejection
                                         </DialogDescription>
                                     </DialogHeader>
                                     <div className="flex flex-col items-center">
@@ -150,10 +150,10 @@ export default function RequestApproval() {
                                 <>
                                     <DialogHeader className="pt-8">
                                         <DialogTitle className="text-2xl font-bold">
-                                            Request <b>{patientData?.name}'s</b> Approval
+                                            Request <b>{patientData?.name}&apos;s</b> Approval
                                         </DialogTitle>
                                         <DialogDescription>
-                                            Request <b>{patientData?.name}'s</b> approval to view history.
+                                            Request <b>{patientData?.name}&apos;s</b> approval to view history.
                                         </DialogDescription>
                                     </DialogHeader>
                                     <Button
