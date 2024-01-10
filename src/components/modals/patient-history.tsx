@@ -169,7 +169,6 @@ export default function PatientHistory() {
                 revalidateOnReconnect: false
             })
 
-    console.log(testResultData);
 
 
 
