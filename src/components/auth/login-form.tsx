@@ -23,7 +23,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { FaEye, FaEyeSlash } from "react-icons/fa"
-import avitaCare from '../../../public/Avita Health.png'
+import avitaCare from '../../../public/avital-logo.png'
 import Image from "next/image"
 
 import { useForm } from "react-hook-form"

@@ -21,7 +21,7 @@ import { useRouter } from "next/navigation";
 import { SetStateAction, useState, type Dispatch } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
 import * as z from "zod";
-import avitaCare from '../../../public/Avita Health.png'
+import avitaCare from '../../../public/avital-logo.png'
 import Image from "next/image"
 
 type ProfileForm = {
