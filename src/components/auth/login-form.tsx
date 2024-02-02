@@ -95,7 +95,7 @@ export default function LoginForm() {
             <div className="flex flex-col items-center space-y-2">
                 <Image src={avitaCare} alt="AvitaCare logo for the Website" width={180} height={180} />
 
-                <h1 className="text-3xl font-semibold">Welcome Back</h1>
+                <h1 className="text-3xl font-semibold text-[#004680]">Welcome Back</h1>
             </div>
 
             {
@@ -148,7 +148,7 @@ export default function LoginForm() {
                         )}
                     />
                     <div className="flex flex-col justify-center">
-                        <Button type="submit" className="w-full active:scale-95 hover:scale-105 transition-all ease-in-out" disabled={isLoading}>
+                        <Button type="submit" className="w-full active:scale-95 hover:scale-105 transition-all ease-in-out bg-[#004680] hover:bg-[#004680]" disabled={isLoading}>
                             {isLoading && (
                                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                             )}

@@ -179,7 +179,7 @@ const ProfileDetails = ({
           <div className="flex flex-col items-center space-y-2">
             <Image src={avitaCare} alt="AvitaCare logo for the Website" width={180} height={180} />
 
-            <h1 className="text-3xl font-semibold">Let&apos;s Get Started</h1>
+            <h1 className="text-3xl font-semibold text-[#004680]">Let&apos;s Get Started</h1>
           </div>
 
           {errors !== "" && (
@@ -269,7 +269,7 @@ const ProfileDetails = ({
           />
 
           <div className="flex justify-center mt-10">
-            <Button className="w-full hover:scale-105 active:scale-95 transition-all ease-in-out">
+            <Button className="w-full hover:scale-105 active:scale-95 transition-all ease-in-out bg-[#004680] hover:bg-[#004680]">
               Next
             </Button>
           </div>
@@ -432,7 +432,7 @@ const UserDetails = ({
             </Button>
             <Button
               type="submit"
-              className="w-full bg-black text-white text-center active:scale-95 hover:scale-105 transition-all ease-in-out active:duration-75"
+              className="w-full bg-[#004680] hover:bg-[#004680] text-white text-center active:scale-95 hover:scale-105 transition-all ease-in-out active:duration-75"
               disabled={isLoading}
             >
               {isLoading && (
