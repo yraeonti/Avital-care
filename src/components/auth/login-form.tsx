@@ -147,14 +147,24 @@ export default function LoginForm() {
                             </FormItem>
                         )}
                     />
-                    <div className="flex justify-center">
+                    <div className="flex flex-col justify-center">
                         <Button type="submit" className="w-full active:scale-95 hover:scale-105 transition-all ease-in-out" disabled={isLoading}>
                             {isLoading && (
                                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                             )}
                             Login
                         </Button>
+
+
+                        <div className="mt-3">
+                            <Link href="#" className="underline text-sm">Forgot Password?</Link>
+                        </div>
+
                     </div>
+
+
+
+
 
 
                 </form>
