@@ -74,7 +74,7 @@ export async function GET(req: NextRequest) {
 
         if (!token) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
 
-        if (!Authorize(['ADMIN', Role.DOCTOR], token.role)) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
+        if (!Authorize(['ADMIN', Role.DOCTOR, Role.PATIENT], token.role)) return NextResponse.json({ status: false, message: 'Not authorized' }, { status: 401 })
 
         const searchParams = req.nextUrl.searchParams
         const patientId = searchParams.get('query')

@@ -29,10 +29,13 @@ export default async function mailer(data: Params) {
       ...data
     });
 
-    return 'message sent'
+
+    return "message sent"
 
   } catch (error) {
-    return null
+    console.log();
+
+    return new Error(`email not sent --- ${error}`)
   }
 
 

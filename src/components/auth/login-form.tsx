@@ -157,7 +157,7 @@ export default function LoginForm() {
 
 
                         <div className="mt-3">
-                            <Link href="#" className="underline text-sm">Forgot Password?</Link>
+                            <Link href="/forgot-password" className="underline text-sm">Forgot Password?</Link>
                         </div>
 
                     </div>

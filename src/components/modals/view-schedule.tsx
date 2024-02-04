@@ -52,8 +52,6 @@ export default function ViewScheduler() {
 
     // const [booked, setBooked] = useState(false);
 
-    console.log(doctorsList);
-
     const handleDayClick: DayClickEventHandler = (day, modifiers) => {
 
         if (day && modifiers.booked) {
