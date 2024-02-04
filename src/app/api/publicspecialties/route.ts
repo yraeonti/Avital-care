@@ -1,5 +1,4 @@
 import { db } from "@/app/services/db";
-import { Role } from "@/app/services/types";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest, res: NextResponse) {
@@ -18,43 +17,25 @@ export async function GET(req: NextRequest, res: NextResponse) {
         { status: 401 }
       );
 
-    const doctors = await db.user.findMany({
-      where: {
-        role: Role.DOCTOR,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
+    const specialties = await db.specialties.findMany({
       include: {
         profile: {
-          include: {
-            specialty: {
-              select: {
-                name: true,
-              },
-            },
+          select: {
+            name: true,
+            id: true,
           },
         },
       },
     });
 
-    const data = doctors.map((item) => {
+    const data = specialties.map((specialty) => {
       return {
-        id: item.id,
-        name: item.profile?.name,
-        email: item.email,
-        telephone: item.profile?.telephone,
-        img: item.profile?.imageUrl,
+        value: specialty.name,
+        label: specialty.name,
       };
     });
 
-    const totalcount = await db.user.count({
-      where: {
-        role: Role.DOCTOR,
-      },
-    });
-
-    return NextResponse.json({ status: true, data, totalcount });
+    return NextResponse.json({ status: true, data });
   } catch (error) {
     console.log(error);
 
