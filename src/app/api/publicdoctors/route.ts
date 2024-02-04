@@ -38,13 +38,22 @@ export async function GET(req: NextRequest, res: NextResponse) {
       },
     });
 
+    const data = doctors.map((item) => {
+      return {
+        id: item.id,
+        name: item.profile?.name,
+        email: item.email,
+        telephone: item.profile?.telephone,
+      };
+    });
+
     const totalcount = await db.user.count({
       where: {
         role: Role.DOCTOR,
       },
     });
 
-    return NextResponse.json({ status: true, doctors, totalcount });
+    return NextResponse.json({ status: true, data, totalcount });
   } catch (error) {
     return NextResponse.json(
       { status: false, message: "Something went wrong" },
