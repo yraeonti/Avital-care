@@ -50,13 +50,11 @@ export default function UpdateAppointmentStatus({ account }: { account: 'doctor'
     })
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        console.log('HITTING IT', values);
 
         setIsLoading(true)
         try {
 
             if (appointmentData?.id) {
-                console.log('hitter');
 
                 const res = await axios.put('/api/patient/appointment', {
                     id: appointmentData.id,
@@ -83,7 +81,6 @@ export default function UpdateAppointmentStatus({ account }: { account: 'doctor'
             }
 
         } catch (error) {
-            console.log(error);
             setIsLoading(false)
             toast.toast({
                 description: 'Appointment status not updated'

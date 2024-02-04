@@ -30,10 +30,13 @@ enum REQUESTHISTORY {
 }
 
 model User {
-  id              String           @id @default(uuid())
-  email           String           @unique
-  password        String
-  role            ROLE             @default(PATIENT)
+  id                    String    @id @default(uuid())
+  email                 String    @unique
+  password              String
+  role                  ROLE      @default(PATIENT)
+  reset_password_token  String?
+  reset_password_expiry DateTime?
+
   profile         Profile?
   session         Session[]
   appointment     Appointment[]

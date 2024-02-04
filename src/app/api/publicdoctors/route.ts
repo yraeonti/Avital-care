@@ -55,6 +55,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
     return NextResponse.json({ status: true, data, totalcount });
   } catch (error) {
+    console.log(error);
+
     return NextResponse.json(
       { status: false, message: "Something went wrong" },
       { status: 500 }
