@@ -45,6 +45,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         email: item.email,
         telephone: item.profile?.telephone,
         img: item.profile?.imageUrl,
+        specialty: item.profile?.specialty,
       };
     });
 
