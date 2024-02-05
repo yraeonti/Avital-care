@@ -48,9 +48,13 @@ export default function ForgotPassword() {
 
             if (response.status === 200) {
                 setResetSent(true)
+                return;
             }
 
-
+            toast({
+                variant: 'destructive',
+                description: "Request not sent",
+            })
         } catch (error) {
             toast({
                 variant: 'destructive',
