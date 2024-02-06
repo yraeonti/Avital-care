@@ -17,7 +17,6 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { useState } from "react"
 import axios from "axios"
-import { useToast } from "../ui/use-toast"
 
 const formSchema = z.object({
     email: z.string().email({ message: 'Invalid email' }),
@@ -36,25 +35,19 @@ export default function ForgotPassword() {
         }
     })
 
-    const { toast } = useToast()
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
 
         try {
             setIsLoading(true)
-            const response = await axios.post("/api/auth/forgot-password", {
+            await axios.post("/api/auth/forgot-password", {
                 email: values.email
             })
 
-            setResetSent(true)
-
-
         } catch (error) {
-            toast({
-                variant: 'destructive',
-                description: "Something went wrong...",
-            })
+
         }
+        setResetSent(true)
         setIsLoading(false)
     }
 
