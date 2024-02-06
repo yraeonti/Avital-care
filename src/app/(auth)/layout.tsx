@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import '../globals.css'
 import { cn } from '@/lib/utils'
 import { Open_Sans } from 'next/font/google'
+import { Toaster } from "@/components/ui/toaster"
 
 
 
@@ -24,6 +25,7 @@ export default function RootLayout({
     <html lang="en" >
       <body className={`${font.className} bg-[#004680]`}>
         {children}
+        <Toaster />
       </body>
     </html>
   )

@@ -46,10 +46,8 @@ export default function ForgotPassword() {
                 email: values.email
             })
 
-            if (response.status === 200) {
-                setResetSent(true)
-                return;
-            }
+            setResetSent(true)
+
 
         } catch (error) {
             toast({
