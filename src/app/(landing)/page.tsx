@@ -1,5 +1,4 @@
 "use client"
-import "./App.css";
 import About from "./components/About";
 import Banner from "./components/Banner";
 import Carousel from "./components/Carousel";

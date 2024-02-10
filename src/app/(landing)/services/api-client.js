@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const axiosInstance = axios.create({
-    baseURL: "https://avitahealthng.com/api",
+    baseURL: "/api",
     headers: {
         apikey: 'moegreene51234',
 
