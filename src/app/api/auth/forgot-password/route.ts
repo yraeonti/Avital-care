@@ -75,7 +75,7 @@ export async function POST(req: Request) {
                 </p>
 
                 <p>
-                Clink on this link to reset password: http://avital-care.vercel.app/forgot-password/${token}
+                Clink on this link to reset password: https://avitahealthng.com/forgot-password/${token}
                 </p>
             `
         })

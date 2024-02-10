@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const axiosInstance = axios.create({
-    baseURL: "https://avital-care.vercel.app/api",
+    baseURL: "https://avitahealthng.com/api",
     headers: {
         apikey: 'moegreene51234',
 

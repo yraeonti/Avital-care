@@ -5,6 +5,7 @@ import {
   MdOutlineMedicalServices,
   MdPregnantWoman,
 } from "react-icons/md";
+import Link from "next/link";
 
 const WaitTimes = () => {
   const [visible, setVisible] = useState(false);
@@ -50,12 +51,12 @@ const WaitTimes = () => {
         <div className="bucyrus py-5 border-b-2 border-white md:border-b-0 md:w-1/3 md:border-r-2">
           <div className="flex flex-row md:flex-col flex-grow-0 flex-shrink justify-center items-center text-white text-sm md:text-lg lg:text-2xl text-shadow">
             <h3 className="mr-4">
-              <a
+              <Link
                 className="text-nowrap"
-                href="https://avital-care.vercel.app/signup"
+                href="/signup"
               >
                 PRIMARY CARE
-              </a>
+              </Link>
             </h3>
             <p className="flex items-center">
               <span>
@@ -69,9 +70,9 @@ const WaitTimes = () => {
         <div className="gallion py-5 border-b-2 border-white md:border-b-0 md:w-1/3 md:border-r-2">
           <div className="flex flex-row md:flex-col flex-grow-0 flex-shrink justify-center items-center text-white text-sm md:text-lg lg:text-2xl text-shadow">
             <h3 className="mr-4">
-              <a href="https://avital-care.vercel.app/signup">
+              <Link href="/signup">
                 MATERNAL HEALTH CARE
-              </a>
+              </Link>
             </h3>
             <p className="flex items-center">
               <span>
@@ -85,9 +86,9 @@ const WaitTimes = () => {
         <div className="ontario py-5 border-b border-white md:border-b-0 md:w-1/3">
           <div className="flex flex-row md:flex-col flex-grow-0 flex-shrink justify-center items-center text-white text-sm md:text-lg lg:text-2xl text-shadow">
             <h3 className="mr-4">
-              <a href="https://avital-care.vercel.app/signup">
+              <Link href="/signup">
                 SPECIALIZED CONSULTATION
-              </a>
+              </Link>
             </h3>
             <p className="flex items-center flex-shrink">
               <span>

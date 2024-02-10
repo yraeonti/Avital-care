@@ -2,6 +2,7 @@ import doctor from "../assets/doctor.png";
 import dStethoscope from "../assets/doctorsStethoscope.png";
 import laboratory from "../assets/laboratory.png";
 import meter from "../assets/spectrophotometer.png";
+import Link from "next/link";
 
 const HomeIcons = () => {
   const items = [
@@ -35,16 +36,16 @@ const HomeIcons = () => {
             style={{ border: "3px solid #004680" }}
             key={index}
           >
-            <a
+            <Link
               className="flex flex-col justify-center items-center text-center"
-              href="https://avital-care.vercel.app/signup"
+              href="/signup"
             >
               <img className="text-center" src={item.icon.src} alt="" />
               <h2 className="sm:text-base md:text-lg lg:text-2xl my-1">
                 {item.heading}
               </h2>
               <p className="mb-4 hover">{item.paragraph}</p>
-            </a>
+            </Link>
           </div>
         ))}
       </div>
