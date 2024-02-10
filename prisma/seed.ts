@@ -9,7 +9,7 @@ async function main() {
         create: {
             id: '9e5116e4-6eb2-4649-8183-f0b57266982d',
             email: 'admin@gmail.com',
-            password: '$2a$10$uHPj/vWomGM3h8tx1atgoemjhzh2cODAPIsG6qsK4dTbmV8vktN/2',
+            password: '',
             role: 'ADMIN'
         }
     })
