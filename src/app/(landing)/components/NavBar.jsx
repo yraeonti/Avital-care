@@ -6,7 +6,7 @@ import Link from "next/link";
 import avitaLogo from "../assets/av4.png";
 
 const list = [
-  { title: "HOME", link: "" },
+  { title: "HOME", link: "/" },
   { title: "SERVICES", link: "/#services" },
   { title: "DOCTORS", link: "/doctors" },
   { title: "MY PORTAL", link: "/login" },
