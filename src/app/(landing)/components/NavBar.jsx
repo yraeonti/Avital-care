@@ -4,7 +4,6 @@ import { AiOutlineMenu } from "react-icons/ai";
 import SideBar from "./SideBar";
 import Link from "next/link";
 import avitaLogo from "../assets/av4.png";
-import { useRouter } from "next/router";
 
 const list = [
   { title: "HOME", link: "" },
@@ -17,18 +16,6 @@ const list = [
 
 const NavBar = () => {
   const [toggled, setToggle] = useState(false);
-
-  useEffect(() => {
-    const hash = window.location.hash.substring(1);
-    if (hash) {
-      window.history.replaceState(
-        null,
-        document.title,
-        window.location.pathname
-      );
-    }
-  }, []);
-
   return (
     <>
       <div
