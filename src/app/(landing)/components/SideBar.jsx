@@ -34,10 +34,11 @@ const SideBar = ({ toggled, setToggle }) => {
     <div
       ref={sideBarRef}
       style={{ zIndex: "99999999" }}
-      className={`side-background fixed right-0 top-0 h-screen z-50 pl-4 pr-12 py-8 flex flex-col justify-start items-start md:hidden ${toggled
-        ? "transition-transform ease-in duration-500 transform translate-x-0 !important"
-        : "transition-transform ease-out duration-500 transform translate-x-full !important "
-        }`}
+      className={`side-background fixed right-0 top-0 h-screen z-50 pl-4 pr-12 py-8 flex flex-col justify-start items-start md:hidden ${
+        toggled
+          ? "transition-transform ease-in duration-500 transform translate-x-0 !important"
+          : "transition-transform ease-out duration-500 transform translate-x-full !important "
+      }`}
     >
       <button
         onClick={() => setToggle(false)}
@@ -48,12 +49,17 @@ const SideBar = ({ toggled, setToggle }) => {
 
       <ul>
         {list.map((listItem, index) => (
-          <Link onClick={() => setToggle(false)} key={index} href={listItem.link}>
+          <Link
+            href={listItem.link}
+            onClick={() => setToggle(false)}
+            key={index}
+          >
             <li
-              className={`${index === list.length - 1
-                ? "text-white text-lg p-3 w-auto hover:bg-blue-900 hover:cursor-pointer transition-all"
-                : "text-white text-lg border-b-2 border-white p-3 w-auto hover:bg-blue-800 hover:cursor-pointer transition-all"
-                }`}
+              className={`${
+                index === list.length - 1
+                  ? "text-white text-lg p-3 w-auto hover:bg-blue-900 hover:cursor-pointer transition-all"
+                  : "text-white text-lg border-b-2 border-white p-3 w-auto hover:bg-blue-800 hover:cursor-pointer transition-all"
+              }`}
             >
               {listItem.title}
             </li>
