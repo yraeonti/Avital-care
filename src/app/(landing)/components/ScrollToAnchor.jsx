@@ -1,36 +1,17 @@
-"use client"
-import { useEffect, useRef } from "react";
-import { usePathname, useRouter } from "next/navigation";
+"use client";
+import { useEffect } from "react";
 
 function ScrollToAnchor() {
-
-  const location = usePathname();
-  const navigate = useRouter();
-  const lastHash = useRef("");
-
-
   useEffect(() => {
-
-    if (window) {
-      if (location.includes("#")) {
-        lastHash.current = location.split("#")[1];
-      }
-
-      if (lastHash.current && document.getElementById(lastHash.current)) {
-        setTimeout(() => {
-          document
-            .getElementById(lastHash.current)
-            ?.scrollIntoView({ behavior: "smooth", block: "start" });
-
-          navigate.replace(location.pathname, { scroll: true });
-
-          lastHash.current = "";
-        }, 100);
-      }
+    const hash = window.location.hash.substring(1);
+    if (hash) {
+      window.history.replaceState(
+        null,
+        document.title,
+        window.location.pathname
+      );
     }
-
-
-  }, [location, navigate]);
+  }, []);
 
   return null;
 }

@@ -1,9 +1,10 @@
-"use client"
+"use client";
 import React, { useEffect, useState, useRef } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import SideBar from "./SideBar";
-import Link from "next/link"
+import Link from "next/link";
 import avitaLogo from "../assets/av4.png";
+import { useRouter } from "next/router";
 
 const list = [
   { title: "HOME", link: "" },
@@ -16,6 +17,17 @@ const list = [
 
 const NavBar = () => {
   const [toggled, setToggle] = useState(false);
+
+  useEffect(() => {
+    const hash = window.location.hash.substring(1);
+    if (hash) {
+      window.history.replaceState(
+        null,
+        document.title,
+        window.location.pathname
+      );
+    }
+  }, []);
 
   return (
     <>
@@ -50,7 +62,7 @@ const NavBar = () => {
       <div className="blue hidden md:block">
         <ul className="flex justify-center">
           {list.map((listItem, index) => (
-            <Link key={index} href={listItem.link} onClick={() => setNavLink(!navlink)}>
+            <Link key={index} href={listItem.link}>
               <li className="mx-3 p-3 text-base lg:text-lg text-white hover:text-blue-300 hover:cursor-pointer transition-all">
                 {listItem.title}
               </li>
