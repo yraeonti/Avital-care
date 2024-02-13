@@ -13,8 +13,6 @@ export default async function ForgotPasswordPage({ slug }: { slug: string }) {
         }
     })
 
-    console.log(user);
-
     if (user) {
         return (
             <section className="flex items-center justify-center h-full">
