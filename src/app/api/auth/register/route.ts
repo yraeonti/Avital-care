@@ -4,6 +4,8 @@ import { fromZodError } from 'zod-validation-error';
 import { db } from "@/app/services/db";
 import { hashPassword } from "@/app/utils/password";
 import { Role } from "@/app/services/types";
+import mailer from "@/app/utils/mailer";
+import { signUpMail } from "@/app/utils/mailTemplate";
 
 
 export async function POST(req: Request) {
@@ -105,13 +107,23 @@ export async function POST(req: Request) {
                             address,
                         }
                     }
+                },
+                include: {
+                    profile: {
+                        select: {
+                            name: true
+                        }
+                    }
                 }
             })
 
             if (!user) return NextResponse.json({ message: 'Patient not created' }, { status: 400 })
 
-            console.log('user 0000', user);
-
+            await mailer({
+                to: user.email,
+                subject: "USER REGISTRATION",
+                html: signUpMail(user.profile?.name ?? "")
+            })
 
             return NextResponse.json({ status: true, message: 'Patient created' })
 
@@ -125,7 +137,6 @@ export async function POST(req: Request) {
                         create: {
                             name,
                             nin,
-
                             telephone,
                             specialtyId: specialty
                         }
@@ -134,6 +145,8 @@ export async function POST(req: Request) {
             })
 
             if (!user) return NextResponse.json({ message: 'Doctor not created' }, { status: 400 })
+
+
 
             return NextResponse.json({ status: true, message: 'Doctor created' })
         }

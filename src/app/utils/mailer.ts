@@ -13,7 +13,7 @@ export default async function mailer(data: Params) {
   try {
 
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
+      host: "smtp.resend.com",
       port: 465,
       secure: true,
       auth: {
@@ -25,9 +25,10 @@ export default async function mailer(data: Params) {
 
 
     const info = await transporter.sendMail({
-      from: `"Freddie" <${process.env.EMAIL_SENDER}>`, // sender address
+      from: `"Avita" <notification@avitahealthng.com >`, // sender address
       ...data
     });
+
 
 
     return "message sent"
@@ -35,7 +36,7 @@ export default async function mailer(data: Params) {
   } catch (error) {
     console.log();
 
-    return new Error(`email not sent --- ${error}`)
+    throw new Error(`email not sent --- ${error}`)
   }
 
 

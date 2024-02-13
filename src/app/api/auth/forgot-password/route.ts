@@ -3,7 +3,7 @@ import { z, ZodError } from "zod"
 import { fromZodError } from 'zod-validation-error';
 import { db } from "@/app/services/db";
 import { hashPassword } from "@/app/utils/password";
-import { Role } from "@/app/services/types";
+import { forgotPassword } from "@/app/utils/mailTemplate";
 import mailer from "@/app/utils/mailer";
 import crypto from "crypto"
 
@@ -65,19 +65,7 @@ export async function POST(req: Request) {
         const sent = await mailer({
             to: user.email,
             subject: "RESET PASSWORD LINK",
-            html: `
-                <h3>
-                    Hello ${user.profile?.name},
-                </h3>
-
-                <p>
-                You requested for a password reset link for your account.
-                </p>
-
-                <p>
-                Clink on this link to reset password: https://avitahealthng.com/forgot-password/${token}
-                </p>
-            `
+            html: forgotPassword(user.profile?.name ?? "", `https://avitahealthng.com/forgot-password/${token}`)
         })
 
         if (sent !== "message sent") {
