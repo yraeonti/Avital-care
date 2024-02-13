@@ -1,12 +1,12 @@
-"use client"
+"use client";
 import React, { useEffect, useState, useRef } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import SideBar from "./SideBar";
-import Link from "next/link"
+import Link from "next/link";
 import avitaLogo from "../assets/av4.png";
 
 const list = [
-  { title: "HOME", link: "" },
+  { title: "HOME", link: "/" },
   { title: "SERVICES", link: "/#services" },
   { title: "DOCTORS", link: "/doctors" },
   { title: "MY PORTAL", link: "/login" },
@@ -16,7 +16,6 @@ const list = [
 
 const NavBar = () => {
   const [toggled, setToggle] = useState(false);
-
   return (
     <>
       <div
@@ -50,7 +49,7 @@ const NavBar = () => {
       <div className="blue hidden md:block">
         <ul className="flex justify-center">
           {list.map((listItem, index) => (
-            <Link key={index} href={listItem.link} onClick={() => setNavLink(!navlink)}>
+            <Link key={index} href={listItem.link}>
               <li className="mx-3 p-3 text-base lg:text-lg text-white hover:text-blue-300 hover:cursor-pointer transition-all">
                 {listItem.title}
               </li>

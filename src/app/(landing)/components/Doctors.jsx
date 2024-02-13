@@ -68,10 +68,11 @@ const Doctors = () => {
         {/* inputs */}
         <form
           action=""
-          className={`md:flex items-center justify-center flex-wrap ${visible
-            ? "flex transition-opacity duration-500 ease-in"
-            : "hidden transition-opacity duration-500 ease-out"
-            }`}
+          className={`md:flex items-center justify-center flex-wrap ${
+            visible
+              ? "flex transition-opacity duration-500 ease-in"
+              : "hidden transition-opacity duration-500 ease-out"
+          }`}
         >
           <input
             className="m-4 p-2 outline-none border-2 border-gray-400"
@@ -116,6 +117,15 @@ const Doctors = () => {
         <h1 className="text-center mb-8 text-5xl" style={{ color: "#004680" }}>
           Find a Doctor
         </h1>
+        {/* no doctors in db */}
+        {!isLoading && !doctors?.data && (
+          <h2
+            className="text-center mt-4 text-2xl"
+            style={{ color: "#004680" }}
+          >
+            There are no Doctors at the moment.
+          </h2>
+        )}
 
         {/* if there are no doctors for search */}
         {(searchText || selectedSpecialty) && filteredDoctors?.length === 0 && (
