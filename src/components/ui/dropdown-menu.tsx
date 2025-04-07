@@ -1,17 +1,21 @@
 "use client"
 
 import * as React from "react"
-import Link from "next/link"
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import { Check, ChevronRight, Circle } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
 const DropdownMenu = DropdownMenuPrimitive.Root
+
 const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger
+
 const DropdownMenuGroup = DropdownMenuPrimitive.Group
+
 const DropdownMenuPortal = DropdownMenuPrimitive.Portal
+
 const DropdownMenuSub = DropdownMenuPrimitive.Sub
+
 const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup
 
 const DropdownMenuSubTrigger = React.forwardRef<
@@ -177,28 +181,6 @@ const DropdownMenuShortcut = ({
 }
 DropdownMenuShortcut.displayName = "DropdownMenuShortcut"
 
-const ExampleDropdownMenu = () => {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="px-4 py-2 bg-gray-200 rounded-md">
-        Open Menu
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuItem asChild>
-          <Link href="/dashboard">Dashboard</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/settings">Settings</Link>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link href="/avita-education">Avita Education and Research</Link>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
-}
-
 export {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -215,5 +197,4 @@ export {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuRadioGroup,
-  ExampleDropdownMenu,
 }
