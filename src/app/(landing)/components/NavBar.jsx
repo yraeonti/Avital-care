@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import SideBar from "./SideBar";
 import Link from "next/link";
@@ -10,12 +10,14 @@ const list = [
   { title: "SERVICES", link: "/#services" },
   { title: "DOCTORS", link: "/doctors" },
   { title: "MY PORTAL", link: "/login" },
+  { title: "AVITA EDUCATION AND RESEARCH", link: "/avita-education" },
   { title: "FAQ", link: "/#faq" },
   { title: "CONTACT US", link: "/#contact" },
 ];
 
 const NavBar = () => {
   const [toggled, setToggle] = useState(false);
+
   return (
     <>
       <div
@@ -46,6 +48,7 @@ const NavBar = () => {
         </div>
       </div>
 
+      {/* Top Nav Bar */}
       <div className="blue hidden md:block">
         <ul className="flex justify-center">
           {list.map((listItem, index) => (
@@ -57,6 +60,7 @@ const NavBar = () => {
           ))}
         </ul>
       </div>
+
       <SideBar toggled={toggled} setToggle={setToggle} />
     </>
   );
