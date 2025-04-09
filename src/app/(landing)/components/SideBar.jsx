@@ -3,17 +3,7 @@ import { IoMdExit } from "react-icons/io";
 import { useRef, useEffect } from "react";
 import Link from "next/link";
 
-const SideBar = ({ toggled, setToggle }) => {
-  const list = [
-    { title: "HOME", link: "/" },
-    { title: "SERVICES", link: "/#services" },
-    { title: "DOCTORS", link: "/doctors" },
-    { title: "MY PORTAL", link: "/login" },
-    { title: "FAQ", link: "/#faq" },
-    { title: "CONTACT US", link: "/#contact" },
-    { title: "SIGN UP", link: "/signup" },
-  ];
-
+const SideBar = ({ toggled, setToggle, list }) => {
   const sideBarRef = useRef(null);
 
   useEffect(() => {
@@ -24,7 +14,6 @@ const SideBar = ({ toggled, setToggle }) => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -36,8 +25,8 @@ const SideBar = ({ toggled, setToggle }) => {
       style={{ zIndex: "99999999" }}
       className={`side-background fixed right-0 top-0 h-screen z-50 pl-4 pr-12 py-8 flex flex-col justify-start items-start md:hidden ${
         toggled
-          ? "transition-transform ease-in duration-500 transform translate-x-0 !important"
-          : "transition-transform ease-out duration-500 transform translate-x-full !important "
+          ? "transition-transform ease-in duration-500 transform translate-x-0"
+          : "transition-transform ease-out duration-500 transform translate-x-full"
       }`}
     >
       <button
@@ -48,23 +37,29 @@ const SideBar = ({ toggled, setToggle }) => {
       </button>
 
       <ul>
-        {list.map((listItem, index) => (
-          <Link
-            href={listItem.link}
-            onClick={() => setToggle(false)}
-            key={index}
-          >
-            <li
-              className={`${
-                index === list.length - 1
-                  ? "text-white text-lg p-3 w-auto hover:bg-blue-900 hover:cursor-pointer transition-all"
-                  : "text-white text-lg border-b-2 border-white p-3 w-auto hover:bg-blue-800 hover:cursor-pointer transition-all"
-              }`}
+        {list.map((item, index) => {
+          const isExternal = item.link.startsWith("http");
+
+          return isExternal ? (
+            <a
+              key={index}
+              href={item.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setToggle(false)}
             >
-              {listItem.title}
-            </li>
-          </Link>
-        ))}
+              <li className="text-white text-lg border-b-2 border-white p-3 w-auto hover:bg-blue-800 hover:cursor-pointer transition-all">
+                {item.title}
+              </li>
+            </a>
+          ) : (
+            <Link key={index} href={item.link} onClick={() => setToggle(false)}>
+              <li className="text-white text-lg border-b-2 border-white p-3 w-auto hover:bg-blue-800 hover:cursor-pointer transition-all">
+                {item.title}
+              </li>
+            </Link>
+          );
+        })}
       </ul>
     </div>
   );
