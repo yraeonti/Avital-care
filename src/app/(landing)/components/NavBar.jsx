@@ -10,7 +10,7 @@ const list = [
   { title: "SERVICES", link: "/#services" },
   { title: "DOCTORS", link: "/doctors" },
   { title: "MY PORTAL", link: "/login" },
-  { title: "AVITA HEALTH RESEARCH AND EDUCATION", link: "/avita-education" },
+  { title: "AVITA HEALTH RESEARCH AND EDUCATION", link: "/https://royalmedicsacademy.com/" },
   { title: "FAQ", link: "/#faq" },
   { title: "CONTACT US", link: "/#contact" },
 ];
