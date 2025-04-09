@@ -51,7 +51,7 @@ const NavBar = () => {
         </div>
       </div>
 
-      {/* Top Nav Bar */}
+      {/* Desktop Navigation */}
       <div className="blue hidden md:block">
         <ul className="flex justify-center">
           {list.map((listItem, index) => {
@@ -78,7 +78,8 @@ const NavBar = () => {
         </ul>
       </div>
 
-      <SideBar toggled={toggled} setToggle={setToggle} />
+      {/* Mobile Sidebar with nav items */}
+      <SideBar toggled={toggled} setToggle={setToggle} list={list} />
     </>
   );
 };
