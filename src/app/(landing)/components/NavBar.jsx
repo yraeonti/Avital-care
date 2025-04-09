@@ -10,7 +10,10 @@ const list = [
   { title: "SERVICES", link: "/#services" },
   { title: "DOCTORS", link: "/doctors" },
   { title: "MY PORTAL", link: "/login" },
-  { title: "AVITA HEALTH RESEARCH AND EDUCATION", link: "https://royalmedicsacademy.com/" },
+  {
+    title: "AVITA HEALTH RESEARCH AND EDUCATION",
+    link: "https://royalmedicsacademy.com/",
+  },
   { title: "FAQ", link: "/#faq" },
   { title: "CONTACT US", link: "/#contact" },
 ];
@@ -51,13 +54,27 @@ const NavBar = () => {
       {/* Top Nav Bar */}
       <div className="blue hidden md:block">
         <ul className="flex justify-center">
-          {list.map((listItem, index) => (
-            <Link key={index} href={listItem.link}>
-              <li className="mx-3 p-3 text-base lg:text-lg text-white hover:text-blue-300 hover:cursor-pointer transition-all">
-                {listItem.title}
-              </li>
-            </Link>
-          ))}
+          {list.map((listItem, index) => {
+            const isExternal = listItem.link.startsWith("http");
+            return isExternal ? (
+              <a
+                key={index}
+                href={listItem.link}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <li className="mx-3 p-3 text-base lg:text-lg text-white hover:text-blue-300 hover:cursor-pointer transition-all">
+                  {listItem.title}
+                </li>
+              </a>
+            ) : (
+              <Link key={index} href={listItem.link}>
+                <li className="mx-3 p-3 text-base lg:text-lg text-white hover:text-blue-300 hover:cursor-pointer transition-all">
+                  {listItem.title}
+                </li>
+              </Link>
+            );
+          })}
         </ul>
       </div>
 
