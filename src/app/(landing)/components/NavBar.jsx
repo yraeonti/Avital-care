@@ -16,7 +16,7 @@ const list = [
   },
   { title: "FAQ", link: "/#faq" },
   { title: "CONTACT US", link: "/#contact" },
-  { title: "VOLUNTEER IN AFRICA", link: "/volunteer" }, // ✅ New link added
+  { title: "VOLUNTEER", link: "/volunteer" }, // ✅ New link added
 ];
 
 const NavBar = () => {
