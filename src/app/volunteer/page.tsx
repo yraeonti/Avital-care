@@ -4,9 +4,10 @@ import Image from "next/image";
 
 const countries = {
   Nigeria: {
-     image: "/nigeria.jpg",
+    image: "/nigeria.jpg",
     duration: "2-12 weeks",
     cost: "From 2300 USD",
+    price: 230000, // in kobo
     description:
       "Engage in Nigeria’s bustling healthcare system, contributing to patient care and health education across urban and rural communities.",
     highlights: ["Urban Hospitals", "Outreach Programs", "Health Education"],
@@ -15,9 +16,10 @@ const countries = {
     accommodation: "Shared housing with meals included",
   },
   Ghana: {
-     image: "/sierra-leone.jpg",
-    duration: "2-20 weeks",
-    cost: "From 2300 USD",
+    image: "/ghana.jpg",
+    duration: "1-16 weeks",
+    cost: "From 2500 USD",
+    price: 250000,
     description:
       "Volunteer in Ghana’s friendly healthcare environment. Gain hands-on experience in hospitals and rural health centers.",
     highlights: ["Teaching Hospitals", "Mobile Clinics", "Community Health"],
@@ -28,7 +30,8 @@ const countries = {
   "Sierra Leone": {
     image: "/sierra-leone.jpg",
     duration: "2-20 weeks",
-    cost: "From 2300 EURO",
+    cost: "From 2300 USD",
+    price: 230000,
     description:
       "Support rebuilding efforts of Sierra Leone’s health system. Work with local doctors and help underserved communities.",
     highlights: ["Rural Clinics", "Medical Outreach", "Child Health Programs"],
@@ -38,8 +41,57 @@ const countries = {
   },
 };
 
+const departments = [
+  "Internal Medicine",
+  "Pediatrics",
+  "Surgery",
+  "Obstetrics & Gynecology",
+  "Public Health",
+  "Emergency Medicine",
+  "General Practice",
+];
+
 export default function VolunteerPage() {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [selectedDepartment, setSelectedDepartment] = useState("");
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handlePayment = async () => {
+    if (!email || !selectedDepartment || !selectedCountry) {
+      alert("Please fill all fields.");
+      return;
+    }
+
+    const amount = countries[selectedCountry].price;
+
+    setIsSubmitting(true);
+    try {
+      const res = await fetch("/api/paystack", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          amount,
+          metadata: {
+            department: selectedDepartment,
+            country: selectedCountry,
+          },
+        }),
+      });
+
+      const data = await res.json();
+      if (data?.authorization_url) {
+        window.location.href = data.authorization_url;
+      } else {
+        alert("Payment initiation failed.");
+      }
+    } catch (err) {
+      alert("Error occurred. Try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div>
@@ -117,17 +169,46 @@ export default function VolunteerPage() {
         ))}
       </div>
 
-      {/* Modal (simulated for demo) */}
+      {/* Modal for department selection and payment */}
       {selectedCountry && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg max-w-md w-full">
             <h3 className="text-xl font-bold mb-4">Select Department - {selectedCountry}</h3>
-            <p className="text-sm text-gray-600 mb-4">Department selection coming soon.</p>
+
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="w-full border p-2 mb-3 rounded"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+
+            <select
+              className="w-full border p-2 mb-4 rounded"
+              value={selectedDepartment}
+              onChange={(e) => setSelectedDepartment(e.target.value)}
+            >
+              <option value="">-- Select Department --</option>
+              {departments.map((dept) => (
+                <option key={dept} value={dept}>
+                  {dept}
+                </option>
+              ))}
+            </select>
+
             <button
-              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+              className="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mb-2"
+              onClick={handlePayment}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Processing..." : "Proceed to Pay"}
+            </button>
+
+            <button
+              className="w-full bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
               onClick={() => setSelectedCountry(null)}
             >
-              Close
+              Cancel
             </button>
           </div>
         </div>
@@ -135,4 +216,3 @@ export default function VolunteerPage() {
     </div>
   );
 }
-
