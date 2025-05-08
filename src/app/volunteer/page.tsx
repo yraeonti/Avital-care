@@ -98,7 +98,7 @@ export default function VolunteerPage() {
       <section
         className="text-white text-center py-20 mb-12"
         style={{
-          backgroundImage: "url('/africa.jpeg')",
+          backgroundImage: "url('africa.jpeg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundBlendMode: "overlay",
