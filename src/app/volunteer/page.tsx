@@ -4,9 +4,9 @@ import Image from "next/image";
 
 const countries = {
   Nigeria: {
-    image: "/nigeria.jpg",
+     image: "/nigeria.jpg",
     duration: "2-12 weeks",
-    cost: "From 2100 EURO",
+    cost: "From 2300 USD",
     description:
       "Engage in Nigeria’s bustling healthcare system, contributing to patient care and health education across urban and rural communities.",
     highlights: ["Urban Hospitals", "Outreach Programs", "Health Education"],
@@ -15,9 +15,9 @@ const countries = {
     accommodation: "Shared housing with meals included",
   },
   Ghana: {
-    image: "/ghana.jpg",
-    duration: "1-16 weeks",
-    cost: "From 2200 EURO",
+     image: "/sierra-leone.jpg",
+    duration: "2-20 weeks",
+    cost: "From 2300 USD",
     description:
       "Volunteer in Ghana’s friendly healthcare environment. Gain hands-on experience in hospitals and rural health centers.",
     highlights: ["Teaching Hospitals", "Mobile Clinics", "Community Health"],
