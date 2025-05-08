@@ -1,10 +1,8 @@
 "use client";
-
 import React, { useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import SideBar from "./SideBar";
 import Link from "next/link";
-import Image from "next/image";
 import avitaLogo from "../assets/av4.png";
 
 const list = [
@@ -18,7 +16,6 @@ const list = [
   },
   { title: "FAQ", link: "/#faq" },
   { title: "CONTACT US", link: "/#contact" },
-  { title: "VOLUNTEER", link: "/volunteer" },
 ];
 
 const NavBar = () => {
@@ -32,28 +29,23 @@ const NavBar = () => {
       >
         <div className="flex justify-between items-center flex-wrap">
           <Link href="/">
-            <Image
-              src={avitaLogo}
-              alt="Avita logo"
-              width={144}
-              height={48}
-              className="object-cover"
-              priority
+            <img
+              className="w-36 h-12 object-cover"
+              src={avitaLogo.src}
+              alt="website logo"
             />
           </Link>
 
           <div className="flex justify-between items-center">
             <div className="mr-3 hidden md:block">
-              <Link href="/signup">
-                <button className="p-3 rounded-lg blue-border">Sign Up</button>
-              </Link>
+              <button className="p-3 rounded-lg blue-border">
+                <Link href="/signup">Sign Up</Link>
+              </button>
             </div>
-            <button
-              onClick={() => setToggle(true)}
-              aria-label="Open mobile navigation"
-              className="md:hidden"
-            >
-              <AiOutlineMenu size="2rem" color="#004680" />
+            <button onClick={() => setToggle(true)}>
+              <span className="text-3x font-bold md:hidden">
+                <AiOutlineMenu size="2rem" color="#004680" />
+              </span>
             </button>
           </div>
         </div>
@@ -62,23 +54,23 @@ const NavBar = () => {
       {/* Desktop Navigation */}
       <div className="blue hidden md:block">
         <ul className="flex justify-center">
-          {list.map((item, index) => {
-            const isExternal = item.link.startsWith("http");
+          {list.map((listItem, index) => {
+            const isExternal = listItem.link.startsWith("http");
             return isExternal ? (
               <a
                 key={index}
-                href={item.link}
+                href={listItem.link}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <li className="mx-3 p-3 text-base lg:text-lg text-white hover:text-blue-300 hover:cursor-pointer transition-all">
-                  {item.title}
+                  {listItem.title}
                 </li>
               </a>
             ) : (
-              <Link key={index} href={item.link}>
+              <Link key={index} href={listItem.link}>
                 <li className="mx-3 p-3 text-base lg:text-lg text-white hover:text-blue-300 hover:cursor-pointer transition-all">
-                  {item.title}
+                  {listItem.title}
                 </li>
               </Link>
             );
