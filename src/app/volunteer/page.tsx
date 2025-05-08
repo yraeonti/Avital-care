@@ -16,7 +16,7 @@ const countries = {
     accommodation: "Shared housing with meals included",
   },
   Ghana: {
-    image: "/ghana.jpg",
+    image: "/ghana.jpeg",
     duration: "1-16 weeks",
     cost: "From 2500 USD",
     price: 250000,
