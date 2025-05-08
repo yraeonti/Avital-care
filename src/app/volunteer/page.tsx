@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const countries = {
   Nigeria: {
-    image: "/nigeria.jpg",
+    image: "/nigeria.jpeg",
     duration: "2-12 weeks",
     cost: "From 2300 USD",
     price: 230000, // in kobo
