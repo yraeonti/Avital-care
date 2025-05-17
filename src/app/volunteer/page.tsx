@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const countries = {
   Nigeria: {
-    image: "/nigeria.jpg",
+    image: "/nigeria.jpeg",
     duration: "2-12 weeks",
     cost: "From 2300 USD",
     price: 230000, // in kobo
@@ -16,7 +16,7 @@ const countries = {
     accommodation: "Shared housing with meals included",
   },
   Ghana: {
-    image: "/ghana.jpg",
+    image: "/ghana.jpeg",
     duration: "1-16 weeks",
     cost: "From 2500 USD",
     price: 250000,
@@ -28,7 +28,7 @@ const countries = {
     accommodation: "Volunteer dorms or homestay with meals",
   },
   "Sierra Leone": {
-    image: "/sierra-leone.jpg",
+    image: "/sierra-leone.jpeg",
     duration: "2-20 weeks",
     cost: "From 2300 USD",
     price: 230000,
