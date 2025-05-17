@@ -28,7 +28,7 @@ const countries = {
     accommodation: "Volunteer dorms or homestay with meals",
   },
   "Sierra Leone": {
-    image: "se.jpeg",
+    image: "/se.jpeg",
     duration: "2-20 weeks",
     cost: "From 2300 USD",
     price: 230000,
