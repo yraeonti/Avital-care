@@ -56,17 +56,15 @@ const departments = [
 export default function VolunteerPage() {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedDepartment, setSelectedDepartment] = useState("");
-  const [email, setEmail] = useState("");
   const router = useRouter();
 
   const handleProceed = () => {
-    if (!email || !selectedDepartment || !selectedCountry) {
-      alert("Please fill all fields.");
+    if (!selectedDepartment || !selectedCountry) {
+      alert("Please select a department.");
       return;
     }
 
     const query = new URLSearchParams({
-      email,
       department: selectedDepartment,
       country: selectedCountry,
     }).toString();
@@ -159,14 +157,6 @@ export default function VolunteerPage() {
           <div className="bg-white p-6 rounded-lg max-w-md w-full">
             <h3 className="text-xl font-bold mb-4">Select Department - {selectedCountry}</h3>
 
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="w-full border p-2 mb-3 rounded"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-
             <select
               className="w-full border p-2 mb-4 rounded"
               value={selectedDepartment}
@@ -189,7 +179,10 @@ export default function VolunteerPage() {
 
             <button
               className="w-full bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
-              onClick={() => setSelectedCountry(null)}
+              onClick={() => {
+                setSelectedCountry(null);
+                setSelectedDepartment("");
+              }}
             >
               Cancel
             </button>
