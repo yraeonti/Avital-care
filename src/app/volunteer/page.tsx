@@ -1,5 +1,7 @@
 "use client";
+
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 const countries = {
@@ -7,7 +9,7 @@ const countries = {
     image: "/nigeria.jpeg",
     duration: "2-12 weeks",
     cost: "From 2300 USD",
-    price: 230000, // in kobo
+    price: 230000,
     description:
       "Engage in Nigeria’s bustling healthcare system, contributing to patient care and health education across urban and rural communities.",
     highlights: ["Urban Hospitals", "Outreach Programs", "Health Education"],
@@ -55,42 +57,21 @@ export default function VolunteerPage() {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [email, setEmail] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
-  const handlePayment = async () => {
+  const handleProceed = () => {
     if (!email || !selectedDepartment || !selectedCountry) {
       alert("Please fill all fields.");
       return;
     }
 
-    const amount = countries[selectedCountry].price;
+    const query = new URLSearchParams({
+      email,
+      department: selectedDepartment,
+      country: selectedCountry,
+    }).toString();
 
-    setIsSubmitting(true);
-    try {
-      const res = await fetch("/api/paystack", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          amount,
-          metadata: {
-            department: selectedDepartment,
-            country: selectedCountry,
-          },
-        }),
-      });
-
-      const data = await res.json();
-      if (data?.authorization_url) {
-        window.location.href = data.authorization_url;
-      } else {
-        alert("Payment initiation failed.");
-      }
-    } catch (err) {
-      alert("Error occurred. Try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
+    router.push(`/apply?${query}`);
   };
 
   return (
@@ -106,8 +87,12 @@ export default function VolunteerPage() {
         }}
       >
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-4">Volunteer and Work as a Medical Doctor in Africa</h1>
-          <p className="text-xl">Join our medical volunteer program and make a difference</p>
+          <h1 className="text-4xl font-bold mb-4">
+            Volunteer and Work as a Medical Doctor in Africa
+          </h1>
+          <p className="text-xl">
+            Join our medical volunteer program and make a difference
+          </p>
         </div>
       </section>
 
@@ -169,7 +154,6 @@ export default function VolunteerPage() {
         ))}
       </div>
 
-      {/* Modal for department selection and payment */}
       {selectedCountry && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg max-w-md w-full">
@@ -198,10 +182,9 @@ export default function VolunteerPage() {
 
             <button
               className="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mb-2"
-              onClick={handlePayment}
-              disabled={isSubmitting}
+              onClick={handleProceed}
             >
-              {isSubmitting ? "Processing..." : "Proceed to Pay"}
+              Proceed to Apply
             </button>
 
             <button
