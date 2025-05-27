@@ -7,36 +7,22 @@ export default function ApplyPage() {
   const searchParams = useSearchParams();
   const [country, setCountry] = useState("");
   const [department, setDepartment] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [cvFile, setCvFile] = useState<File | null>(null);
-  const [motivation, setMotivation] = useState("");
-  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    const c = searchParams.get("country");
-    const d = searchParams.get("department");
-    if (c) setCountry(c);
-    if (d) setDepartment(d);
+    const selectedCountry = searchParams.get("country");
+    const selectedDepartment = searchParams.get("department");
+
+    if (selectedCountry) setCountry(selectedCountry);
+    if (selectedDepartment) setDepartment(selectedDepartment);
   }, [searchParams]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData(e.target);
 
-    if (!fullName || !email || !cvFile) {
-      alert("Please fill in all required fields and upload your CV.");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("fullName", fullName);
-    formData.append("email", email);
-    formData.append("phone", phone);
+    // Append selected values from state
     formData.append("country", country);
     formData.append("department", department);
-    formData.append("motivation", motivation);
-    formData.append("cvFile", cvFile);
 
     try {
       const res = await fetch("/api/apply", {
@@ -46,18 +32,15 @@ export default function ApplyPage() {
 
       const data = await res.json();
 
-      if (res.ok) {
-        setMessage("Application submitted successfully!");
-        setFullName("");
-        setEmail("");
-        setPhone("");
-        setCvFile(null);
-        setMotivation("");
+      if (data.success) {
+        alert("Application submitted successfully!");
+        e.target.reset(); // optional: reset form fields
       } else {
-        setMessage(data.error || "Failed to submit application.");
+        alert("An error occurred while submitting.");
       }
-    } catch (err) {
-      setMessage("An error occurred while submitting.");
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("Network error occurred.");
     }
   };
 
@@ -69,81 +52,34 @@ export default function ApplyPage() {
         </h1>
 
         <div className="mb-4">
-          <p>
-            <strong>Selected Country:</strong> {country}
-          </p>
-          <p>
-            <strong>Selected Department:</strong> {department}
-          </p>
+          <p><strong>Selected Country:</strong> {country}</p>
+          <p><strong>Selected Department:</strong> {department}</p>
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-4"
-          encType="multipart/form-data"
-        >
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block font-medium mb-1">
-              Full Name <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              className="w-full border p-2 rounded"
-              placeholder="Your full name"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              required
-            />
+            <label className="block font-medium mb-1">Full Name</label>
+            <input type="text" name="fullName" className="w-full border p-2 rounded" placeholder="Your full name" required />
           </div>
 
           <div>
-            <label className="block font-medium mb-1">
-              Email Address <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="email"
-              className="w-full border p-2 rounded"
-              placeholder="your@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+            <label className="block font-medium mb-1">Email Address</label>
+            <input type="email" name="email" className="w-full border p-2 rounded" placeholder="your@email.com" required />
           </div>
 
           <div>
             <label className="block font-medium mb-1">Phone Number</label>
-            <input
-              type="tel"
-              className="w-full border p-2 rounded"
-              placeholder="+234..."
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
+            <input type="tel" name="phone" className="w-full border p-2 rounded" placeholder="+234..." required />
           </div>
 
           <div>
-            <label className="block font-medium mb-1">
-              Upload CV or Medical License <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="file"
-              className="w-full"
-              onChange={(e) => e.target.files && setCvFile(e.target.files[0])}
-              required
-            />
+            <label className="block font-medium mb-1">Upload CV or Medical License</label>
+            <input type="file" name="file" className="w-full" required />
           </div>
 
           <div>
-            <label className="block font-medium mb-1">
-              Why do you want to volunteer?
-            </label>
-            <textarea
-              className="w-full border p-2 rounded"
-              rows={4}
-              placeholder="Your motivation and goals..."
-              value={motivation}
-              onChange={(e) => setMotivation(e.target.value)}
-            />
+            <label className="block font-medium mb-1">Why do you want to volunteer?</label>
+            <textarea name="motivation" className="w-full border p-2 rounded" rows={4} placeholder="Your motivation and goals..." required />
           </div>
 
           <button
@@ -153,10 +89,6 @@ export default function ApplyPage() {
             Submit Application
           </button>
         </form>
-
-        {message && (
-          <p className="mt-4 text-center text-green-600 font-semibold">{message}</p>
-        )}
       </div>
     </div>
   );
