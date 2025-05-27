@@ -11,19 +11,19 @@ export async function POST(req) {
     const message = formData.get("message");
     const country = formData.get("country") || "Not provided";
     const department = formData.get("department") || "Not provided";
-
     const file = formData.get("file");
 
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT),
+      secure: false,
       auth: {
-        user: process.env.ADMIN_EMAIL,
-        pass: process.env.ADMIN_EMAIL_PASSWORD,
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
       },
     });
 
-    // Prepare file buffer if attached
-    let attachments = [];
+    const attachments = [];
     if (file && typeof file.name === "string") {
       const buffer = Buffer.from(await file.arrayBuffer());
       attachments.push({
@@ -32,10 +32,10 @@ export async function POST(req) {
       });
     }
 
-    // Send email to admin
+    // Send email to Admin
     await transporter.sendMail({
-      from: `"Volunteer Application" <${process.env.ADMIN_EMAIL}>`,
-      to: process.env.ADMIN_EMAIL,
+      from: `"Volunteer Application" <${process.env.SMTP_USER}>`,
+      to: process.env.SMTP_USER,
       subject: "New Medical Volunteer Application",
       html: `
         <h3>New Volunteer Application</h3>
@@ -49,16 +49,15 @@ export async function POST(req) {
       attachments,
     });
 
-    // Confirmation email to the applicant
+    // Confirmation email to user
     await transporter.sendMail({
-      from: `"Merita Health Team" <${process.env.ADMIN_EMAIL}>`,
+      from: `"Merita Health" <${process.env.SMTP_USER}>`,
       to: email,
-      subject: "Thank you for applying as a volunteer",
+      subject: "Thank You for Applying as a Volunteer",
       html: `
         <h3>Hello ${fullName},</h3>
-        <p>Thank you for your interest in volunteering as a medical doctor with Merita Health.</p>
-        <p>We have received your application and will be in touch shortly.</p>
-        <br />
+        <p>Thank you for applying to volunteer with Merita Health.</p>
+        <p>We’ve received your application and will get back to you shortly.</p>
         <p>Warm regards,<br/>Merita Health Team</p>
       `,
     });
@@ -66,9 +65,6 @@ export async function POST(req) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error processing application:", error);
-    return NextResponse.json(
-      { success: false, error: "Something went wrong." },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Something went wrong." }, { status: 500 });
   }
 }
