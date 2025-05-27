@@ -1,94 +1,72 @@
-import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
-import formidable from "formidable-serverless";
+import nodemailer from 'nodemailer';
 
-// Disable Next.js body parser to handle multipart/form-data
-export const config = {
-  api: {
-    bodyParser: false,
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.ADMIN_EMAIL,
+    pass: process.env.ADMIN_EMAIL_PASSWORD,
   },
-};
+});
 
-export async function POST(req: Request) {
-  const form = new formidable.IncomingForm();
-
+export async function POST(req) {
   try {
-    // Parse form data and files
-    const { fields, files } = await new Promise<{ fields: any; files: any }>(
-      (resolve, reject) => {
-        form.parse(req as any, (err, fields, files) => {
-          if (err) reject(err);
-          else resolve({ fields, files });
-        });
-      }
-    );
+    const formData = await req.formData();
 
-    const { fullName, email, phone, country, department, motivation } = fields;
-    const cvFile = files.cvFile;
+    const fullName = formData.get("fullName");
+    const email = formData.get("email");
+    const phone = formData.get("phone");
+    const motivation = formData.get("motivation");
+    const department = formData.get("department");
+    const country = formData.get("country");
+    const file = formData.get("file");
 
-    if (!fullName || !email || !cvFile) {
-      return NextResponse.json(
-        { error: "Full Name, Email and CV are required." },
-        { status: 400 }
-      );
+    if (!fullName || !email || !phone || !motivation || !department || !country || !file) {
+      return new Response(JSON.stringify({ error: "Missing fields" }), { status: 400 });
     }
 
-    // Setup Nodemailer transporter using environment variables
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.ADMIN_EMAIL,
-        pass: process.env.ADMIN_EMAIL_PASSWORD,
-      },
-    });
+    const fileBuffer = Buffer.from(await file.arrayBuffer());
+    const fileName = file.name;
 
-    // Prepare email to Admin with applicant details and CV attachment
-    const adminMailOptions = {
-      from: process.env.ADMIN_EMAIL,
+    // Send to admin
+    await transporter.sendMail({
+      from: `"Volunteer App" <${process.env.ADMIN_EMAIL}>`,
       to: process.env.ADMIN_EMAIL,
-      subject: `New Volunteer Application from ${fullName}`,
-      text: `
-Name: ${fullName}
-Email: ${email}
-Phone: ${phone}
-Country: ${country}
-Department: ${department}
-Motivation: ${motivation}
+      subject: `New Volunteer Application - ${fullName}`,
+      html: `
+        <h2>New Volunteer Application</h2>
+        <p><strong>Name:</strong> ${fullName}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        <p><strong>Country:</strong> ${country}</p>
+        <p><strong>Department:</strong> ${department}</p>
+        <p><strong>Motivation:</strong> ${motivation}</p>
       `,
       attachments: [
         {
-          filename: (cvFile as any).originalFilename || "CV.pdf",
-          path: (cvFile as any).filepath,
+          filename: fileName,
+          content: fileBuffer,
         },
       ],
-    };
+    });
 
-    // Confirmation email to applicant
-    const userMailOptions = {
-      from: process.env.ADMIN_EMAIL,
+    // Confirmation to client
+    await transporter.sendMail({
+      from: `"Volunteer Program" <${process.env.ADMIN_EMAIL}>`,
       to: email,
-      subject: "Volunteer Application Received",
-      text: `Dear ${fullName},
+      subject: `Thanks for applying, ${fullName}!`,
+      html: `
+        <p>Dear ${fullName},</p>
+        <p>Thank you for applying to volunteer as a medical doctor in ${country}.</p>
+        <p>We have received your application for the <strong>${department}</strong> department.</p>
+        <p>Our team will get back to you shortly.</p>
+        <br />
+        <p>Warm regards,<br/>Volunteer Coordination Team</p>
+      `,
+    });
 
-Thank you for your application to volunteer in ${country} in the department of ${department}.
-
-We have received your information and CV and will get back to you shortly.
-
-Best regards,
-Volunteer Program Team`,
-    };
-
-    // Send emails
-    await transporter.sendMail(adminMailOptions);
-    await transporter.sendMail(userMailOptions);
-
-    return NextResponse.json({ message: "Application submitted successfully." });
+    return new Response(JSON.stringify({ success: true }), { status: 200 });
   } catch (error) {
-    console.error("Error sending emails:", error);
-    return NextResponse.json(
-      { error: "Failed to send emails. Please try again later." },
-      { status: 500 }
-    );
+    console.error("Submission error:", error);
+    return new Response(JSON.stringify({ error: "Email sending failed" }), { status: 500 });
   }
 }
-
