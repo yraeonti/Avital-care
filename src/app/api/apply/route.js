@@ -56,9 +56,9 @@ export async function POST(req) {
       subject: "Thank You for Applying as a Volunteer",
       html: `
         <h3>Hello ${fullName},</h3>
-        <p>Thank you for applying to volunteer with Merita Health.</p>
+        <p>Thank you for applying to volunteer with Avita Health.</p>
         <p>We’ve received your application and will get back to you shortly.</p>
-        <p>Warm regards,<br/>Merita Health Team</p>
+        <p>Warm regards,<br/>Avita Health Team</p>
       `,
     });
 
