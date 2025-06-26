@@ -14,6 +14,10 @@ const list = [
     title: "AVITA HEALTH RESEARCH AND EDUCATION",
     link: "https://royalmedicsacademy.com/",
   },
+  {
+    title: "VOLUNTEER",
+    link: "https://avitahealthng.com/volunteer",
+  },
   { title: "FAQ", link: "/#faq" },
   { title: "CONTACT US", link: "/#contact" },
 ];
@@ -23,6 +27,7 @@ const NavBar = () => {
 
   return (
     <>
+      {/* Top Section with Logo and Menu */}
       <div
         style={{ borderBottomColor: "#004680" }}
         className="py-3 px-4 pl-0 border-b-2 lg:border-b-0"
@@ -78,7 +83,7 @@ const NavBar = () => {
         </ul>
       </div>
 
-      {/* Mobile Sidebar with nav items */}
+      {/* Mobile Sidebar */}
       <SideBar toggled={toggled} setToggle={setToggle} list={list} />
     </>
   );
