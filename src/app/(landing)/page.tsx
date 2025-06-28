@@ -13,6 +13,9 @@ export default function Page() {
     return (
         <>
             <Head>
+                {/* ✅ Google Search Console Verification */}
+                <meta name="google-site-verification" content="PITOon_qXlS-_EeWidyKwyKPFxgRk15rO8qhrU8-zIY" />
+
                 <title>Avita Health NG – Wellness & Healthcare in Nigeria</title>
                 <meta name="description" content="Avita Health NG offers diagnostics, wellness programs, and corporate healthcare services across Nigeria." />
                 <meta name="robots" content="index, follow" />
